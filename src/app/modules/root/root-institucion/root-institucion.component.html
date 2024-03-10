@@ -1,0 +1,9 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Institucion</li>
+  </ol>
+</nav>
+<div *ngIf="loading" class="d-flex justify-content-center py5- my-5">
+  <app-loading size="100px"></app-loading>
+</div>
+<app-entity-display [config]="config" [entityData]="data"></app-entity-display>

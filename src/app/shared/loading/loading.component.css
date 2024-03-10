@@ -1,0 +1,111 @@
+/* Define keyframes for color animations */
+
+@keyframes rojo {
+  0% { fill: #d7263cdd; }
+  25% { fill: #ff5614dd; }
+  50% { fill: #177e89dd; }
+  75% { fill: #6053ccdd; }
+  100% { fill: #d7263cdd; }
+}
+
+@keyframes azul {
+  0% { fill: #0d3b65dd; }
+  25% { fill: #177e89dd; }
+  50% { fill: #ffb800dd; }
+  75% { fill: #aaa95add; }
+  100% { fill: #0d3b65dd; }
+}
+
+@keyframes morado {
+  0% { fill: #6053ccdd; }
+  25% { fill: #d7263cdd; }
+  50% { fill: #ff5614dd; }
+  75% { fill: #388659dd; }
+  100% { fill: #6053ccdd; }
+}
+
+@keyframes oliva {
+  0% { fill: #aaa95add; }
+  25% { fill: #0d3b65dd; }
+  50% { fill: #177e89dd; }
+  75% { fill: #ffb800dd; }
+  100% { fill: #aaa95add; }
+}
+
+@keyframes verde {
+  0% { fill: #388659dd; }
+  25% { fill: #6053ccdd; }
+  50% { fill: #d7263cdd; }
+  75% { fill: #ff5614dd; }
+  100% { fill: #388659dd; }
+}
+
+@keyframes amarillo {
+  0% { fill: #ffb800dd; }
+  25% { fill: #aaa95add; }
+  50% { fill: #0d3b65dd; }
+  75% { fill: #177e89dd; }
+  100% { fill: #ffb800dd; }
+}
+
+@keyframes naranja {
+  0% { fill: #ff5614dd; }
+  25% { fill: #388659dd; }
+  50% { fill: #6053ccdd; }
+  75% { fill: #d7263cdd; }
+  100% { fill: #ff5614dd; }
+}
+
+@keyframes cyana {
+  0% { fill: #177e89dd; }
+  25% { fill: #ffb800dd; }
+  50% { fill: #aaa95add; }
+  75% { fill: #0d3b65dd; }
+  100% { fill: #177e89dd; }
+}
+
+/* Define keyframes for opacity animation */
+
+@keyframes fadeInOut {
+  0% { opacity: 1; }
+  50% { opacity: 0.8; }
+  100% { opacity: 0.5; }
+}
+
+/* Apply animations to elements */
+
+#alumno {
+  animation: alumno 3s infinite linear;
+}
+
+#rojoI, #rojoD {
+  animation: rojo 2s infinite;
+}
+
+#azulI, #azulD {
+  animation: azul 2s infinite;
+}
+
+#moradoI, #moradoD {
+  animation: morado 2s infinite;
+}
+
+#olivaI, #olivaD {
+  animation: oliva 2s infinite;
+}
+
+#verdeI, #verdeD {
+  animation: verde 2s infinite;
+}
+
+#amarilloI, #amarilloD {
+  animation: amarillo 2s infinite;
+}
+
+#naranjaI, #naranjaD {
+  animation: naranja 2s infinite;
+}
+
+#cyanI, #cyanD {
+  animation: cyana 2s infinite;
+}

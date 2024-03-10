@@ -1,0 +1,6 @@
+/* Estilos adicionales aquí si son necesarios */
+.nav-pills .nav-link.active {
+  color: #fff;
+  background-color: #5a5e64; /* Color Bootstrap para 'success' */
+  border-radius: 0;
+}

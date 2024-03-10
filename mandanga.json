@@ -1,0 +1,219 @@
+{
+  "roles": [
+    {
+      "id": "1",
+      "nombre": "root",
+      "estado": "activo"
+    },
+    {
+      "id": "2",
+      "nombre": "rectoria",
+      "estado": "activo"
+    },
+    {
+      "id": "3",
+      "nombre": "secretaria",
+      "estado": "activo"
+    },
+    {
+      "nombre": "Docente",
+      "estado": "activo",
+      "id": "709f"
+    },
+    {
+      "nombre": "acudiente",
+      "estado": "activo",
+      "id": "eaed"
+    },
+    {
+      "id": "314e",
+      "nombre": "ccc",
+      "estado": "activo"
+    }
+  ],
+  "grados": [
+    {
+      "nombre": "Prejardin",
+      "estado": "activo",
+      "nivel": "1",
+      "id": "1"
+    },
+    {
+      "nombre": "Jardín",
+      "estado": "activo",
+      "nivel": "1",
+      "id": "2"
+    },
+    {
+      "id": "8ee6",
+      "nombre": "Primero",
+      "estado": "activo",
+      "nivel": "6810"
+    },
+    {
+      "id": "30ef",
+      "nombre": "Segundo",
+      "estado": "activo",
+      "nivel": "6810"
+    },
+    {
+      "id": "112b",
+      "nivel": "6810",
+      "nombre": "Tercero",
+      "estado": "activo"
+    },
+    {
+      "id": "819d",
+      "nivel": "6810",
+      "nombre": "Cuarto",
+      "estado": "activo"
+    },
+    {
+      "nivel": "6810",
+      "nombre": "Quinto",
+      "estado": "activo",
+      "id": "cd92"
+    },
+    {
+      "id": "4dc5",
+      "nivel": "2f47",
+      "nombre": "Sexto",
+      "estado": "activo"
+    },
+    {
+      "id": "56d7",
+      "nivel": "2f47",
+      "nombre": "Septimo",
+      "estado": "activo"
+    },
+    {
+      "id": "546e",
+      "nivel": "2f47",
+      "nombre": "Octavo",
+      "estado": "activo"
+    },
+    {
+      "id": "65c0",
+      "nivel": "2f47",
+      "nombre": "Noveno",
+      "estado": "activo"
+    }
+  ],
+  "areas": [
+    {
+      "nivel": "1",
+      "nombre": "Español",
+      "estado": "activo",
+      "id": "833f"
+    },
+    {
+      "nivel": "1",
+      "nombre": "Matemáticas",
+      "estado": "activo",
+      "id": "d80f"
+    },
+    {
+      "id": "a560",
+      "nivel": "1",
+      "nombre": "Deportes",
+      "estado": "activo"
+    },
+    {
+      "id": "dc49",
+      "nivel": "6810",
+      "nombre": "Espanol",
+      "estado": "activo"
+    }
+  ],
+  "materias": [
+    {
+      "nombre": "Espaniol",
+      "ih": 3,
+      "estado": "activo",
+      "grado": "1",
+      "area": "833f",
+      "id": "1"
+    },
+    {
+      "area": "dc49",
+      "grado": "8ee6",
+      "nombre": "Castellano",
+      "ih": "8",
+      "estado": "activo",
+      "id": "7749"
+    },
+    {
+      "area": "d80f",
+      "grado": "1",
+      "nombre": "Lectura",
+      "ih": "2",
+      "estado": "activo",
+      "id": "67b5"
+    }
+  ],
+  "niveles": [
+    {
+      "nombre": "Preescolar",
+      "estado": "activo",
+      "id": "1"
+    },
+    {
+      "nombre": "Primaria",
+      "estado": "activo",
+      "id": "6810"
+    },
+    {
+      "nombre": "Secundaria",
+      "estado": "activo",
+      "id": "2f47"
+    }
+  ],
+  "lectivos": [
+    {
+      "nivel": "1",
+      "inicio": "01/01/2020",
+      "fin": "12/12/2020",
+      "estado": "activo",
+      "id": "3dbe"
+    },
+    {
+      "id": "58b2",
+      "nivel": "6810",
+      "inicio": "01/01/2023",
+      "fin": "12/12/2023",
+      "estado": "activo"
+    }
+  ],
+  "periodos": [
+    {
+      "lectivo": "3dbe",
+      "nombre": "primero",
+      "inicio": "2001-01-01",
+      "fin": "2024-01-12",
+      "porcentaje": 35,
+      "estado": "activo",
+      "id": "63e7"
+    }
+  ],
+  "instituciones": [
+    {
+      "tipo": "Institucion Educativa",
+      "nombre": "Nuestra Señora del Perpetuo Socorro",
+      "direccion": "Calle 4 Avenida 3 a",
+      "telefono": "3165337662",
+      "email": "a@a",
+      "dane": "1111",
+      "url": "http://me",
+      "id": "1"
+    }
+  ],
+  "usuarios": [
+    {
+      "id": "1",
+      "nombres": "Adan",
+      "apellidos": "Lucio Sanchez",
+      "clave": "18913301",
+      "email": "adan@gmail.com"
+    }
+  ]
+}

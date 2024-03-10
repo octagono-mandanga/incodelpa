@@ -1,0 +1,17 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a routerLink="/coordinacion/cursos">Cursos</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Editar</li>
+  </ol>
+</nav>
+<small *ngIf="loading">
+  {{msg}}
+</small>
+<app-formulario
+  (event)="onEvento($event)"
+  [loading]="loading"
+  [message]="message"
+  [success]="success"
+  [config]="config"
+  [entityData]="data"
+></app-formulario>

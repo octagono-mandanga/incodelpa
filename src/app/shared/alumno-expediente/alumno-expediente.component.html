@@ -1,0 +1,106 @@
+<div *ngIf="loading" class="card">
+  <div class="card-body">
+      <div class="container mt-3">
+        <div class="d-flex  justify-content-center">
+          <app-loading size="20px"></app-loading>
+          <h4 class="ms-2 text-secondary">
+            Cargando...
+          </h4>
+        </div>
+      </div>
+  </div>
+</div>
+<div *ngIf="!loading" class="card">
+  <div class="card-header bg-transparent">
+    <i class="fa-solid fa-list me-2"></i> Expediente
+  </div>
+  <div class="card-body">
+    <div class="d-flex mb-2 p-2 border bg-light">
+      <div class="flex-shrink-0">
+        <img [src]="alumno.avatar_url" alt="" width="96" class="ms-2 rounded-circle me-1 border" />
+      </div>
+      <div class="flex-grow-1 ms-3">
+        <h4 class="my-0">
+          {{alumno.primer_apellido}} {{alumno.segundo_apellido}}
+        </h4>
+        <h5 class="p-0 mb-0 text-secondary">
+          {{alumno.primer_nombre}} {{alumno.segundo_nombre}}
+        </h5>
+        <p class="p-0 mb-0 text-secondary" style="line-height: 1rem;">
+          <small>
+            {{alumno.email}}
+          </small>
+        </p>
+        <div class="btn-group mt-1">
+          <a type="button" class="btn btn-sm btn-dark py-1 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-solid fa-gear"></i>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" *ngIf="config?.actions?.edit" [routerLink]="[config?.actions?.edit, alumno.id]">Editar Perfil</a></li>
+            <li><a class="dropdown-item" *ngIf="config?.actions?.modify" [routerLink]="[config?.actions?.modify, alumno.id]">Modificar Matricula</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="matricula?.id" class="alert alert-info" role="alert">
+      <h6 class="text-secondary mb-0">Matricula Académica (Actual)</h6>
+      <h5 class="mb-0">
+        Curso: {{matricula.curso.nombre}} ({{matricula.curso.grado.nombre}})
+      </h5>
+      <p class="mb-0">
+        Director: {{matricula.curso.director.primer_nombre}} {{matricula.curso.director.segundo_nombre}} {{matricula.curso.director.primer_apellido}}
+      </p>
+    </div>
+    <div class="expediente" *ngIf="matriculas.length>0">
+      <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+          <button *ngFor="let item of matriculas; let i = index"
+          class="nav-link" [class.active]="i === 0"
+          [attr.id]="'pill'+item.id"
+          data-bs-toggle="pill"
+          [attr.data-bs-target]="'#pillContent'+item.id">
+            {{ item.curso.nombre }}
+          </button>
+        </div>
+      </nav>
+      <div class="tab-content" id="nav-tabContent">
+        <div *ngFor="let item of matriculas; let i = index"
+          class="tab-pane fade"
+          [class.active]="i === 0"
+          [class.show]="i === 0"
+          [attr.id]="'pillContent'+item.id">
+          <div class="my-2 alert alert-secondary border">
+            <h5 class="text-secondary mb-0">
+              <small>
+                {{ item.curso.grado.nombre }}
+              </small>
+            </h5>
+            <h6 class="mb-0 font-monospace text-secondary">
+              {{ item.curso.nombre }}
+            </h6>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li *ngFor="let item of item.curso.asignaciones" class="list-group-item pb-1">
+              <div class="d-flex">
+                <div class="flex-grow-1">
+                  <h6 class="my-0">
+                    {{item.materia.nombre}}
+                  </h6>
+                  <p class="mb-0">
+                    {{item.docente.primer_nombre}} {{item.docente.segundo_nombre}}
+                    {{item.docente.primer_apellido}} {{item.docente.segundo_apellido}}
+                  </p>
+                </div>
+              </div>
+
+              <div>
+
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

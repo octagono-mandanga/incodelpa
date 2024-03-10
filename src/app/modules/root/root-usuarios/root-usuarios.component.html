@@ -1,0 +1,45 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Usuarios</li>
+  </ol>
+</nav>
+<div class="card">
+  <div class="card-body">
+    <div *ngIf="loading" class="container mt-3">
+      <div class="d-flex  justify-content-center">
+        <app-loading size="20px"></app-loading>
+        <h4 class="ms-2 text-secondary">
+          Cargando...
+        </h4>
+      </div>
+    </div>
+    <div *ngIf="!loading" class="d-flex align-items-start">
+      <ul class="nav flex-column nav-pills border-end pe-2 me-2" id="v-pills-tab" role="tablist">
+        <li class="nav-item" *ngFor="let item of roles; index as i">
+          <a class="nav-link cursor"
+          [attr.id]="item.name+'-tab'" data-bs-toggle="pill" [attr.data-bs-target]="'#'+item.name"
+          [ngClass]="{'active': i === 0}"
+          (click)="onRole(item.id)"
+          >{{ item.name | titlecase }}</a>
+        </li>
+      </ul>
+
+      <div class="tab-content w-100" id="v-pills-tabContent">
+        <div class="tab-content">
+          <div  *ngFor="let item of roles; index as i"
+            class="tab-pane" [attr.id]="item.name" role="tabpanel" [attr.tabindex]="i"
+            [ngClass]="{'active': i === 0}">
+            <div class="d-flex justify-content-end">
+              <a [routerLink]="['/root/usuarios/add/', item.id]" type="button" class="btn btn-primary">
+                Registrar
+              </a>
+            </div>
+            <app-user-list [users]="filter"></app-user-list>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

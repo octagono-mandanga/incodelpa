@@ -1,0 +1,19 @@
+/* construction-message.component.css */
+
+.construction-message {
+  text-align: center;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  padding: 20px;
+}
+
+.construction-icon {
+  font-size: 100px;
+  color: #b12101;
+}
+
+.message {
+  font-size: 36px;
+  color: #333;
+  margin-bottom: 20px;
+}

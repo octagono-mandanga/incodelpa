@@ -1,0 +1,15 @@
+.d-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner-grow {
+  width: 3rem;
+  height: 3rem;
+}
+
+span {
+  color: #6c757d; /* Un gris sutil para el mensaje */
+  font-size: 0.8rem;
+}

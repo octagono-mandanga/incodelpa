@@ -1,0 +1,14 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a routerLink="/root/lectivos">Lectivos</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Nuevo</li>
+  </ol>
+</nav>
+<app-formulario
+  (event)="onEditar($event)"
+  [loading]="loading"
+  [message]="message"
+  [success]="success"
+  [config]="config"
+  [entityData]="data"
+></app-formulario>

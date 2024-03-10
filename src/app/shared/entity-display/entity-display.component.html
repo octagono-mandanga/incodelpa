@@ -1,0 +1,18 @@
+<div *ngIf="entityData" class="card p-3">
+  <div class="card-body">
+    <h5 class="card-title">Detalles</h5>
+    <ng-container *ngIf="entityData">
+      <div *ngFor="let col of config.columns" class="mb-2">
+        <strong>{{ col.displayName }}:</strong> {{ entityData[col.key] }}
+      </div>
+      <!-- Asumiendo que tienes un botón de edición -->
+
+      <a *ngIf="config.actions['edit']" [routerLink]="[config.actions['edit'], entityData.id]" class="btn btn-success">Editar</a>
+
+    </ng-container>
+  </div>
+</div>
+<ng-template #noDataTemplate>
+  <p>No hay datos disponibles.</p>
+  <a [routerLink]="[config.actions['edit'], 1]" class="btn btn-primary">Crear</a>
+</ng-template>

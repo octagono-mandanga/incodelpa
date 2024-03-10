@@ -1,0 +1,86 @@
+/* Colores base para tema oscuro */
+:root {
+  --color-dark: #121212; /* Casi negro */
+  --color-dark-lighter: #232323; /* Gris oscuro */
+  --color-text: #ffffff; /* Blanco para texto */
+  --color-accent: #4caf50; /* Verde como color de acento */
+  --color-links: #ffffff; /* Blanco para los enlaces */
+  --color-links-hover: #4caf50; /* Verde al pasar el ratón por encima de los enlaces */
+}
+
+#sidebar-wrapper {
+  min-width: 250px;
+  max-width: 250px;
+  opacity: 1;
+  transition: all 0.2s ease;
+  background: #121212; /* Fondo oscuro para la barra lateral */
+  color: #ffffff; /* Texto en color blanco para contraste */
+}
+
+#menu-toggle {
+  color: #ffffff; /* Icono del menú en blanco para visibilidad */
+}
+#wrap-root {
+  background: #e0e0ea;
+}
+.cursor {
+  cursor: pointer;
+}
+.sidebar-heading{
+  height: 53px;
+  background: #101010;
+  border: 1px solid #232323;
+}
+.sidebar-contracted {
+  min-width: 0 !important;
+  max-width: 0 !important;
+  overflow: hidden !important;
+  opacity: 0;
+}
+
+.navbar {
+  background-color: #232323; /* Color más oscuro para la barra de navegación */
+  color: #ffffff;
+}
+
+.navbar .navbar-nav .nav-item .user-initials-circle {
+  background-color: #4caf50; /* Utiliza el color de acento para el círculo de usuario */
+  color: #ffffff; /* Color del texto para el círculo del usuario */
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: normal;
+  font-size: .9rem;
+}
+
+.list-group-item {
+  background-color: #121212; /* Fondo oscuro para los elementos del listado */
+  color: #ffffff; /* Texto en color blanco para contraste */
+  border: none; /* Eliminar bordes predeterminados */
+}
+
+.list-group-item:hover {
+  background-color: #4caf50; /* Color ligeramente más claro al pasar el ratón por encima */
+}
+.active{
+  background-color: #142c15; /* Color ligeramente más claro al pasar el ratón por encima */
+}
+.dropdown-menu {
+  background: #121212; /* Menú desplegable con fondo oscuro */
+  color: #ffffff; /* Texto en color blanco para contraste */
+}
+
+.dropdown-menu .dropdown-item {
+  color: #ffffff; /* Opciones de menú en blanco para contraste */
+}
+
+.dropdown-menu .dropdown-item:hover {
+  color: #ffffff; /* Color del texto para hover */
+  background-color: #4caf50; /* Color de fondo al pasar el ratón por encima */
+}
+
+.dropdown-menu .dropdown-divider {
+  border-color: #232323; /* Divider más claro para visibilidad */
+}

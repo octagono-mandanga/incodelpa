@@ -1,0 +1,7 @@
+.input-group-text {
+  cursor: pointer;
+}
+
+.input-group-text i {
+  font-size: 1.25rem; /* Ajusta según sea necesario */
+}

@@ -1,0 +1,50 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Backups</li>
+  </ol>
+</nav>
+<div *ngIf="countdown > 0" class="mb-1">
+  <small>
+    Recargando en {{ countdown }} segundos...
+  </small>
+</div>
+<div class="card">
+  <div class="card-body">
+    <div *ngIf="loading" class="container mt-3">
+      <div class="d-flex  justify-content-center">
+        <app-loading size="20px"></app-loading>
+        <h4 class="ms-2 text-secondary">
+          Cargando...
+        </h4>
+      </div>
+    </div>
+    <div *ngIf="!loading" class="backups-container">
+      <ul class="backups-list">
+        <li *ngFor="let backup of backups" class="backup-item">
+          <div class="d-flex">
+            <div class="flex-shrink-0">
+              <i class="fa-solid fa-download fa-2x"></i>
+            </div>
+            <div class="flex-grow-1 ms-3">
+              <a href="{{ backup.url }}" download="{{ backup.name }}" class="backup-link mb-0  lh-1">
+                {{ backup.name }} ({{  backup.size | number }} KB)
+              </a>
+
+              <span class="backup-info lh-1">
+                Creado: {{ backup.last_modified | date:'medium' }}
+              </span>
+            </div>
+          </div>
+
+
+        </li>
+      </ul>
+    </div>
+    <div class="d-grid gap-2">
+      <button (click)="startBackup()" [disabled]="loading" class="btn btn-success">
+        {{ loading ? 'Procesando...' : 'Iniciar Copia' }}
+      </button>
+    </div>
+
+  </div>
+</div>

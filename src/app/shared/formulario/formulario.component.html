@@ -1,0 +1,40 @@
+<div *ngIf="message" [ngClass]="{'alert-success': success, 'alert-danger': !success}" class="alert" role="alert">
+  {{ message }}
+</div>
+<div class="container p-4">
+  <div *ngIf="loading" class="d-flex  justify-content-center">
+    <app-loading size="20px"></app-loading>
+    <h4 class="ms-2 text-secondary">
+      Cargando...
+    </h4>
+  </div>
+  <form *ngIf="form && !loading" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div *ngFor="let col of config.columns" class="form-group mb-2">
+      <label *ngIf="col.displayName" class="text-secondary">
+        <span *ngIf="col.required">*</span>
+        {{col.displayName}}
+      </label>
+
+      <!-- Input para tipo 'text' y 'email' -->
+      <input *ngIf="col.type === 'hidden'" type="hidden" [name]="col.key" [value]="col.value" [required]="col.required ?? false">
+      <input *ngIf="col.type === 'text' || col.type === 'email'" type="{{col.type}}" class="form-control" [formControlName]="col.key" [required]="col.required ?? false">
+      <input *ngIf="col.type === 'number'" type="number" class="form-control" [formControlName]="col.key" [required]="col.required ?? false" step="any">
+      <!-- Input para tipo 'date' -->
+      <input *ngIf="col.type === 'date'" type="date" class="form-control" [formControlName]="col.key" [required]="col.required ?? false">
+      <!-- Selector para tipo 'select' -->
+      <select *ngIf="col.type === 'select'" class="form-select" [formControlName]="col.key"
+        (change)="onSelectChange($event, col.key)">
+        <option *ngFor="let option of col.options" [value]="option.value">{{option.displayValue}}</option>
+      </select>
+
+
+      <!-- Mensaje de error si el campo es inválido y ha sido tocado -->
+      <div *ngIf="form.get(col.key)?.invalid && form.get(col.key)?.touched" class="text-danger">
+        {{col.displayName}} es requerido.
+      </div>
+    </div>
+    <button *ngIf="entityData" [disabled]="form.invalid" type="submit" class="btn btn-success mt-2">Actualizar</button>
+    <button *ngIf="!entityData" [disabled]="form.invalid" type="submit" class="btn btn-primary mt-2">Procesar</button>
+  </form>
+</div>
+

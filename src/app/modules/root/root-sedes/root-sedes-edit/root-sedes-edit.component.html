@@ -1,0 +1,14 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a routerLink="/root/sedes">Sedes</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Editar</li>
+  </ol>
+</nav>
+<app-formulario
+  (event)="onEditar($event)"
+  [loading]="loading"
+  [message]="message"
+  [success]="success"
+  [config]="config"
+  [entityData]="data"
+></app-formulario>

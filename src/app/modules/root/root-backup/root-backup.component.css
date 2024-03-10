@@ -1,0 +1,39 @@
+.backup-container {
+  text-align: center;
+  margin-top: 20px;
+}
+.loading {
+  color: #888;
+  text-align: center;
+  padding: 20px;
+}
+
+.backups-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.backup-item {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.backup-link {
+  color: #007bff;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.backup-link:hover {
+  text-decoration: underline;
+}
+
+.backup-info {
+  display: block;
+  color: #666;
+  font-size: 0.8rem;
+}

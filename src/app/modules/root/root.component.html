@@ -1,0 +1,51 @@
+<div class="d-flex" style="height: 100vh;" id="wrap-root">
+  <!-- Sidebar -->
+  <div [ngClass]="{'border-right': true, 'sidebar-contracted': !sidebarOpen}" id="sidebar-wrapper">
+    <!-- ... -->
+    <div class="sidebar-heading fw-bold">
+      <figure class="d-flex" style="justify-content: center;  min-height: 100%;">
+        <img src="./assets/images/logoroot.svg">
+      </figure>
+    </div>
+    <div class="list-group list-group-flush">
+      <a *ngFor="let item of opts" class="list-group-item list-group-item-action cursor" [routerLink]="['/root/'+item.link]" routerLinkActive="active">
+        {{ item.label }}
+      </a>
+      <!-- Más elementos del menú aquí -->
+    </div>
+  </div>
+
+  <!-- Page Content -->
+  <div class="flex-grow-1">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light border-bottom">
+      <button class="btn" id="menu-toggle" (click)="toggleMenu()">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <!-- Espacio entre los elementos de la barra de navegación -->
+      <div class="navbar-nav flex-grow-1">
+        <!-- Otros elementos de la barra de navegación aquí -->
+      </div>
+
+      <!-- Menú de usuario -->
+      <div class="nav-item dropdown me-3">
+        <a class="nav-link dropdown-toggle d-flex align-items-center" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <div class="user-initials-circle me-2">GL</div>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end mt-2">
+          <li><a class="dropdown-item" [routerLink]="['/root/perfil']" routerLinkActive="active">Perfil</a></li>
+          <li><a class="dropdown-item" [routerLink]="['/root/configuracion']" routerLinkActive="active">Configuración</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" [routerLink]="['/logout']">Salir</a></li>
+        </ul>
+      </div>
+    </nav>
+
+
+    <!-- Router Outlet -->
+    <div class="container-fluid pt-3">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

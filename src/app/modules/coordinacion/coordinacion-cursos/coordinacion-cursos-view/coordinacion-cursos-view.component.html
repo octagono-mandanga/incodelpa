@@ -1,0 +1,132 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a routerLink="/coordinacion/cursos">Cursos</a></li>
+    <!--
+    <li class="breadcrumb-item"><a [routerLink]="['/coordinacion/cursos/view/', data.id]" *ngIf="data!.id">{{data.nombre}}</a></li>
+    -->
+    <li class="breadcrumb-item active" aria-current="page" *ngIf="data">{{data.nombre}}</li>
+  </ol>
+</nav>
+<div class="row">
+  <div class="col-xs-12 col-md-3">
+    <div class="card mb-2" style="background: none;" *ngIf="!loading">
+      <div class="card-body">
+
+        <h4 class="card-title mb-0">{{ data.nombre }}</h4>
+        <p class="card-text mb-0">
+          {{ data.grado.nombre }}
+        </p>
+        <p class="card-text mb-0">
+          {{ data.lectivo.nivel.nombre }}
+        </p>
+        <p class="card-text mb-0">
+          <span class="text-secondary">
+            Sede:
+          </span>
+           {{ data.sede.nombre }}
+        </p>
+        <p class="card-text mb-0">
+          <span class="text-secondary">
+            Director:
+          </span>
+          {{ data.director?.primer_nombre }}
+        </p>
+        <div>
+          <span class="text-secondary">
+            Estado:
+          </span>
+          <i *ngIf="data.estado==='activo'" class="fa-solid fa-circle-check text-success"></i>
+          <i *ngIf="data.estado==='inactivo'" class="fa-solid fa-circle-minus text-danger"></i>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="background: none;" *ngIf="!loading && disponibles.length>0">
+      <div class="card-body p-0 pt-2">
+        <small class="ms-3 fw-bold text-secondary">
+          Sin Asignar
+        </small>
+        <!-- Some borders are removed -->
+        <div class="disponibles mt-2 mb-2">
+                    <ul class="list-group list-group-flush">
+            <li *ngFor="let item of disponibles" class="list-group-item bg-transparent py-0">
+              <small>
+                {{ item.nombre | titlecase }}
+              </small>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-md-9">
+    <div class="card shadow-sm">
+      <div class="card-header">
+        <div class="d-flex justify-content-end">
+          <div class="btn-group">
+            <div class="dropdown">
+              <button class="btn btn-warning dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                <i class="fa-solid fa-cog fa-sm"></i>
+              </button>
+              <div class="dropdown-menu">
+                <h6 class="dropdown-header">Gestionar</h6>
+                <a class="dropdown-item" href="#">Notas Extras</a>
+                <a class="dropdown-item" [routerLink]='["/coordinacion/cursos/asignacion/", id]'>Asignar Docentes</a>
+                <a class="dropdown-item" href="#">Matricular</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Boletines</a>
+                <a class="dropdown-item" href="#">Consolidados</a>
+                <a class="dropdown-item" href="#">Puestos</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body p-0" *ngIf="!loading">
+
+        <div class="d-flex align-items-start">
+          <div class="nav flex-column nav-pills me-3" id="v-pills-tab" style="flex: 0 0 auto; width: 25%;">
+            <a *ngFor="let item of asignaciones; let i = index"
+                class="nav-link" [class.active]="i === 0"
+                [attr.id]="'pill'+item.id"
+                data-bs-toggle="pill"
+                [attr.data-bs-target]="'#pillContent'+item.id">
+                {{ item.materia.nombre }}
+            </a>
+          </div>
+          <div class="tab-content" id="tabContent" style="flex: 1;">
+            <div *ngFor="let item of asignaciones; let i = index"
+                class="tab-pane fade"
+                [class.active]="i === 0"
+                [class.show]="i === 0"
+                [attr.id]="'pillContent'+item.id">
+              <!-- Contenido específico de la asignación -->
+              <div class="d-flex bg-light mt-1 p-2 mb-2">
+                <div class="flex-shrink-0">
+                  <img [src]="item.docente.avatar_url" alt="" width="64" />
+                </div>
+                <div class="flex-grow-1 ms-3">
+                  <h5 class="my-0">
+                    {{item.materia.nombre | uppercase}}
+                  </h5>
+                  <h6 class="my-0">
+                    {{item.docente.primer_nombre}} {{item.docente.segundo_nombre}} {{item.docente.primer_apellido}} {{item.docente.segundo_apellido}}
+                  </h6>
+                  <p class="mb-0">
+                    <small>
+                      {{item.docente.email}}
+                    </small>
+                  </p>
+                </div>
+              </div>
+
+              Aquí va el contenido para {{ item.materia.nombre }}
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+

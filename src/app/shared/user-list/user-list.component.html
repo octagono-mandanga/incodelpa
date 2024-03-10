@@ -1,0 +1,33 @@
+<div class="container mt-3">
+  <!-- Listado de Usuarios -->
+  <div class="user-list">
+    <!-- Usuario Individual -->
+    <div *ngFor="let user of users; let i = index" class="user-item d-flex align-items-center justify-content-between mb-2">
+      <!-- Información del Usuario -->
+      <div class="d-flex align-items-center">
+        <!-- Avatar del Usuario -->
+        <div class="avatar">
+          <img [src]="user.avatar_url" alt="Avatar" class="rounded-circle" width="50" height="50">
+        </div>
+        <!-- Detalles del Usuario -->
+        <div class="user-info">
+          <div class="user-name">{{ user.primer_apellido }} {{ user.primer_nombre }}</div>
+          <div class="user-document">{{ user.nid }}</div>
+          <div class="user-email">{{ user.email }}</div>
+        </div>
+      </div>
+      <!-- Acciones -->
+      <div class="user-actions">
+        <button class="btn btn-primary btn-sm me-1">
+          <!-- Icono de editar (asegúrate de incluir un paquete de iconos o imágenes) -->
+          Editar
+        </button>
+        <button class="btn btn-danger btn-sm">
+          <!-- Icono de eliminar -->
+          Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+

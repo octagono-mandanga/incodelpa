@@ -1,0 +1,102 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a routerLink="/coordinacion/cursos">Cursos</a></li>
+    <li class="breadcrumb-item"><a [routerLink]="['/coordinacion/cursos/view/', id]" *ngIf="data?.id">{{data.nombre}}</a></li>
+    <li class="breadcrumb-item active">Asignar</li>
+
+  </ol>
+</nav>
+<div class="card" *ngIf="loading">
+  <div class="card-body">
+    <div class="container mt-3">
+      <div class="d-flex justify-content-center">
+        <app-loading size="30px"></app-loading>
+        <h4 class="ms-2 text-secondary">
+          Cargando...
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row" *ngIf="!loading">
+  <div class="col-5">
+    <div class="card">
+      <div class="card-header bg-transparent">
+        <small>
+          <i class="fa-regular fa-address-card me-2"></i>
+          Asignados
+        </small>
+      </div>
+      <div class="card-body p-0" >
+        <app-loading2 *ngIf="loading2"></app-loading2>
+        <table *ngIf="!loading2" class="table table-sm table-striped mb-0">
+          <tbody>
+            <tr *ngFor="let item  of asignaciones" class="">
+              <td scope="row">
+                <b>
+                  {{item.materia.nombre}}
+                </b>
+                <br>
+                {{item.docente.primer_nombre}} {{item.docente.segundo_nombre}} {{item.docente.primer_apellido}} </td>
+              <td>
+                <button type="button" (click)="onDelete(item.id)" class="btn btn-outline-danger border-0">
+                  <i class="fa-regular fa-trash-can"></i>
+                </button>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+
+
+      </div>
+    </div>
+  </div>
+  <div class="col-7">
+    <div class="card">
+      <div class="card-header bg-transparent">
+        <small>
+          <i class="fa-solid fa-database me-2"></i>
+          Asignar
+        </small>
+      </div>
+      <div class="card-body">
+        <app-loading2 *ngIf="loading2"></app-loading2>
+        <form *ngIf="!loading2" [formGroup]="form" (ngSubmit)="onSubmit()">
+          <div class="form-group mb-2">
+            <label for="docenteSelect" class="text-secondary">Docente</label>
+            <select class="form-select" id="docenteSelect" formControlName="docente">
+              <option *ngFor="let docente of docentes" [value]="docente.id">{{ docente.primer_nombre }} {{ docente.primer_apellido }}</option>
+            </select>
+          </div>
+
+          <div class="form-group mb-2">
+            <label for="asignaturasSelect" class="text-secondary">Asignaturas</label>
+            <select multiple class="form-control" formControlName="materias">
+              <option *ngFor="let asignatura of disponibles" [value]="asignatura.id">{{ asignatura.nombre }}</option>
+            </select>
+          </div>
+
+          <div class="form-group mb-2">
+            <label for="estadoSelect" class="text-secondary">Estado</label>
+            <select class="form-control" id="estadoSelect" formControlName="estado">
+              <option *ngFor="let estado of estados" [value]="estado">{{ estado }}</option>
+            </select>
+          </div>
+          <div class="d-grid gap-2 mt-3">
+            <button class="btn btn-primary" type="submit" [disabled]="!form.valid">
+              <i class="fa-solid fa-circle-chevron-left me-2"></i>
+              Asignar
+            </button>
+          </div>
+
+        </form>
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+</div>

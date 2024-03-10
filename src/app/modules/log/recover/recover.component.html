@@ -1,0 +1,34 @@
+<div class="wrap">
+  <div class="d-flex">
+    <div class="figure">
+      <div class="gradient"></div>
+    </div>
+    <div class="form">
+      <form [formGroup]="resetForm" (ngSubmit)="reset()">
+        <div class="d-flex justify-content-center py5- my-2">
+          <app-loading size="100px" *ngIf="loading"></app-loading>
+        </div>
+        <figure *ngIf="!loading" class="d-flex mb-5">
+          <img src="./assets/images/logo.svg">
+        </figure>
+        <div *ngIf="message" [ngClass]="{'alert-success': success, 'alert-danger': !success}" class="alert" role="alert">
+          {{ message }}
+        </div>
+        <div class="form-floating mb-4">
+          <input type="email" class="form-control rounded-0" id="email" formControlName="email" placeholder="Email">
+          <label for="email">Email address</label>
+        </div>
+        <div class="d-flex justify-content-end mb-3">
+          <p><a [routerLink]="['/']" class="link-underline-light">Regresar Login</a></p>
+        </div>
+        <div class="d-grid gap-2 mb-4">
+            <button [disabled]="loading || !resetForm.valid" class="btn btn-dark rounded-0" type="submit">Olvide la Clave</button>
+        </div>
+        <p class="text-secondary border-top mt-3 py-3 px-1">
+            Te enviaremos un enlace seguro para restablecer tu contraseña. Por favor, sigue las instrucciones en el correo para crear una nueva clave y recuperar el acceso a tu cuenta.
+        </p>
+      </form>
+    </div>
+
+    </div>
+</div>

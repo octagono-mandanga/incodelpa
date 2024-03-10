@@ -1,0 +1,99 @@
+
+<div *ngIf="loading" class="card">
+  <div class="card-body">
+      <div class="container mt-3">
+        <div class="d-flex  justify-content-center">
+          <app-loading size="20px"></app-loading>
+          <h4 class="ms-2 text-secondary">
+            Cargando...
+          </h4>
+        </div>
+      </div>
+  </div>
+</div>
+<div *ngIf="!loading" class="row">
+  <div class="col-xs-12 col-md-2">
+    <div class="d-flex flex-column  align-items-center p-2 border bg-light">
+      <img [src]="alumno.avatar_url" alt="" width="96" class="img-fluid rounded-circle border" />
+        <h5 class="my-0 text-break">
+          {{alumno.primer_apellido}} {{alumno.segundo_apellido}}
+        </h5>
+        <h6 class="p-0 mb-0 text-secondary text-break">
+          {{alumno.primer_nombre}} {{alumno.segundo_nombre}}
+        </h6>
+        <p class="p-0 mb-0 text-secondary text-break" style="line-height: 1rem;">
+          <small>
+            {{alumno.email}}
+          </small>
+        </p>
+
+    </div>
+  </div>
+  <div class="cols-xs-12 col-md-7">
+      <div class="card">
+        <ul class="nav nav-pills nav-justified mt-3 border-bottom border-top">
+          <li class="nav-item" *ngFor="let step of steps; let i = index">
+            <a class="nav-link cursor" [class.active]="currentStep === i+1">{{ step.title }}</a>
+          </li>
+        </ul>
+
+        <div class="card-body" *ngFor="let step of steps; let i = index" [class.d-none]="currentStep !== i+1">
+          <div *ngIf="currentStep === 1">
+            <div *ngIf="matricula?.id" class="alert alert-info" role="alert">
+              <h5 class="mb-0">
+                Curso: {{matricula.curso.nombre}} ({{matricula.curso.grado.nombre}})
+              </h5>
+              <p class="mb-0">
+                Director: {{matricula.curso.director.primer_nombre}} {{matricula.curso.director.segundo_nombre}} {{matricula.curso.director.primer_apellido}}
+              </p>
+            </div>
+            <app-formulario
+              (event)="onModificar($event)"
+              [loading]="loading"
+              [config]="config"
+            ></app-formulario>
+          </div>
+          <div *ngIf="currentStep === 2">
+            <div *ngIf="nuevocurso?.id" [ngClass]="'alert alert-'+cambio.mensaje.alert" role="alert">
+              <h5 class="mb-0">
+                Curso: {{nuevocurso.nombre}} ({{nuevocurso.grado.nombre}})
+              </h5>
+              <p class="mb-0">
+                Director: {{nuevocurso.director?.primer_nombre}} {{nuevocurso.director?.segundo_nombre}} {{nuevocurso.director?.primer_apellido}}
+              </p>
+              <p>
+                <small>
+                  {{ cambio.mensaje.msg }}
+                </small>
+              </p>
+            </div>
+            <div class="d-flex justify-content-between gap-2">
+              <button type="button" class="btn btn-secondary" (click)="currentStep=1">
+                Volver
+              </button>
+              <button type="button" class="btn btn-warning" (click)="onConfirmar()">
+                Confirmar
+              </button>
+            </div>
+
+
+          </div>
+          <div *ngIf="currentStep === steps.length">
+            <!-- El formulario o contenido final, como se ve en tu imagen -->
+            <div *ngIf="matricula.curso?.id" [ngClass]="'alert alert-success'" role="alert">
+              <h4 class="mb-0">
+                Curso: {{matricula.curso.nombre}} ({{matricula.curso.grado.nombre}})
+              </h4>
+              <h5 class="mb-0">
+                Director: {{matricula.curso.director?.primer_nombre}} {{matricula.curso.director?.segundo_nombre}} {{matricula.curso.director?.primer_apellido}}
+              </h5>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+  </div>
+</div>

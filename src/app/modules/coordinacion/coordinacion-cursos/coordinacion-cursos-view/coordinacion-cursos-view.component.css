@@ -1,0 +1,25 @@
+.disponibles ul li small {
+  font-size: 0.9rem;
+}
+.disponibles p {
+  font-size: 0.7rem;
+}
+.nav{
+  background-color: #f6f6f6;
+}
+.nav-link {
+  transition: background-color 0.2s ease-in-out;
+}
+
+.nav-link:hover {
+  background-color: #f8f9fa; /* Un color sutil para el efecto hover */
+  cursor: pointer;
+}
+
+.nav-link.active {
+  background-color: #e9ecef; /* Un color más oscuro para el enlace activo */
+  color: #495057;
+  border-radius: 0; /* Agrega un poco de redondez a los bordes si lo deseas */
+  border-right: 1px solid #7d8288;
+}
+

@@ -1,0 +1,112 @@
+<div class="col-xs-12 col-md-12">
+  <div class="card shadow-sm">
+    <div class="card-header">
+      <div class="d-flex justify-content-end">
+        <div class="btn-group">
+          <div class="dropdown">
+            <button class="btn btn-sm btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown">
+              <i class="fa-solid fa-cog fa-sm"></i>
+            </button>
+            <div class="dropdown-menu">
+              <h6 class="dropdown-header">Gestionar</h6>
+              <a class="dropdown-item" href="#">Notas Extras</a>
+              <a class="dropdown-item" [routerLink]='["/coordinacion/cursos/asignacion/"]'>Asignar Docentes</a>
+              <a class="dropdown-item" href="#">Matricular</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Boletines</a>
+              <a class="dropdown-item" href="#">Consolidados</a>
+              <a class="dropdown-item" href="#">Puestos</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body p-0" *ngIf="!loading">
+
+      <div class="d-flex align-items-start">
+        <div class="nav flex-column nav-pills me-3" id="v-pills-tab" style="flex: 0 0 auto; width: 25%;">
+          <a *ngFor="let item of asignaciones; let i = index"
+              class="nav-link" [class.active]="i === 0"
+              [attr.id]="'pill'+item.id"
+              data-bs-toggle="pill"
+              [attr.data-bs-target]="'#pillContent'+item.id">
+              {{ item.materia.nombre }}
+          </a>
+        </div>
+        <div class="tab-content" id="tabContent" style="flex: 1;">
+          <div *ngFor="let item of asignaciones; let i = index"
+              class="tab-pane fade"
+              [class.active]="i === 0"
+              [class.show]="i === 0"
+              [attr.id]="'pillContent'+item.id">
+            <!-- Contenido específico de la asignación -->
+            <div (click)="onDocente(item.docente.id)" class="d-flex mt-1 p-2 mb-2 border-bottom cursor" style="background-color: #e9ecef">
+              <div class="flex-shrink-0">
+                <img [src]="item.docente.avatar_url" alt="" width="64" class="rounded-circle" />
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <h6 class="my-0">
+                  {{item.materia.nombre | uppercase}}
+                </h6>
+                <p class="my-0">
+                  {{item.docente.primer_nombre}} {{item.docente.segundo_nombre}} {{item.docente.primer_apellido}} {{item.docente.segundo_apellido}}
+                </p>
+                <p class="mb-0">
+                  <small class="text-secondary">
+                    Docente
+                  </small>
+                </p>
+              </div>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li *ngFor="let item of alumnos" (click)="onAlumno(item.id)" class="list-group-item pb-1 cursor">
+                <div class="d-flex">
+                  <div class="flex-shrink-0">
+                    <img [src]="item.avatar_url" alt="" width="40" class="rounded-circle" />
+                  </div>
+                  <div class="flex-grow-1 ms-3">
+                    <h6 class="my-0">
+                      {{item.primer_apellido}} {{item.segundo_apellido}}
+                    </h6>
+                    <p class="mb-0">
+                      {{item.primer_nombre}} {{item.segundo_nombre}}
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <ul *ngIf="asignaciones.length==0" class="list-group list-group-flush">
+        <li *ngFor="let item of alumnos" (click)="onAlumno(item.id)" class="list-group-item pb-1 cursor">
+          <div class="d-flex">
+            <div class="flex-shrink-0">
+              <img [src]="item.avatar_url" alt="" width="40" class="rounded-circle" />
+            </div>
+            <div class="flex-grow-1 ms-3">
+              <h6 class="my-0">
+                {{item.primer_apellido}} {{item.segundo_apellido}}
+              </h6>
+              <p class="mb-0">
+                {{item.primer_nombre}} {{item.segundo_nombre}}
+              </p>
+            </div>
+          </div>
+
+          <div>
+
+          </div>
+        </li>
+      </ul>
+
+
+
+    </div>
+  </div>
+</div>

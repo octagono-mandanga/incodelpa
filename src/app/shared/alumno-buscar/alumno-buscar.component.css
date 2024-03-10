@@ -1,0 +1,17 @@
+.result-container {
+  position: absolute;
+  z-index: 1;
+}
+
+.result-container ul {
+  position: absolute;
+  z-index: 2;
+  width: 230px;
+  border-radius: 0;
+  top: 6px;
+}
+.form-control:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: lightgray;
+}

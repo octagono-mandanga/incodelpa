@@ -1,0 +1,45 @@
+<div class="wrap">
+  <div class="d-flex">
+      <div class="figure">
+          <div class="gradient"></div>
+      </div>
+      <div class="form">
+        <form [formGroup]="recoverForm" (ngSubmit)="onSubmit()">
+          <div class="d-flex justify-content-center py5- my-2">
+            <app-loading size="100px" *ngIf="loading"></app-loading>
+          </div>
+          <figure *ngIf="!loading" class="d-flex mb-5">
+            <img src="./assets/images/logo.svg">
+          </figure>
+          <div *ngIf="message" [ngClass]="{'alert-success': success, 'alert-danger': !success}" class="alert" role="alert">
+            {{ message }}
+          </div>
+          <div class="form-floating mb-4">
+            <input type="email" class="form-control rounded-0" id="email" formControlName="email" placeholder="Email">
+            <label for="email">Email address</label>
+          </div>
+          <div class="form-floating mb-4">
+            <input type="password" class="form-control rounded-0" id="password" formControlName="password" placeholder="Password">
+            <label for="password">Clave</label>
+          </div>
+
+          <div class="form-floating mb-4">
+            <input type="password" class="form-control rounded-0" id="confirmar" formControlName="confirmar" placeholder="Confirmar">
+            <label for="email">Confirmar Clave</label>
+          </div>
+          <div class="d-flex justify-content-end mb-3">
+
+            <p><a [routerLink]="['/']" class="link-underline-light">Regresar Login</a></p>
+          </div>
+          <div class="d-grid gap-2 mb-4">
+              <button [disabled]="loading || !recoverForm.valid" class="btn btn-success rounded-0" type="submit">Cambiar Clave</button>
+          </div>
+          <p class="text-secondary border-top mt-3 py-3 px-1">
+            <small>
+              Genere una nueva clave que contenga al menos ocho caracteres. Recuerde que su clave debe ser de facil recordacion para usted pero no para terceros. La seguridad de su cuenta esta en sus manos.
+            </small>
+          </p>
+        </form>
+      </div>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a routerLink="/coordinacion/alumnos">Alumnos</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Editar</li>
+  </ol>
+</nav>
+<div *ngIf="!loading" class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-4">
+        <div class="input-group">
+          <label class="input-group-text" for="inputFile"><i class="fa-solid fa-camera"></i></label>
+          <input type="file" class="form-control" id="inputFile" (change)="fileChangeEvent($event)" hidden>
+          <label for="inputFile" class="btn btn-primary">Seleccionar imagen</label>
+        </div>
+        <img [src]="croppedImage" class="img-fluid mt-2 " />
+      </div>
+      <div class="col-8">
+        <image-cropper
+          [imageChangedEvent]="imageChangedEvent"
+          [maintainAspectRatio]="true"
+          [aspectRatio]="1 / 1"
+          format="png"
+          (imageCropped)="imageCropped($event)"
+          [resizeToWidth]="128"
+          [resizeToHeight]="128">
+        </image-cropper>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<app-formulario
+  (event)="onAgregar($event)"
+  [loading]="loading"
+  [message]="message"
+  [success]="success"
+  [config]="config"
+  [entityData]="data"
+></app-formulario>

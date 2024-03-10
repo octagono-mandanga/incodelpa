@@ -1,0 +1,35 @@
+.user-list {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 1rem;
+}
+
+.user-item {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.user-item:last-child {
+  border-bottom: none;
+}
+
+.avatar img {
+  width: 50px; /* Ajusta el tamaño según sea necesario */
+  height: 50px; /* Asegúrate de que la imagen del avatar sea cuadrada */
+}
+
+.user-info .user-name {
+  font-weight: bold;
+}
+
+.user-info .user-document,
+.user-info .user-email {
+  font-size: 0.8rem;
+  color: #666;
+}
+/*
+.user-actions button {
+
+}
+*/

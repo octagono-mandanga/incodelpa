@@ -1,0 +1,22 @@
+/* entity-display.component.css */
+.card-body {
+  background-color: #f8f9fa; /* Un ligero color de fondo */
+  border-radius: 0.25rem;
+}
+
+.mb-2 {
+  margin-bottom: 1rem !important; /* Aumentar el espaciado entre elementos */
+}
+
+.card-title {
+  color: #4a5568; /* Color oscuro para el título para mejorar la legibilidad */
+  margin-bottom: 1.5rem; /* Espaciado extra debajo del título */
+}
+
+.btn-success {
+  margin-top: 1rem; /* Espaciado encima del botón Editar */
+}
+
+.btn-primary {
+  margin-top: 1rem; /* Espaciado encima del botón Crear */
+}
