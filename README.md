@@ -1,28 +1,63 @@
-# Mdng
+# Proyecto Octagono
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.1.
+Este es el repositorio oficial del proyecto Octagono. El proyecto Octagono es una aplicación web diseñada para la gestión administrativa de una institución educativa. Permite a los usuarios realizar diversas tareas relacionadas con la administración de alumnos, cursos, docentes, y más.
 
-## Development server
+## Logo
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+![Logo del proyecto](src/assets/images/logo.svg)
 
-## Code scaffolding
+## Usuarios y sus Funcionalidades
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### Root
+- Backup
+- Áreas
+- Grados
+- Institución
+- Lectivos
+- Períodos
+- Materias
+- Niveles
+- Roles
+- Sedes
+- Usuarios
 
-## Build
+### Secretaria
+- Alumnos
+- Cursos
+- Docentes
+- Perfil
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Coordinación
+- Alumnos
+- Cursos
+- Docentes
+- Perfil
 
-## Running unit tests
+## Capturas de Pantalla
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Aquí hay algunas capturas de pantalla de la aplicación:
 
-## Running end-to-end tests
+![Captura de pantalla 1](src/assets/images/belleza.jpg)
+![Captura de pantalla 2](src/assets/images/coode.jpg)
+![Captura de pantalla 3](src/assets/images/olvido.jpg)
+![Captura de pantalla 4](src/assets/images/surprise.jpg)
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Instalación
 
-## Further help
+1. Clona este repositorio: `git clone https://github.com/tu-usuario/octagono.git`
+2. Instala las dependencias: `npm install`
+3. Inicia el servidor de desarrollo: `npm start`
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
-"# mdng" 
+## Contribución
+
+¡Contribuciones son bienvenidas! Si quieres contribuir a este proyecto, por favor sigue los siguientes pasos:
+
+1. Haz un fork del repositorio.
+2. Crea una rama para tu contribución: `git checkout -b mi-contribucion`
+3. Realiza tus cambios y haz commits: `git commit -am 'Añade nuevas funcionalidades'`
+4. Empuja tus cambios a la rama: `git push origin mi-contribucion`
+5. Envía un pull request.
+
+## Licencia
+
+Este proyecto está licenciado bajo la [Licencia MIT](LICENSE).
