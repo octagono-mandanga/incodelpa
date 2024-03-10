@@ -38,7 +38,7 @@ Este es el repositorio oficial del proyecto Octagono. El proyecto Octagono es un
 Aquí hay algunas capturas de pantalla de la aplicación:
 
 ![Captura de pantalla 1](src/assets/images/belleza.jpg)
-![Captura de pantalla 2](src/assets/images/coode.jpg)
+![Captura de pantalla 2](src/assets/images/code.jpg)
 ![Captura de pantalla 3](src/assets/images/olvido.jpg)
 ![Captura de pantalla 4](src/assets/images/surprise.jpg)
 
