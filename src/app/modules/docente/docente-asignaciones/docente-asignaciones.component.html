@@ -1,0 +1,46 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Asignaciones</li>
+  </ol>
+</nav>
+<div class="card" *ngIf="loading">
+  <div class="card-body">
+    <div class="container mt-3">
+      <div class="d-flex justify-content-center">
+        <app-loading size="30px"></app-loading>
+        <h4 class="ms-2 text-secondary">
+          Cargando...
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row" *ngIf="!loading">
+  <div class="col-12">
+    <!-- Some borders are removed -->
+    <ul class="list-group list-group-flush">
+      <li *ngFor="let item of data" class="list-group-item">
+        <div class="d-flex">
+          <div class="flex-grow-1">
+            <a [routerLink]="['/docente/cursos/', item.id]" class="h4 text-primary cursor text-decoration-none fw-bold my-0">{{ item.materia.nombre }}</a>
+            <p class="my-0">{{ item.curso.grado.nombre }}. [{{item.curso.nombre}}] - {{item.curso.sede.nombre}}</p>
+            <p class="my-0">
+              {{ item.curso.director.primer_nombre }} {{ item.curso.director.segundo_nombre }} {{ item.curso.director.primer_apellido }}
+            </p>
+          </div>
+          <div class="flex-shrink-0 align-middle" style="display: flex; align-items: center;">
+            <a [routerLink]="['/docente/calificar/', item.id]" class="btn btn-success rounded-0">
+              Calificar
+            </a>
+
+          </div>
+        </div>
+
+
+      </li>
+    </ul>
+
+  </div>
+</div>
+
+

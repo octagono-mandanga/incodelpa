@@ -7,6 +7,7 @@ const routes: Routes = [
   {path:'coordinacion', loadChildren: ()=> import('./modules/coordinacion/coordinacion.module').then(m => m.CoordinacionModule)},
   {path:'secretaria', loadChildren: ()=> import('./modules/secretaria/secretaria.module').then(m => m.SecretariaModule)},
   {path:'rectoria', loadChildren: ()=> import('./modules/rectoria/rectoria.module').then(m => m.RectoriaModule)},
+  {path:'docente', loadChildren: ()=> import('./modules/docente/docente.module').then(m => m.DocenteModule)},
 ];
 
 @NgModule({

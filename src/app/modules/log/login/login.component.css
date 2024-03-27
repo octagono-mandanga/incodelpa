@@ -1,5 +1,5 @@
 .figure {
-  background: url('/assets/images/belleza.jpg');
+  background: url('/assets/images/belleza.webp');
   width: 35%;
   background-repeat: no-repeat;
   background-size: cover;
@@ -9,7 +9,16 @@
   background: linear-gradient(0deg, rgba(1, 62, 115, 0.9) 0%, rgba(9, 9, 121, 0.4) 36%, rgba(2, 0, 36, 0.3) 100%);
   height: 100%;
 }
-
+.escudo {
+  background-image: url(/assets/images/logocolegio.svg);
+  background-size: cover;
+  width: 400px;
+  height: 120vh;
+  position: fixed;
+  right: 0;
+  z-index: -100;
+  opacity: 0.03;
+}
 .form {
   background: #fafafa;
   padding: 40px;
@@ -17,6 +26,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 100;
+  position: relative;
 }
 .form figure {
   display: flex;

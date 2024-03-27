@@ -2,13 +2,17 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CrudService<T> {
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private router: Router
+  ) { }
   baseUrl = environment.url;
 
   create(entity: T, endpoint: string): Observable<T> {
@@ -32,8 +36,11 @@ export class CrudService<T> {
     });
     return this.http.get<T[]>(`${this.baseUrl}${endpoint}`, { params: queryParams , headers }).pipe(
       catchError(error => {
-        console.error('Error al leer:', error);
+        if (error.status === 401 || error.status === 403) {
+          this.router.navigate(['/logout'])
+        }
         return throwError(() => new Error('Error en consulta.'));
+
       })
     );
   }

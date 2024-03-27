@@ -47,7 +47,7 @@
         <tr *ngFor="let item of displayedData">
           <td *ngFor="let column of config.columns">
             <span *ngIf="column.key==='avatar_url'" >
-              <img [src]="item[column.key]+'?'+gettime()" alt="Avatar" class="rounded-circle" width="50" height="50">
+              <img [src]="item[column.key]+'?t='+gettime()" alt="Avatar" class="rounded-circle" width="50" height="50">
             </span>
             <span *ngIf="column.key==='estado'" >
               <i *ngIf="item[column.key]==='activo'" class="fa-solid fa-circle-check text-success"></i>

@@ -1,0 +1,94 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+
+    <li class="breadcrumb-item"><a routerLink="/docente/">Asignaciones</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Competencias</li>
+    <li class="breadcrumb-item active" aria-current="page">Notas</li>
+
+  </ol>
+</nav>
+<div class="card" *ngIf="loading">
+  <div class="card-body">
+    <div class="container mt-3">
+      <div class="d-flex justify-content-center">
+        <app-loading size="30px"></app-loading>
+        <h4 class="ms-2 text-secondary">
+          Cargando {{ msg }}...
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card bg-light mb-2" *ngIf="!loading">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-xs-12 col-md-5">
+        <p class="h3 mb-0">
+          {{ asignacion.materia.nombre | titlecase }}
+        </p>
+        <p class="mb-0">
+          {{ asignacion.curso.sede.nombre | titlecase }} - {{ asignacion.curso.nombre | titlecase }} [{{ asignacion.curso.grado.nombre | titlecase }}]
+        </p>
+      </div>
+      <div class="col-xs-12 col-md-7">
+        <ul class="list-group list-group-horizontal mt-2">
+          <li *ngFor="let escala of escalas" class="list-group-item border-0">
+            <i class="fa-solid fa-2xs fa-square" [ngStyle]="{'color': escala.color}"></i> {{ escala.nombre | titlecase }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card" *ngIf="!loading">
+  <div class="card-body p-0">
+    <!-- Some borders are removed -->
+    <div class="table-responsive">
+      <table class="table table-striped" *ngIf="matriz['alumnos'].length>0">
+        <thead>
+          <tr>
+            <th>Alumnos</th>
+            <th *ngFor="let periodo of matriz['alumnos'][0].periodos">
+              <p class=" text-center mb-0 lh-1">
+                {{ periodo.nombre.substring(0,1) | uppercase }}P
+              </p>
+              <p class="fw-normal text-center mb-0 lh-1">
+                <small>
+                  {{periodo.porcentaje}}%
+                </small>
+              </p>
+            </th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of matriz['alumnos']" class="">
+            <td>
+              <div class="d-flex">
+                <div class="flex-shrink-0">
+                  <img [src]="item.avatar_url" alt="" width="48px" class="rounded-circle me-2" />
+                </div>
+                <div class="flex-grow-1 ms-3">
+                  <p class="h5 my-0 lh-2">
+                    {{ item.primer_apellido }} {{ item.segundo_apellido }}
+                  </p>
+                  <p class="h6 fw-normal lh-1 mb-0">
+                    {{ item.primer_nombre }} {{ item.segundo_nombre }}
+                  </p>
+                </div>
+              </div>
+
+
+
+            </td>
+            <td *ngFor="let periodo of item.periodos" class="text-center fw-bold align-middle h5" [ngStyle]="{'color': getColor(periodo.notaTotal)}">
+              {{ periodo.notaTotal | round:1 }}
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>

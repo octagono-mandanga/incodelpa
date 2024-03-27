@@ -1,0 +1,76 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+
+    <li class="breadcrumb-item"><a routerLink="/docente/">Asignaciones</a></li>
+    <li class="breadcrumb-item active" aria-current="page" *ngIf="data">Calificar</li>
+
+  </ol>
+</nav>
+<div class="card" *ngIf="loading">
+  <div class="card-body">
+    <div class="container mt-3">
+      <div class="d-flex justify-content-center">
+        <app-loading size="30px"></app-loading>
+        <h4 class="ms-2 text-secondary">
+          Cargando {{ msg }}...
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card bg-light mb-2" *ngIf="!loading">
+  <div class="card-body">
+    <p class="h5 mb-0">
+      {{ data.materia.nombre | titlecase }}
+    </p>
+    <p class="mb-0">
+      {{ data.curso.sede.nombre | titlecase }} - {{ data.curso.nombre | titlecase }} [{{ data.curso.grado.nombre | titlecase }}]
+    </p>
+  </div>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="!loading">
+  <div class="card bg-success-subtle mb-1">
+    <div class="card-body">
+      <h4 class="alert-heading">Selección de Competencias - Período: {{ periodo.nombre | titlecase }}</h4>
+      <p>
+        Seleccione las competencias para la evaluación de estudiantes, la ventana de calificación esta definida desde el <strong>{{ periodo.inicio | titlecase }}</strong> hasta el <strong>{{ periodo.fin | titlecase }}</strong>.
+      </p>
+      <div class="d-grid gap-2 d-md-block">
+        <button class="btn btn-success rounded-0" type="submit" [disabled]="!form.value.competenciasSeleccionadas.includes(true)">Continuar</button>
+      </div>
+    </div>
+  </div>
+  <div class="card mb-4" *ngIf="!loading">
+    <div class="card-header">
+      <p class="small mb-0 align-middle">
+        COMPETENCIAS <span class="badge text-bg-secondary rounded-pill">
+          {{getNumSeleccionadas()}}
+        </span>
+      </p>
+
+    </div>
+    <div class="card-body p-0">
+      <div formArrayName="competenciasSeleccionadas">
+        <table class="table table-striped mb-0">
+          <tbody>
+            <tr *ngFor="let item of competencias; let i = index">
+              <td class="align-middle">
+                <div class="form-check p-0">
+                  <input
+                    class="form-check-input border-1 m-0 shadow-sm"
+                    type="checkbox"
+                    [formControlName]="i">
+                </div>
+              </td>
+              <td class="lh-sm">
+                {{item.detalle}}
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</form>

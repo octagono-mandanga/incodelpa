@@ -103,7 +103,6 @@ export class CoordinacionCursosAddComponent implements OnInit {
       const campoDirector = this.config.columns.find((col: any) => col.key === 'director');
       if (campoDirector) {
         campoDirector.options = opcionesDocentes;
-        console.log(opcionesDocentes)
       }
 
       this.loading = false

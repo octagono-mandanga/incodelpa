@@ -1,0 +1,73 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+
+    <li class="breadcrumb-item"><a routerLink="/docente/">Asignaciones</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Competencias</li>
+    <li class="breadcrumb-item active" aria-current="page">Notas</li>
+
+  </ol>
+</nav>
+<div class="card" *ngIf="loading">
+  <div class="card-body">
+    <div class="container mt-3">
+      <div class="d-flex justify-content-center">
+        <app-loading size="30px"></app-loading>
+        <h4 class="ms-2 text-secondary">
+          Cargando {{ msg }}...
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card bg-light mb-2" *ngIf="!loading">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-9">
+        <p class="h4 mb-0">
+          {{ asignacion.materia.nombre | titlecase }} - Periodo: {{ periodo.nombre | titlecase }}
+        </p>
+        <p class="mb-0">
+          {{ asignacion.curso.sede.nombre | titlecase }} - {{ asignacion.curso.nombre | titlecase }} [{{ asignacion.curso.grado.nombre | titlecase }}]
+        </p>
+      </div>
+      <div class="col-3">
+        <div class="spinner-border mt-2" role="status" *ngIf="loading2">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    </div>
+    <div class="d-grid gap-2 d-md-block mt-2">
+      <a class="btn btn-primary rounded-0" [routerLink]="['/docente/calificar/'+id+'/reporte/', id]">Terminar</a>
+    </div>
+  </div>
+</div>
+<!-- Some borders are removed -->
+<div class="card" *ngIf="!loading">
+  <div class="card-body p-0">
+    <!-- Some borders are removed -->
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end p-2">
+      <button *ngIf="!metodo" (click)="metodo=!metodo" class="btn btn-dark me-md-2" type="button">Una Nota</button>
+      <button *ngIf="metodo" (click)="metodo=!metodo" class="btn btn-success" type="button">Todas</button>
+    </div>
+    <ul  class="list-group list-group-flush">
+      <li *ngFor="let item of matriculas; let i = index" class="list-group-item">
+        <app-alumno-calificar
+          #alumnoitem
+          (focoSiguiente)="enfocarAlumno(i)"
+          (focoFullSiguiente)="enfocarSiguienteAlumno(i)"
+          (emitirCalificacion)="procesarNota($event)"
+          (emitirCalificacionNotaFull)="procesarNotaFull($event)"
+          [metodo]="metodo"
+          [alumno]="item.alumno"
+          [notas]="filtrarNotas(item.id)"
+          [competencias]="selectedCompetencias"
+          [escalas]="escalas"></app-alumno-calificar>
+      </li>
+    </ul>
+
+
+
+  </div>
+</div>
+
+

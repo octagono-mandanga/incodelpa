@@ -17,8 +17,9 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('direccion');
             $table->string('telefono');
-            $table->string('email')->unique();
-            $table->string('dane')->unique();
+            $table->string('email');
+            $table->string('resolucion')->nullable();
+            $table->string('dane')->nullable();
             $table->string('url');
             $table->timestamps();
         });

@@ -20,7 +20,7 @@ class AlumnoController extends Controller
     public function index()
     {
         // Carga solo los usuarios con el rol 'alumno'
-        $users = User::role('alumno')->with('roles')->get();
+        $users = User::role('alumno', 'api')->with('roles')->get();
         return response()->json($users);
     }
 

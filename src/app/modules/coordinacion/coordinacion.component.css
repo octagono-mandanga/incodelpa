@@ -11,6 +11,7 @@
 #sidebar-wrapper {
   min-width: 250px;
   max-width: 250px;
+  min-height: 100%;
   opacity: 1;
   transition: all 0.2s ease;
   background: #151401; /* Fondo oscuro para la barra lateral */

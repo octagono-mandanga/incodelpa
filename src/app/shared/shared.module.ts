@@ -13,6 +13,9 @@ import { AlumnoExpedienteComponent } from './alumno-expediente/alumno-expediente
 import { AlumnoBuscarComponent } from './alumno-buscar/alumno-buscar.component';
 import { MatriculaModificarComponent } from './matricula-modificar/matricula-modificar.component';
 import { ConstructionMessageComponent } from './construction-message/construction-message.component';
+import { AlumnoCalificarComponent } from './alumno-calificar/alumno-calificar.component';
+import { AlumnoCalificarCompetenciaComponent } from './alumno-calificar-competencia/alumno-calificar-competencia.component';
+import { RoundPipe } from '../round.pipe';
 
 
 
@@ -28,7 +31,10 @@ import { ConstructionMessageComponent } from './construction-message/constructio
     AlumnoExpedienteComponent,
     AlumnoBuscarComponent,
     MatriculaModificarComponent,
-    ConstructionMessageComponent
+    ConstructionMessageComponent,
+    AlumnoCalificarComponent,
+    AlumnoCalificarCompetenciaComponent,
+    RoundPipe
   ],
   exports: [
     DatatableComponent,
@@ -41,7 +47,9 @@ import { ConstructionMessageComponent } from './construction-message/constructio
     AlumnoExpedienteComponent,
     AlumnoBuscarComponent,
     MatriculaModificarComponent,
-    ConstructionMessageComponent
+    ConstructionMessageComponent,
+    AlumnoCalificarComponent,
+    RoundPipe
   ],
   imports: [
     CommonModule,

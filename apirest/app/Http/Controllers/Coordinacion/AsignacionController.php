@@ -3,11 +3,17 @@
 namespace App\Http\Controllers\Coordinacion;
 use App\Http\Controllers\Controller;
 
-use App\Models\Asignacion; // Asegúrate de tener el modelo Asignacion correctamente definido
-use App\Models\Curso; // Asegúrate de tener el modelo Asignacion correctamente definido
-use App\Models\Materia; // Asegúrate de tener el modelo Asignacion correctamente definido
+use App\Models\Asignacion;
+use App\Models\Curso;
+use App\Models\Materia;
+use App\Models\Matricula;
+use App\Models\Periodo;
+use App\Models\Lectivo;
+use App\Models\Escala;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class AsignacionController extends Controller
 {
@@ -35,14 +41,6 @@ class AsignacionController extends Controller
     public function store(Request $request)
     {
         // Valida los datos de entrada
-        /*
-        $validatedData = $request->validate([
-            'curso' => 'required|exists:cursos,id',
-            'materia' => 'required|exists:materias,id',
-            'docente' => 'nullable|exists:usuarios,id',
-            'estado' => 'required|string',
-        ]);
-        */
         $validatedData = $request->validate([
             'curso' => 'required|exists:cursos,id',
             'materias' => 'required|array', // Cambio aquí para recibir un array de materias
@@ -101,7 +99,9 @@ class AsignacionController extends Controller
     {
         // Obtén el curso por su ID para asegurarte de que exista
         $curso = Curso::find($id);
-
+        $periodos = Periodo::where('lectivo', $curso->lectivo)->orderBy('orden')->get();
+        $lectivo = Lectivo::find($curso->lectivo);
+        $escalas = Escala::where('nivel', $lectivo->nivel)->get();
         if (!$curso) {
             return response()->json(['error' => 'Curso no encontrado'], 404);
         }
@@ -124,10 +124,45 @@ class AsignacionController extends Controller
             ->orderBy('nombre')
             ->get();
 
+        foreach($asignaciones as $index => $asignacion){
+            $data = Matricula::join('cursos', 'cursos.id', '=', 'matriculas.curso')
+            ->join('users', 'matriculas.alumno', '=', 'users.id')
+            ->join('asignaciones', 'asignaciones.curso', '=', 'cursos.id')
+            ->leftjoin('periodos', 'periodos.lectivo', '=', 'cursos.lectivo')
+            ->leftjoin('nota_competencia', function($join) {
+                $join
+                    ->on('nota_competencia.asignacion', '=', 'asignaciones.id')
+                    ->on('nota_competencia.matricula', '=', 'matriculas.id')
+                    ->on('nota_competencia.periodo', '=', 'periodos.id');
+                }
+            )
+            ->where('asignaciones.id', $asignacion->id)
+            ->where('matriculas.estado', 'activo')
+            ->groupBy('users.id', 'periodos.id')
+            ->orderBy('users.primer_apellido')
+            ->orderBy('users.segundo_apellido')
+            ->orderBy('users.primer_nombre')
+            ->orderBy('users.segundo_nombre')
+            ->orderBy('periodos.orden')
+            ->select('users.*', 'periodos.nombre','periodos.id as pid', 'periodos.porcentaje as porcentaje', DB::raw('ROUND(AVG(nota_competencia.nota), 1) as lanota'))
+            ->get();
+            $data->each(function ($item) {
+                $avatarPath = "avatars/{$item->id}.png"; // La misma lógica que en tu accesorio.
+
+                if (Storage::disk('public')->exists($avatarPath)) {
+                    $item->avatar_url = Storage::disk('public')->url($avatarPath);
+                } else {
+                    $item->avatar_url = asset('api/storage/avatars/avatar.png');
+                }
+            });
+            $asignacion->matriculados=$data;
+        }
         // Retorna tanto las asignaciones como las materias disponibles
         return response()->json([
             'asignaciones' => $asignaciones,
-            'disponibles' => $disponibles
+            'disponibles' => $disponibles,
+            'periodos' => $periodos,
+            'escalas' => $escalas,
         ]);
     }
 

@@ -26,7 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/test', function () {
     return response()->json(['message' => 'Test route is working!'], 200);
 });
-Route::get('/test/ntest', function () {
+Route::get('/test/new', function () {
     return response()->json(['message' => 'Test2 route is working!'], 200);
 });
 //Rutas protegidas
@@ -78,6 +78,7 @@ Route::prefix('secretaria')->name('secretaria.')->middleware(['auth:sanctum', 's
     Route::apiResource('docentes', App\Http\Controllers\Secretaria\DocenteController::class);
 
     Route::apiResource('matricula', App\Http\Controllers\Secretaria\MatriculaController::class);
+    Route::get('/matriculas/curso/{id}', [App\Http\Controllers\Secretaria\MatriculaController::class, 'curso']);
 
     Route::get('/auth', [App\Http\Controllers\AuthController::class, 'auth']);
     Route::put('/auth/update', [App\Http\Controllers\AuthController::class, 'update']);
@@ -86,6 +87,7 @@ Route::prefix('coordinacion')->name('coordinacion.')->middleware(['auth:sanctum'
     Route::apiResource('lectivos', App\Http\Controllers\Coordinacion\LectivoController::class);
     Route::apiResource('sedes', App\Http\Controllers\Coordinacion\SedeController::class);
     Route::apiResource('grados', App\Http\Controllers\Coordinacion\GradoController::class);
+    Route::get('/matriculas/curso/{id}', [App\Http\Controllers\Coordinacion\MatriculaController::class, 'curso']);
     Route::apiResource('cursos', App\Http\Controllers\Coordinacion\CursoController::class);
     Route::apiResource('alumnos', App\Http\Controllers\Coordinacion\AlumnoController::class);
     Route::post('alumnos/avatar/{id}', [App\Http\Controllers\Coordinacion\AlumnoController::class, 'setAvatar']);
@@ -100,7 +102,29 @@ Route::prefix('coordinacion')->name('coordinacion.')->middleware(['auth:sanctum'
     Route::get('/auth', [App\Http\Controllers\AuthController::class, 'auth']);
     Route::put('/auth/update', [App\Http\Controllers\AuthController::class, 'update']);
 });
+Route::prefix('docente')->name('docente.')->middleware(['auth:sanctum', 'docente'])->group(function () {
+    Route::get('/auth', [App\Http\Controllers\AuthController::class, 'auth']);
+    Route::put('/auth/update', [App\Http\Controllers\AuthController::class, 'update']);
+    Route::apiResource('asignaciones', App\Http\Controllers\Docente\AsignacionController::class);
+    Route::get('/asignaciones/periodoactivo/{id}', [App\Http\Controllers\Docente\AsignacionController::class, 'periodoActivo']);
+    Route::get('/asignaciones/competencias/{id}', [App\Http\Controllers\Docente\AsignacionController::class, 'competencias']);
+    Route::apiResource('periodos', App\Http\Controllers\Docente\PeriodoController::class);
+    Route::apiResource('matriculas', App\Http\Controllers\Docente\MatriculaController::class);
 
+    Route::get('/escalas/{id}', [App\Http\Controllers\Docente\EscalaController::class, 'show']);
+    Route::get('/notas/competencias/{id}', [App\Http\Controllers\Docente\NotaCompetenciaController::class, 'competencias']);
+    Route::get('/notas/asignacion/{id}', [App\Http\Controllers\Docente\NotaCompetenciaController::class, 'asignacion']);
+    Route::get('/notas/notas-asignacion/{id}', [App\Http\Controllers\Docente\NotaCompetenciaController::class, 'notasAsignacion']);
+    Route::get('/notas/notas-asignacion2/{id}', [App\Http\Controllers\Docente\NotaCompetenciaController::class, 'notasAsignacion2']);
+    Route::apiResource('notas', App\Http\Controllers\Docente\NotaCompetenciaController::class);
+    Route::post('notas/full', [App\Http\Controllers\Docente\NotaCompetenciaController::class, 'fullstore']);
+    //Route::get('/expedientes/asignacion/{id}', [App\Http\Controllers\Docente\ExpedienteController::class, 'asignacion']);
+    Route::apiResource('materias', App\Http\Controllers\Docente\MateriaController::class);
+    Route::get('/tipocompetencias', [App\Http\Controllers\Docente\TipoCompetenciaController::class, 'index']);
+    Route::apiResource('competencias', App\Http\Controllers\Docente\CompetenciaController::class);
+    Route::get('/tipo_documentos', [App\Http\Controllers\Docente\TipoDocumentoController::class, 'index']);
+    //Route::get('/expedientes/notas/{idasignacion}/{idperiodo}', [App\Http\Controllers\Docente\ExpedienteController::class, 'notas']);
+});
 Route::prefix('root')->name('root.')->middleware(['auth:sanctum', 'root'])->group(function () {
     // Ruta ejemplo para la gestión de usuarios dentro del directorio 'Root'
     Route::get('/backup', [App\Http\Controllers\Root\BackupController::class, 'index']);

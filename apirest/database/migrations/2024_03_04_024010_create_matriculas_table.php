@@ -17,13 +17,14 @@ return new class extends Migration
             $table->uuid('alumno');
             $table->uuid('matriculador');
             $table->string('estado');
-            $table->string('condicion')->nullable();
+            $table->uuid('condicion')->nullable();
             $table->text('observaciones')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('curso')->references('id')->on('cursos');
             $table->foreign('alumno')->references('id')->on('users');
+            $table->foreign('condicion')->references('id')->on('condiciones');
             $table->foreign('matriculador')->references('id')->on('users');
         });
     }

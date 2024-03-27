@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -15,23 +16,27 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ]);
-
-        if (Auth::attempt($request->only('email', 'password'))) {
-            $user = Auth::user();
-            $token = $user->createToken('mandanga')->plainTextToken;
-            return response()->json(['user' => $user, 'token' => $token], 200);
+        $user = User::where('email', $request->email)->first();
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['Las credenciales proporcionadas son incorrectas.'],
+            ]);
         }
 
-        throw ValidationException::withMessages([
-            'email' => ['The provided credentials are incorrect.'],
-        ]);
+        $token = $user->createToken('mandanga')->plainTextToken;
+        return response()->json(['user' => $user, 'token' => $token], 200);
+
     }
 
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        //Auth::logout();
 
-        return response()->json(['message' => 'Logged out successfully'], 200);
+        $request->user()->tokens()->delete();
+        // Crear una respuesta
+        $response = response()->json(['message' => 'Logged out successfully'], 200);
+
+        return $response;
     }
     public function auth()
     {

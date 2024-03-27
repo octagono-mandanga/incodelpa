@@ -1,4 +1,4 @@
-<div class="d-flex" style="height: 100vh;" id="wrap-root">
+<div class="d-flex" style="min-height: 100vh;" id="wrap-root">
   <!-- Sidebar -->
   <div [ngClass]="{'border-right': true, 'sidebar-contracted': !sidebarOpen}" id="sidebar-wrapper">
     <!-- ... -->
@@ -18,7 +18,7 @@
   <!-- Page Content -->
   <div class="flex-grow-1">
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light border-bottom">
+    <nav class="navbar navbar-expand-lg navbar-light border-bottom" style="border: 0;">
       <button class="btn" id="menu-toggle" (click)="toggleMenu()">
         <i class="fa-solid fa-bars"></i>
       </button>

@@ -64,9 +64,9 @@ class AlumnoController extends Controller
         $curso = Curso::find($request->curso);
 
         // Usar el método del trait para matricular al estudiante
-
+        $role = Role::findByName('alumno', 'api');
         // Asignamos directamente el rol 'alumno'
-        $user->assignRole('alumno');
+        $user->assignRole($role);
         //Mail
         $institucion = Institucion::first();
         DB::table('password_reset_tokens')->insert([
@@ -111,7 +111,8 @@ class AlumnoController extends Controller
 
 
         // Asignamos directamente el rol 'alumno'
-        $user->assignRole('alumno');
+        $role = Role::findByName('alumno', 'api');
+        $user->assignRole($role);
         //Mail
         $institucion = Institucion::first();
         DB::table('password_reset_tokens')->insert([
@@ -139,7 +140,7 @@ class AlumnoController extends Controller
         // Carga solo los usuarios con el rol 'alumno'
         $seisMesesAtras = now()->subMonths(6);
 
-        $users = User::role('alumno') // Usuarios con el rol 'alumno'
+        $users = User::role('alumno', 'api') // Usuarios con el rol 'alumno'
             ->whereDoesntHave('matriculas') // Que no tengan matrículas
             ->where('created_at', '>=', $seisMesesAtras) // Creados en los últimos 6 meses
             ->with('roles') // Carga la relación roles
@@ -235,7 +236,7 @@ class AlumnoController extends Controller
     {
         $searchTerm = $request->term;
 
-        $users = User::role('alumno') // Filtra solo usuarios con el rol 'alumno'
+        $users = User::role('alumno', 'api')
                     ->where(function ($query) use ($searchTerm) {
                         $query->where('primer_nombre', 'LIKE', "%{$searchTerm}%")
                             ->orWhere('segundo_nombre', 'LIKE', "%{$searchTerm}%")

@@ -5,7 +5,7 @@
   <div *ngIf="loading" class="d-flex  justify-content-center">
     <app-loading size="20px"></app-loading>
     <h4 class="ms-2 text-secondary">
-      Cargando...
+      Cargando {{msg}}...
     </h4>
   </div>
   <form *ngIf="form && !loading" [formGroup]="form" (ngSubmit)="onSubmit()">
@@ -19,6 +19,7 @@
       <input *ngIf="col.type === 'hidden'" type="hidden" [name]="col.key" [value]="col.value" [required]="col.required ?? false">
       <input *ngIf="col.type === 'text' || col.type === 'email'" type="{{col.type}}" class="form-control" [formControlName]="col.key" [required]="col.required ?? false">
       <input *ngIf="col.type === 'number'" type="number" class="form-control" [formControlName]="col.key" [required]="col.required ?? false" step="any">
+      <textarea *ngIf="col.type === 'textarea'" class="form-control" [formControlName]="col.key" [required]="col.required ?? false" rows="3"></textarea>
       <!-- Input para tipo 'date' -->
       <input *ngIf="col.type === 'date'" type="date" class="form-control" [formControlName]="col.key" [required]="col.required ?? false">
       <!-- Selector para tipo 'select' -->

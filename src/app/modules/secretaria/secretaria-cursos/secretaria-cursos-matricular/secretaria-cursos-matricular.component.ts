@@ -64,7 +64,7 @@ export class SecretariaCursosMatricularComponent implements OnInit {
       next: (res: any) => {
         this.disponibles = res.disponibles
         this.asignaciones = res.asignaciones
-        console.log("Data...", res)
+
         this.loading = false
        },
        error: (error) => {

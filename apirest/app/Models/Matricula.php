@@ -32,6 +32,10 @@ class Matricula extends Model
         return $this->belongsTo(Curso::class, 'curso');
     }
 
+    public function alumno_r()
+    {
+        return $this->belongsTo(User::class, 'alumno');
+    }
     public function alumno()
     {
         return $this->belongsTo(User::class, 'alumno');

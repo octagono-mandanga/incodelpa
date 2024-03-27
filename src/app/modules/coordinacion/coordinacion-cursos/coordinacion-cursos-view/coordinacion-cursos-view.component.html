@@ -1,13 +1,22 @@
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a routerLink="/coordinacion/cursos">Cursos</a></li>
-    <!--
-    <li class="breadcrumb-item"><a [routerLink]="['/coordinacion/cursos/view/', data.id]" *ngIf="data!.id">{{data.nombre}}</a></li>
-    -->
     <li class="breadcrumb-item active" aria-current="page" *ngIf="data">{{data.nombre}}</li>
   </ol>
 </nav>
-<div class="row">
+<div class="card" *ngIf="loading">
+  <div class="card-body">
+    <div class="container mt-3">
+      <div class="d-flex justify-content-center">
+        <app-loading size="30px"></app-loading>
+        <h4 class="ms-2 text-secondary">
+          Cargando {{msg}}...
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row" *ngIf="!loading">
   <div class="col-xs-12 col-md-3">
     <div class="card mb-2" style="background: none;" *ngIf="!loading">
       <div class="card-body">
@@ -40,14 +49,14 @@
         </div>
       </div>
     </div>
-    <div class="card" style="background: none;" *ngIf="!loading && disponibles.length>0">
+    <div class="card bg-light bg-gradient" *ngIf="!loading && disponibles.length>0">
       <div class="card-body p-0 pt-2">
         <small class="ms-3 fw-bold text-secondary">
           Sin Asignar
         </small>
         <!-- Some borders are removed -->
         <div class="disponibles mt-2 mb-2">
-                    <ul class="list-group list-group-flush">
+            <ul class="list-group list-group-flush">
             <li *ngFor="let item of disponibles" class="list-group-item bg-transparent py-0">
               <small>
                 {{ item.nombre | titlecase }}
@@ -69,21 +78,20 @@
               </button>
               <div class="dropdown-menu">
                 <h6 class="dropdown-header">Gestionar</h6>
-                <a class="dropdown-item" href="#">Notas Extras</a>
+                <a class="dropdown-item" [routerLink]='["/coordinacion/under"]'>Notas Extras</a>
                 <a class="dropdown-item" [routerLink]='["/coordinacion/cursos/asignacion/", id]'>Asignar Docentes</a>
-                <a class="dropdown-item" href="#">Matricular</a>
+                <a class="dropdown-item" [routerLink]='["/coordinacion/under"]'>Matricular</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Boletines</a>
-                <a class="dropdown-item" href="#">Consolidados</a>
-                <a class="dropdown-item" href="#">Puestos</a>
+                <a class="dropdown-item" [routerLink]='["/coordinacion/under"]'>Boletines</a>
+                <a class="dropdown-item" [routerLink]='["/coordinacion/under"]'>Consolidados</a>
+                <a class="dropdown-item" [routerLink]='["/coordinacion/under"]'>Puestos</a>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div class="card-body p-0" *ngIf="!loading">
-
-        <div class="d-flex align-items-start">
+        <div class="d-flex align-items-start" *ngIf="asignaciones.length>0">
           <div class="nav flex-column nav-pills me-3" id="v-pills-tab" style="flex: 0 0 auto; width: 25%;">
             <a *ngFor="let item of asignaciones; let i = index"
                 class="nav-link" [class.active]="i === 0"
@@ -118,10 +126,96 @@
                   </p>
                 </div>
               </div>
+              <!-- Some borders are removed -->
 
-              Aquí va el contenido para {{ item.materia.nombre }}
+              <ng-container *ngFor="let asignaNota of notas">
+                <ng-container *ngIf="asignaNota.idasignacion==item.id">
+
+                    <div class="table-responsive">
+                      <table class="table table-striped table-bordered ">
+                        <thead>
+                          <tr>
+                            <th>Alumno</th>
+                            <th *ngFor="let item of periodos">
+                              <p class=" text-center mb-0 lh-1">
+                                {{ item.nombre.substring(0,1) | uppercase }}P
+                              </p>
+                              <p class="fw-normal text-center mb-0 lh-1">
+                                <small>
+                                  {{item.porcentaje}}%
+                                </small>
+                              </p>
+                            </th>
+                            <th class="text-center small align-middle fw-normal">Acum.</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let item of asignaNota.data.matriz" class="">
+                            <td>
+                              <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                  <img [src]="item.alumno.avatar_url" alt="" width="48px" class="rounded-circle me-2" />
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                  <p class="h5 my-0 lh-2">
+                                    {{ item.alumno.primer_apellido }} {{ item.alumno. segundo_apellido }}
+                                  </p>
+                                  <p class="h6 fw-normal lh-1 mb-0">
+                                    {{ item.alumno.primer_nombre }} {{ item.alumno.segundo_nombre }}
+                                  </p>
+                                </div>
+                              </div>
+                            </td>
+                            <td *ngFor="let nota of item.notas" class="h4 text-center fw-bold align-middle" [ngStyle]="{'color': getColor(nota)}">{{ nota }}</td>
+                            <td class="h5 text-center fw-bold align-middle" [ngStyle]="{'color': getColor(item.total)}">
+                              {{item.total | round:1}}
+                            </td>
+                          </tr>
+
+                        </tbody>
+                      </table>
+                    </div>
+
+                </ng-container>
+              </ng-container>
+
+
+
             </div>
           </div>
+        </div>
+        <div class="table-responsive" *ngIf="asignaciones.length==0">
+          <table class="table table-striped table-bordered ">
+            <thead>
+              <tr>
+                <th>Alumno</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of matriculados" class="">
+                <td>
+                  <div class="d-flex">
+                    <div class="flex-shrink-0">
+                      <img [src]="item.avatar_url" alt="" width="48px" class="rounded-circle me-2" />
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                      <p class="h5 my-0 lh-2">
+                        {{ item.primer_apellido }} {{ item.segundo_apellido }}
+                      </p>
+                      <p class="h6 fw-normal lh-1 mb-0">
+                        {{ item.primer_nombre }} {{ item.segundo_nombre }}
+                      </p>
+                      <p class="h6 fw-normal lh-1 mb-0">
+                        <small>
+                          {{ item.codigo }}
+                        </small>
+                      </p>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
       </div>

@@ -1,0 +1,53 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">Competencias</li>
+  </ol>
+</nav>
+<div class="card" *ngIf="loading">
+  <div class="card-body">
+    <div class="container mt-3">
+      <div class="d-flex justify-content-center">
+        <app-loading size="30px"></app-loading>
+        <h4 class="ms-2 text-secondary">
+          Cargando {{msg}}...
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card" *ngIf="!loading">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12">
+        <!-- Some borders are removed -->
+        <ul class="list-group list-group-flush">
+          <li *ngFor="let item of asignaturas" class="list-group-item">
+            <div class="d-flex">
+              <div class="flex-grow-1">
+                <h5 class="mt-0">
+                  <a class="text-decoration-none fw-bold mb-0" [routerLink]="['/docente/competencias/asignatura', item.id]">
+                    {{ item.nombre }}
+                  </a>
+                </h5>
+                <p class="mb-0">
+                  Grado: {{item.grado.nombre}}
+                </p>
+                <p class="mb-0">
+                  Area: {{item.area.nombre}}
+                </p>
+              </div>
+              <div class="flex">
+                <h5 class="mb-0">
+                  <span class="badge rounded-pill fw-normal text-bg-info">
+                    {{ item.competencias.length }}
+                  </span>
+                </h5>
+              </div>
+            </div>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  </div>
+</div>

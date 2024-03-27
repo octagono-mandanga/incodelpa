@@ -22,7 +22,7 @@ class DocenteController extends Controller
     {
         // Carga solo los usuarios con el rol 'alumno'
         $seisMesesAtras = now()->subMonths(6);
-        $users = User::role('docente')
+        $users = User::role('docente', 'api')
         ->orderBy('primer_nombre')
         ->orderBy('segundo_nombre')
         ->orderBy('primer_apellido')
@@ -66,7 +66,7 @@ class DocenteController extends Controller
 
         // Asignamos directamente el rol 'alumno'
          // Asume que 'rol' es el ID del rol en el request
-        $role = Role::where('name', 'docente')->first();
+        $role = Role::findByName('docente', 'api');
         $user->assignRole('docente');
         //Mail
         $institucion = Institucion::first();

@@ -17,12 +17,12 @@ export class LogoutComponent implements OnInit {
       next: (response) => {
         this.loading = false
         localStorage.removeItem('token'); // Asumiendo que el token se almacena aquí
-        localStorage.removeItem('user'); // Asumiendo que el token se almacena aquí
+        localStorage.removeItem('userId'); // Asumiendo que el token se almacena aquí
         this.router.navigate(['/']); // Redirige al usuario a la página de login
       },
       error: (error) => {
         localStorage.removeItem('token'); // Asumiendo que el token se almacena aquí
-        localStorage.removeItem('user'); // Asumiendo que el token se almacena aquí
+        localStorage.removeItem('userId'); // Asumiendo que el token se almacena aquí
         this.router.navigate(['/']); // Redirige al usuario a la página de login
         console.error(error);
       }

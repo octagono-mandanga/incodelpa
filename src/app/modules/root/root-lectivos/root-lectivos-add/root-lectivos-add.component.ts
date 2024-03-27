@@ -72,7 +72,7 @@ export class RootLectivosAddComponent implements OnInit {
       },
       error: (error) => {
         this.message = 'Error al crear el lectivo : '+error
-        this.success = false
+        this.success = true
         this.loading = false
       }
     });

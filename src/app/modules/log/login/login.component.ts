@@ -19,8 +19,8 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      email: ['gonzaloandreslucio@gmail.com', [Validators.required, Validators.email]],
-      password: ['123456', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]],
       active: [false]
     });
   }
@@ -62,8 +62,6 @@ export class LoginComponent implements OnInit {
               // Aquí puedes hacer algo con los roles, como almacenarlos en el estado de la aplicación
               if(roles[0])
                 this.router.navigate(['/'+roles[0]]);
-              else
-                console.log("123")
             },
             error: (error) => {
               console.error('Error al obtener los roles del usuario', error);

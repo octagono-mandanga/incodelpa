@@ -10,6 +10,8 @@ export class User {
   public email!: string;
   public estado!: string;
 
+  public alumno!: any;
+  public codigo!: any; //Pa los select directos
 
   public tipo_documento!: string;
   public roles!: any;
@@ -18,6 +20,19 @@ export class User {
   }
   public get fullname(){
     return `${this.primer_nombre} ${this.segundo_nombre || ''} ${this.primer_apellido} ${this.segundo_apellido || ''}`.trim();
+  }
+  public setData(data: any){
+    this.id = data.id
+    this.avatar_url = data.avatar_url
+    this.primer_nombre = data.primer_nombre
+    this.segundo_nombre = data.segundo_nombre
+    this.primer_apellido = data.primer_apellido
+    this.segundo_apellido = data.segundo_apellido
+    this.alumno = data.alumno
+    this.nid = data.nid
+    this.celular = data.celular
+    this.email = data.email
+    this.estado = data.estado
   }
 }
 

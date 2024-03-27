@@ -20,7 +20,7 @@ class DocenteController extends Controller
     public function index()
     {
         // Carga solo los usuarios con el rol 'alumno'
-        $users = User::role('docente')->with('roles')->orderBy('primer_nombre')->orderBy('segundo_nombre')->orderBy('primer_apellido')->get();
+        $users = User::role('docente', 'api')->with('roles')->orderBy('primer_nombre')->orderBy('segundo_nombre')->orderBy('primer_apellido')->get();
         return response()->json($users);
     }
 

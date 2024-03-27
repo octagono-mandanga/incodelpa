@@ -28,4 +28,9 @@ class Lectivo extends Model
     {
         return $this->belongsTo(Nivel::class, 'nivel');
     }
+
+    public function periodos()
+    {
+        return $this->hasMany(Periodo::class, 'lectivo');
+    }
 }

@@ -1,0 +1,7 @@
+.material-icons {
+  cursor: grab; /* Cambia el cursor a una mano para indicar que se puede agarrar */
+}
+
+tr:hover .material-icons {
+  color: #656565; /* Cambia el color del icono al pasar el mouse */
+}

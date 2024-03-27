@@ -1,0 +1,66 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">Periodos</li>
+  </ol>
+</nav>
+<div class="card" *ngIf="loading">
+  <div class="card-body">
+    <div class="container mt-3">
+      <div class="d-flex justify-content-center">
+        <app-loading size="30px"></app-loading>
+        <h4 class="ms-2 text-secondary">
+          Cargando...
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Some borders are removed -->
+
+<div class="card" *ngIf="!loading">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12">
+        <div *ngFor="let nivel of display" class="row border-bottom py-3">
+          <div class="col-4">
+            <h5>
+              {{ nivel.nombre }}
+            </h5>
+          </div>
+          <div class="col-8">
+            <div class="card shadow border-0 mb-3" *ngFor="let periodo of nivel.periodos">
+              <div class="card-body" [ngClass]="'bg-'+periodo.status+'-subtle'">
+
+                <div class="d-flex">
+                  <div class="m-0">
+                    <p class="h6 mb-0">
+                      {{ periodo.nombre | titlecase }}
+                    </p>
+                  </div>
+
+                  <div class="ms-auto mb-0">
+                    <span class="badge" [ngClass]="'text-bg-'+periodo.status">
+                      <ng-container *ngIf="periodo.status === 'success'">Actual</ng-container>
+                      <ng-container *ngIf="periodo.status === 'warning'">Próximo</ng-container>
+                      <ng-container *ngIf="periodo.status === 'danger'">Cerrado</ng-container>
+                    </span>
+                  </div>
+                </div>
+
+                <p class="mb-0 small">
+                  {{ periodo.inicio | titlecase }}
+                </p>
+                <p class="mb-0 small">
+                  {{ periodo.fin | titlecase }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+

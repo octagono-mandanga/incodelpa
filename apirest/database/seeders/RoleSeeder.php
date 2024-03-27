@@ -15,11 +15,11 @@ class RoleSeeder extends Seeder
     public function run(): void
     {
         //
-        Role::create(['name' => 'root', 'guard_name' => 'sanctum']);
-        Role::create(['name' => 'secretaria', 'guard_name' => 'sanctum']);
-        Role::create(['name' => 'coordinacion', 'guard_name' => 'sanctum']);
-        Role::create(['name' => 'docente', 'guard_name' => 'sanctum']);
-        Role::create(['name' => 'alumno ', 'guard_name' => 'sanctum']);
-        Role::create(['name' => 'rectoria', 'guard_name' => 'sanctum']);
+        Role::create(['name' => 'root', 'guard_name' => 'api']);
+        Role::create(['name' => 'secretaria', 'guard_name' => 'api']);
+        Role::create(['name' => 'coordinacion', 'guard_name' => 'api']);
+        Role::create(['name' => 'docente', 'guard_name' => 'api']);
+        Role::create(['name' => 'alumno ', 'guard_name' => 'api']);
+        Role::create(['name' => 'rectoria', 'guard_name' => 'api']);
     }
 }

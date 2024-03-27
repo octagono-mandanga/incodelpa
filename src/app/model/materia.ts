@@ -5,6 +5,7 @@ export class Materia {
   public estado!: string;
   public grado!: any;
   public area!: any;
+  public competencias: any = [];
   public porcentaje!: number;
   constructor(){
   }

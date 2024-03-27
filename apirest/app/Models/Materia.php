@@ -42,4 +42,14 @@ class Materia extends Model
     {
         return $this->hasMany(Asignacion::class, 'materia');
     }
+
+    /*
+    * Define la relación donde una materia tiene muchas competencias.
+    *
+    * @return \Illuminate\Database\Eloquent\Relations\HasMany
+    */
+   public function competencias()
+   {
+       return $this->hasMany(Competencia::class, 'materia');
+   }
 }

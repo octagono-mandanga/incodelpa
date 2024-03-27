@@ -1,0 +1,100 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">
+      <a routerLink="/docente/">
+        Asignaciones
+      </a>
+    </li>
+    <li class="breadcrumb-item active" *ngIf="asignacion" aria-current="page">{{ asignacion.materia.nombre }}</li>
+  </ol>
+</nav>
+<div class="card" *ngIf="loading">
+  <div class="card-body">
+    <div class="container mt-3">
+      <div class="d-flex justify-content-center">
+        <app-loading size="30px"></app-loading>
+        <h4 class="ms-2 text-secondary">
+          Cargando {{msg}}...
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card bg-light mb-2" *ngIf="!loading">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-9">
+        <p class="h3 mb-0">
+          {{ asignacion.materia.nombre | uppercase }}
+        </p>
+        <p class="mb-0">
+          {{ asignacion.curso.sede.nombre | titlecase }} - {{ asignacion.curso.nombre | titlecase }} [{{ asignacion.curso.grado.nombre | titlecase }}]
+        </p>
+        <p class="mb-0">
+          Director Curso: {{ asignacion.curso.director.primer_nombre | titlecase }} {{ asignacion.curso.director.segundo_nombre | titlecase }} {{ asignacion.curso.director.primer_apellido | titlecase }} {{ asignacion.curso.director.segundo_apellido | titlecase }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="btn-toolbar mb-2" *ngIf="!loading">
+  <div class="btn-group me-2">
+    <a
+      [routerLink]="['/docente/calificar', asignacion.id]"
+      class="btn btn-success rounded-0">Calificar
+    </a>
+    <!--
+      <button type="button" class="btn btn-warning rounded-0">Asistencia</button>
+    -->
+  </div>
+
+</div>
+<div class="card" *ngIf="!loading">
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered ">
+        <thead>
+          <tr>
+            <th>Alumno</th>
+            <th *ngFor="let item of periodos">
+              <p class=" text-center mb-0 lh-1">
+                {{ item.nombre.substring(0,1) | uppercase }}P
+              </p>
+              <p class="fw-normal text-center mb-0 lh-1">
+                <small>
+                  {{item.porcentaje}}%
+                </small>
+              </p>
+            </th>
+            <th class="text-center small align-middle fw-normal">Acum.</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of matriz" class="">
+            <td>
+              <div class="d-flex">
+                <div class="flex-shrink-0">
+                  <img [src]="item.alumno.avatar_url" alt="" width="48px" class="rounded-circle me-2" />
+                </div>
+                <div class="flex-grow-1 ms-3">
+                  <p class="h5 my-0 lh-2">
+                    {{ item.alumno.primer_apellido }} {{ item.alumno. segundo_apellido }}
+                  </p>
+                  <p class="h6 fw-normal lh-1 mb-0">
+                    {{ item.alumno.primer_nombre }} {{ item.alumno.segundo_nombre }}
+                  </p>
+                </div>
+              </div>
+            </td>
+            <td *ngFor="let nota of item.notas" class="h4 text-center fw-bold align-middle" [ngStyle]="{'color': getColor(nota)}">{{ nota }}</td>
+            <td class="h5 text-center fw-bold align-middle" [ngStyle]="{'color': getColor(item.total)}">
+              {{item.total | round:1}}
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>

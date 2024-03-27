@@ -24,9 +24,9 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="4.2179991"
-     inkscape:cx="103.8407"
-     inkscape:cy="46.23045"
+     inkscape:zoom="1.4912879"
+     inkscape:cx="97.231394"
+     inkscape:cy="87.843535"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="2936"
@@ -424,7 +424,7 @@
        inkscape:collect="always"
        style="color-interpolation-filters:sRGB"
        id="filter24004-4-2"
-       x="-0.020090772"
+       x="-0.020090757"
        width="1.0401815"
        y="-0.027191709"
        height="1.0543834">
@@ -448,9 +448,9 @@
        inkscape:collect="always"
        style="color-interpolation-filters:sRGB"
        id="filter24000-5-9"
-       x="-0.017620182"
-       width="1.0352404"
-       y="-0.030241997"
+       x="-0.017620135"
+       width="1.0352403"
+       y="-0.030241995"
        height="1.060484">
       <feGaussianBlur
          inkscape:collect="always"
@@ -505,9 +505,9 @@
        inkscape:collect="always"
        style="color-interpolation-filters:sRGB"
        id="filter23996-7-0"
-       x="-0.017620193"
-       width="1.0352404"
-       y="-0.030242004"
+       x="-0.017620151"
+       width="1.0352403"
+       y="-0.030241995"
        height="1.060484">
       <feGaussianBlur
          inkscape:collect="always"
@@ -551,7 +551,7 @@
        inkscape:collect="always"
        style="color-interpolation-filters:sRGB"
        id="filter23992-3-8"
-       x="-0.020090772"
+       x="-0.020090757"
        width="1.0401815"
        y="-0.027191709"
        height="1.0543834">

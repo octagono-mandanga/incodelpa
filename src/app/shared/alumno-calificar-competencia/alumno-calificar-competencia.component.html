@@ -1,0 +1,23 @@
+<div class="d-flex justify-content-between">
+  <div class="d-flex">
+    <div class="flex-shrink-0 competencia">
+      <input class="form-check-input me-2"  [(ngModel)]="checkboxState" (change)="checkboxChange()" type="checkbox">
+    </div>
+    <div class="flex-grow-1 ms-1">
+      <p class="lh-1 mb-0 competencia">
+        {{ competencia.detalle }}
+      </p>
+    </div>
+  </div>
+  <div class="mb-0">
+    <input type="text" class="form-control p-1 rounded-0 text-center nota bg-warning"
+    #lanota
+    [ngClass]="{'bg-warning': claseNota === 'warning', 'bg-danger': claseNota === 'danger', 'bg-info': claseNota === 'info', 'input-disabled': !checkboxState}"
+    [(ngModel)]="nota"
+    (ngModelChange)="onValidar()"
+    [disabled]="!checkboxState"
+    (keyup)="manejarKeyup($event)">
+    <p id="helpId"  class="small form-text text-center fw-bold my-0" [ngStyle]="{color:  claseColor }">{{ mensajeNota | titlecase }}</p>
+
+  </div>
+</div>

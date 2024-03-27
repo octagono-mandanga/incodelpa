@@ -56,6 +56,7 @@ class Kernel extends HttpKernel
         'root' => \App\Http\Middleware\RootRole::class, // Añade esto
         'coordinacion' => \App\Http\Middleware\CoordinacionRole::class, // Añade esto
         'secretaria' => \App\Http\Middleware\SecretariaRole::class, // Añade esto
+        'docente' => \App\Http\Middleware\DocenteRole::class, // Añade esto
     ];
     /**
      * The application's middleware aliases.

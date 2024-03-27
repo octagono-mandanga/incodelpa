@@ -1,0 +1,56 @@
+<div class="row">
+  <div class="col-xs-12 col-md-2" style="align-self: center;" *ngIf="!metodo">
+    <img [src]="alumno.avatar_url" alt="" width="60px" class="mx-auto" style="display: block;" />
+    <h6 class="mt-1 mb-0 text-center lh-1">
+      {{alumno.primer_apellido}} {{alumno.segundo_apellido}}
+    </h6>
+    <p class="my-0 text-center lh-1">
+      {{alumno.primer_nombre}} {{alumno.segundo_nombre}}
+    </p>
+  </div>
+  <div class="col-xs-12 col-md-5" style="align-self: center;" *ngIf="metodo">
+    <div class="d-flex">
+      <div class="flex-shrink-0">
+        <img [src]="alumno.avatar_url" alt="" width="48px" />
+      </div>
+      <div class="flex-grow-1 ms-3">
+        <h6 class="mt-1 mb-0 lh-1">
+          {{alumno.primer_apellido}} {{alumno.segundo_apellido}}
+        </h6>
+        <p class="my-0 lh-1">
+          {{alumno.primer_nombre}} {{alumno.segundo_nombre}}
+        </p>
+      </div>
+    </div>
+
+
+
+  </div>
+  <div class="col-xs-12 col-md-10" *ngIf="!metodo">
+    <ul class="list-group list-group-flush">
+      <li *ngFor="let item of competencias; let i = index" class="list-group-item lh-1">
+        <app-alumno-calificar-competencia
+            [competencia]="item"
+            [escalas]="escalas"
+            [nota]="filtrarNota(item.id)"
+            (focoSiguiente)="enfocarSiguienteInput(i)" (emitirLaNota)="emitirNota($event)"></app-alumno-calificar-competencia>
+      </li>
+    </ul>
+  </div>
+  <div class="col-xs-12 col-md-7 position-relative" *ngIf="metodo">
+    <div class="mb-0 position-absolute top-50 start-50 translate-middle">
+      <input type="text" class="form-control p-1 rounded-0 text-center notafull bg-warning"
+      #fullnota
+      [ngClass]="{'bg-warning': claseNota === 'warning', 'bg-danger': claseNota === 'danger', 'bg-info': claseNota === 'info', 'input-disabled': !checkboxState}"
+      [(ngModel)]="notafull"
+      (ngModelChange)="onValidar()"
+      [disabled]="!checkboxState"
+      (keyup)="manejarFullKeyup($event)">
+      <p id="helpId"  class="small form-text text-center fw-bold my-0" [ngStyle]="{color:  claseColor }">{{ mensajeNota | titlecase }}</p>
+
+
+
+
+    </div>
+  </div>
+</div>

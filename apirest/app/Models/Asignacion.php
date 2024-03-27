@@ -12,6 +12,7 @@ class Asignacion extends Model
     protected $keyType = 'string';
     public $incrementing = false;
 
+
     protected $fillable = ['curso', 'materia', 'docente', 'estado'];
     protected $table = 'asignaciones';
     protected static function boot()
@@ -23,6 +24,8 @@ class Asignacion extends Model
             }
         });
     }
+
+
 
     public function curso()
     {

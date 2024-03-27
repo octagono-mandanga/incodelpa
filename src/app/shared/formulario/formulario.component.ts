@@ -6,7 +6,7 @@ import { Entity } from 'src/app/model/entity';
 interface ColumnConfig {
   key: string;
   displayName: string;
-  type?: 'text' | 'select' | 'date' | 'email' | 'number' | 'hidden';
+  type?: 'text' | 'textarea' | 'select' | 'date' | 'email' | 'number' | 'hidden';
   value?: any;
   options?: {value: string, displayValue: string}[];
   required?: boolean;
@@ -29,6 +29,7 @@ export class FormularioComponent implements OnInit, OnChanges {
   @Input() config!: FormConfig;
   @Input() entityData!: Entity;
   @Input() message!: string;
+  @Input() msg!: string;
   @Input() success: boolean = true;
   @Input() loading: boolean = false;
   public form!: FormGroup;

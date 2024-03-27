@@ -1,0 +1,42 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a [routerLink]="['/docente/competencias']">Competencias</a></li>
+    <li class="breadcrumb-item">
+      <a  [routerLink]="['/docente/competencias/asignatura', id]">
+        Asignatura
+      </a>
+    </li>
+    <li class="breadcrumb-item">Nueva</li>
+  </ol>
+</nav>
+
+<div class="card bg-light mb-2" *ngIf="!loading">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-9">
+        <p class="h3 mb-0">
+          {{ data.nombre | titlecase }}
+        </p>
+        <p class="mb-0">
+          Grado: {{ data.grado.nombre | titlecase }}
+        </p>
+        <p class="mb-0">
+          Area: {{ data.area.nombre | titlecase }}
+        </p>
+      </div>
+      <div class="col-3">
+        <div class="spinner-border mt-2" role="status" *ngIf="loading2">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-formulario
+  (event)="onAgregar($event)"
+  [loading]="loading"
+  [message]="message"
+  [success]="success"
+  [msg]="msg"
+  [config]="config"
+></app-formulario>

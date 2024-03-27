@@ -41,7 +41,7 @@ class User extends Authenticatable
         'segundo_apellido',
         'primer_nombre',
         'segundo_nombre',
-        'segundo_nombre',
+
         'nid',
         'celular',
         'tipo_documento',
@@ -95,5 +95,9 @@ class User extends Authenticatable
     public function asignaciones()
     {
         return $this->hasMany(Asignacion::class, 'docente')->orderBy('created_at', 'desc');
+    }
+    public function alumno()
+    {
+        return $this->belongsTo(Alumno::class, 'id');
     }
 }

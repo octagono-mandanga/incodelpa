@@ -59,7 +59,7 @@ class CursoController extends Controller
     public function show($id)
     {
         // Incluimos las relaciones al buscar el curso específico
-        $curso = Curso::with(['grado', 'sede', 'lectivo.nivel', 'director', 'coordinador', 'matriculas.alumno'])->find($id);
+        $curso = Curso::with(['grado', 'sede', 'lectivo.nivel', 'director', 'coordinador', 'matriculas.alumno.alumno'])->find($id);
         if ($curso) {
             return response()->json(['data' => $curso], 200);
         } else {

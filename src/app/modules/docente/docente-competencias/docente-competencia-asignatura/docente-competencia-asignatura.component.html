@@ -1,0 +1,91 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a routerLink="/docente/competencias">Competencias</a></li>
+    <li class="breadcrumb-item">Asignatura</li>
+  </ol>
+</nav>
+<div class="card" *ngIf="loading">
+  <div class="card-body">
+    <div class="container mt-3">
+      <div class="d-flex justify-content-center">
+        <app-loading size="30px"></app-loading>
+        <h4 class="ms-2 text-secondary">
+          Cargando {{msg}}...
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card bg-light mb-2" *ngIf="!loading">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-9">
+        <p class="h3 mb-0">
+          {{ data.nombre | titlecase }}
+        </p>
+        <p class="mb-0">
+          Grado: {{ data.grado.nombre | titlecase }}
+        </p>
+        <p class="mb-0">
+          Area: {{ data.area.nombre | titlecase }}
+        </p>
+      </div>
+      <div class="col-3">
+        <div class="spinner-border mt-2" role="status" *ngIf="loading2">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="btn-toolbar mb-2" *ngIf="!loading">
+  <div class="btn-group me-2">
+    <a [routerLink]="['/docente/competencias/asignatura-add', data.id]" class="btn btn-success rounded-0">
+      <i class="fa-solid fa-circle-plus"></i>
+      Nueva
+    </a>
+  </div>
+</div>
+<div class="card" *ngIf="!loading">
+  <div class="card-body p-0">
+    <!-- Some borders are removed -->
+    <div class="table-responsive">
+      <table cdkDropList (cdkDropListDropped)="drop($event)" class="table table-striped">
+        <thead>
+          <tr>
+            <th class="small"></th>
+            <th class="small">COMPETENCIA</th>
+            <th class="small">ORDEN</th>
+            <th class="small">TIPO</th>
+            <th class="small">ESTADO</th>
+            <th class="small"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data.competencias; let i = index" cdkDrag>
+            <td cdkDragHandle>
+              <i class="material-icons text-muted">drag_indicator</i>
+            </td>
+            <td class="align-middle">{{item.detalle}}</td>
+            <td class="text-center align-middle">{{item.orden}}</td>
+            <td class="text-center align-middle">{{item.tipo.nombre}}</td>
+            <td class="text-center align-middle">
+              <i *ngIf="item.estado=='activo'" class="fa-solid fa-check text-success"></i>
+              <i *ngIf="item.estado=='inactivo'" class="fa-solid fa-xmark text-danger"></i>
+            </td>
+            <td class="text-center align-middle">
+              <a [routerLink]="['/docente/competencias/asignatura-edit', item.id]" class="btn btn-sm btn-outline-info">
+                <i class="fa-solid fa-pencil"></i>
+              </a>
+
+
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+  </div>
+</div>

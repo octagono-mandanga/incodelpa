@@ -1,0 +1,17 @@
+.nota {
+  font-size: x-large;
+  font-weight: bold;
+  width: 60px;
+  height: 40px;
+}
+
+.competencia {
+  display: flex;
+  height: 100%;
+  align-items: center;
+}
+
+.input-disabled {
+  background-color: #f0f0f0 !important;
+  color: #ccc;
+}
