@@ -41,7 +41,6 @@ class User extends Authenticatable
         'segundo_apellido',
         'primer_nombre',
         'segundo_nombre',
-
         'nid',
         'celular',
         'tipo_documento',
