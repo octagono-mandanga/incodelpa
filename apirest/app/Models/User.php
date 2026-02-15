@@ -3,6 +3,10 @@
 /**
  * Clase que representa a un usuario del sistema.
  * @author Ing. Gonzalo Lucio 
+ * @version 1.0
+ * @package App\Models
+ * @license MIT
+ * @copyright 2026 Incodelpa
  */
 namespace App\Models;
 
