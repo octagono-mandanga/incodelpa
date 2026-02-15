@@ -37,7 +37,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'primer_apellido',
+        'primer_apellido', 
         'segundo_apellido',
         'primer_nombre',
         'segundo_nombre',
@@ -70,7 +70,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * Accesor para "avatar_url".
+     * Accesor para "avatar_url". Como es
      */
     protected $appends = ['avatar_url'];
     public function getAvatarUrlAttribute()
