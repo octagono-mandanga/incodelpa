@@ -1,0 +1,39 @@
+name: Deploy Laravel (Selectivo)
+on:
+  push:
+    paths:
+      - 'apirest/app/**'
+      - 'apirest/database/**'
+      - 'apirest/public/**'
+      - 'apirest/routes/**'
+    branches:
+      - backend
+
+jobs:
+  deploy-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Sincronizar Carpetas Específicas
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          # Aquí filtramos exactamente lo que pediste
+          source: "apirest/app,apirest/database,apirest/public,apirest/routes"
+          target: "/var/www/incodelpa/"
+          # strip_components: 0 para que mantenga la estructura /apirest/app...
+
+      - name: Optimización post-deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/incodelpa/apirest
+            # Si usas migraciones o caché, ejecutarlos aquí
+            php artisan config:cache
+            php artisan route:cache
