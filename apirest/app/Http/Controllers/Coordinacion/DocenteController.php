@@ -32,41 +32,46 @@ class DocenteController extends Controller
             'segundo_apellido' => 'nullable|string',
             'primer_nombre' => 'required|string',
             'segundo_nombre' => 'nullable|string',
-            'nid' => 'required|string|unique:users',
+            'nid' => 'required|string',
             'celular' => 'required|string',
             'tipo_documento' => 'required|exists:tipo_documentos,id',
-            'email' => 'required|string|email|unique:users',
+            'email' => 'required|string|email',
             // Removemos 'rol' del validador ya que no será necesario
         ]);
         $numero = rand(10000000, 99999999);
         $numero2 = rand(10000000, 99999999);
+        $user = User::where('nid', $request->nid)->first();
 
-        $user = User::create([
-            'id' => Str::uuid(),
-            'primer_apellido' => $request->primer_apellido,
-            'segundo_apellido' => $request->segundo_apellido,
-            'primer_nombre' => $request->primer_nombre,
-            'segundo_nombre' => $request->segundo_nombre,
-            'celular' => $request->celular,
-            'nid' => $request->nid,
-            'tipo_documento' => $request->tipo_documento,
-            'email' => $request->email,
-            'password' => bcrypt($numero2),
-            'estado' => 'activo',
-        ]);
+        if (!$user) {
+            $user = User::create([
+                'id' => Str::uuid(),
+                'primer_apellido' => $request->primer_apellido,
+                'segundo_apellido' => $request->segundo_apellido,
+                'primer_nombre' => $request->primer_nombre,
+                'segundo_nombre' => $request->segundo_nombre,
+                'celular' => $request->celular,
+                'nid' => $request->nid,
+                'tipo_documento' => $request->tipo_documento,
+                'email' => $request->email,
+                'password' => bcrypt($request->nid),
+                'estado' => 'activo',
+            ]);
+            DB::table('password_reset_tokens')->insert([
+                'email' => $request->email,
+                'token' => $numero,
+                'created_at' => Carbon::now()
+            ]);
+        }
 
-        // Asignamos directamente el rol 'alumno'
-         // Asume que 'rol' es el ID del rol en el request
-        $role = Role::where('name', 'docente')->first();
-        $user->assignRole('docente');
-        //Mail
-        $institucion = Institucion::first();
-        DB::table('password_reset_tokens')->insert([
-            'email' => $request->email,
-            'token' => $numero,
-            'created_at' => Carbon::now()
-        ]);
-        Mail::to($user->email)->send(new WelcomeEmail($user, $numero, $institucion, $role));
+
+        if (!$user->hasRole('docente')) {
+            $role = Role::findByName('docente', 'api');
+            $user->assignRole($role);
+            //Mail
+            $institucion = Institucion::first();
+
+            Mail::to($user->email)->send(new WelcomeEmail($user, $request->nid, $institucion, $role));
+        }
         return response()->json(['message' => 'Usuario creado exitosamente.', 'user' => $user]);
     }
 

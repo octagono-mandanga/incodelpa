@@ -3,11 +3,13 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CoordinacionDocentesComponent } from './coordinacion-docentes.component';
 import { CoordinacionDocentesAddComponent } from './coordinacion-docentes-add/coordinacion-docentes-add.component';
+import { CoordinacionDocentesViewComponent } from './coordinacion-docentes-view/coordinacion-docentes-view.component';
 
 const routes: Routes = [
   { path: '', component: CoordinacionDocentesComponent },
   { path: 'add', component: CoordinacionDocentesAddComponent },
-  { path: 'edit/:id', component: CoordinacionDocentesEditComponent }
+  { path: 'edit/:id', component: CoordinacionDocentesEditComponent },
+  { path: 'view/:id', component: CoordinacionDocentesViewComponent },
 ];
 
 @NgModule({

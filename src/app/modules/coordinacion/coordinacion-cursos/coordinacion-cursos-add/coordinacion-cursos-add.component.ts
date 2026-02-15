@@ -56,7 +56,7 @@ export class CoordinacionCursosAddComponent implements OnInit {
     };
     try {
       this.loading = true
-      this.msg = 'Cargando Lectivos...';
+      this.msg = 'Lectivos';
       this.lectivos = await firstValueFrom(this.crudLectivoService.read('/coordinacion/lectivos'));
       const opcionesActivas =       this.lectivos
         .filter(entidad => entidad.estado === 'activo')
@@ -71,7 +71,7 @@ export class CoordinacionCursosAddComponent implements OnInit {
         campoLectivo.options = opcionesActivas;
       }
 
-      this.msg = 'Cargando Sedes...';
+      this.msg = 'Sedes';
       const datasede: Sede[] = await firstValueFrom(this.crudSedeService.read('/coordinacion/sedes'));
       const opcionesSedesActivas = datasede
         .filter(entidad => entidad.estado === 'activo')
@@ -86,11 +86,11 @@ export class CoordinacionCursosAddComponent implements OnInit {
         campoSede.options = opcionesSedesActivas;
       }
 
-      this.msg = 'Cargando Grados...';
+      this.msg = 'Grados';
       this.grados = await firstValueFrom(this.crudGradoService.read('/coordinacion/grados'));
 
 
-      this.msg = 'Cargando Docentes...';
+      this.msg = 'Docentes';
       this.docentes = await firstValueFrom(this.crudDocenteService.read('/coordinacion/docentes'));
       const opcionesDocentes = this.docentes
       .filter(entidad => entidad.estado === 'activo')

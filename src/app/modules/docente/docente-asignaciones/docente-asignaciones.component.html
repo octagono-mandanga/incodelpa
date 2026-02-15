@@ -17,22 +17,50 @@
 </div>
 <div class="row" *ngIf="!loading">
   <div class="col-12">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+          aria-expanded="false">
+          Documentos
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          <li><a class="dropdown-item cursor" (click)="onPdf(1)">Listados Simples</a></li>
+          <li><a class="dropdown-item cursor" (click)="onPdf(2)">Listados por Asignatura</a></li>
+          <li><a class="dropdown-item cursor" (click)="onPdf(3)">Listados con Notas</a></li>
+          <li><a class="dropdown-item cursor" (click)="onPdf(8)">Puestos</a></li>
+        </ul>
+      </div>
+      <app-load-document *ngIf="generatepdf" [generatepdfMsg]="generatepdfMsg"></app-load-document>
+    </div>
     <!-- Some borders are removed -->
     <ul class="list-group list-group-flush">
       <li *ngFor="let item of data" class="list-group-item">
-        <div class="d-flex">
+        <div class="d-flex align-items-center">
           <div class="flex-grow-1">
-            <a [routerLink]="['/docente/cursos/', item.id]" class="h4 text-primary cursor text-decoration-none fw-bold my-0">{{ item.materia.nombre }}</a>
+            <a [routerLink]="['/docente/cursos/', item.id]"
+              class="h4 text-primary cursor text-decoration-none fw-bold my-0">{{ item.materia.nombre }}</a>
             <p class="my-0">{{ item.curso.grado.nombre }}. [{{item.curso.nombre}}] - {{item.curso.sede.nombre}}</p>
             <p class="my-0">
-              {{ item.curso.director.primer_nombre }} {{ item.curso.director.segundo_nombre }} {{ item.curso.director.primer_apellido }}
+              {{ item.curso.director.primer_nombre }} {{ item.curso.director.segundo_nombre }} {{
+              item.curso.director.primer_apellido }}
             </p>
           </div>
-          <div class="flex-shrink-0 align-middle" style="display: flex; align-items: center;">
-            <a [routerLink]="['/docente/calificar/', item.id]" class="btn btn-success rounded-0">
+          <div class="flex-shrink-0 d-flex align-items-center">
+            <a [routerLink]="['/docente/calificar/', item.id]" class="btn btn-success rounded-0 me-2">
               Calificar
             </a>
-
+            <div class="dropdown">
+              <button class="btn btn-light rounded-circle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item cursor" (click)="onPdf(1, item.id)">Listados Simples</a></li>
+                <li><a class="dropdown-item cursor" (click)="onPdf(2, item.id)">Listados por Asignatura</a></li>
+                <li><a class="dropdown-item cursor" (click)="onPdf(3, item.id)">Listados con Notas</a></li>
+                <li><a class="dropdown-item cursor" (click)="onPdf(8, item.id)">Puestos</a></li>
+              </ul>
+            </div>
           </div>
         </div>
 
@@ -42,5 +70,3 @@
 
   </div>
 </div>
-
-

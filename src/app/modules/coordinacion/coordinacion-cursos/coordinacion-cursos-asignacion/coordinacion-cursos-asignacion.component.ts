@@ -117,7 +117,7 @@ export class CoordinacionCursosAsignacionComponent implements OnInit {
   async onSubmit() {
     if (this.form.valid) {
         this.loading2 = true
-        await this.crudAsignacionService.create(this.form.value,  '/coordinacion/asignaciones/').subscribe({
+        await this.crudAsignacionService.create(this.form.value,  '/coordinacion/asignaciones').subscribe({
         next: (res: any) => {
           this.loadAsignacion();
           this.message = res.message

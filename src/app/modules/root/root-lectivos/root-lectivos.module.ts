@@ -6,13 +6,15 @@ import { RootLectivosComponent } from './root-lectivos.component';
 import { RootLectivosAddComponent } from './root-lectivos-add/root-lectivos-add.component';
 import { RootLectivosEditComponent } from './root-lectivos-edit/root-lectivos-edit.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { RootLectivosViewComponent } from './root-lectivos-view/root-lectivos-view.component';
 
 
 @NgModule({
   declarations: [
     RootLectivosComponent,
     RootLectivosAddComponent,
-    RootLectivosEditComponent
+    RootLectivosEditComponent,
+    RootLectivosViewComponent
   ],
   imports: [
     CommonModule,

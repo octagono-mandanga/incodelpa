@@ -88,4 +88,22 @@ export class CrudService<T> {
       })
     );
   }
+
+  readObject<U>(endpoint: string, params?: any): Observable<U> {
+    let queryParams = new HttpParams({ fromObject: params });
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    // La única diferencia es que aquí no usamos T[] o U[], sino solo U
+    return this.http.get<U>(`${this.baseUrl}${endpoint}`, { params: queryParams, headers }).pipe(
+      catchError(error => {
+        if (error.status === 401 || error.status === 403) {
+          this.router.navigate(['/logout']);
+        }
+        return throwError(() => new Error('Error en consulta.'));
+      })
+    );
+  }
 }

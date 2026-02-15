@@ -76,14 +76,12 @@ class User extends Authenticatable
     protected $appends = ['avatar_url'];
     public function getAvatarUrlAttribute()
     {
-        $avatarPath = "avatars/{$this->id}.png"; // Asume que guardas los avatares con el ID del usuario como nombre de archivo.
+        $avatarPath = "avatars/{$this->id}.png";
 
         if (Storage::disk('public')->exists($avatarPath)) {
             return Storage::disk('public')->url($avatarPath);
         }
 
-        // Retorna la URL de un avatar genérico si el usuario no tiene uno.
-        // Asegúrate de tener un avatar genérico disponible en tu disco público.
         return asset('storage/avatars/avatar.png');
     }
 

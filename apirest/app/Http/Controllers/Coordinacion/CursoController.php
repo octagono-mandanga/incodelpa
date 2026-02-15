@@ -13,12 +13,13 @@ class CursoController extends Controller
     {
         // Aquí ajustamos para cargar las relaciones necesarias, por ejemplo: 'grado', 'sede', 'lectivo'
 
-        $cursos = Curso::with(['grado', 'sede', 'lectivo.nivel', 'director'])
+        $cursos = Curso::with(['grado', 'sede', 'lectivo.nivel', 'asignaciones.materia', 'asignaciones.docente', 'matriculas.alumno.alumno', 'director'])
         ->join('lectivos', 'lectivos.id', '=', 'cursos.lectivo')
         ->join('niveles', 'niveles.id', '=', 'lectivos.nivel') // Asume que 'lectivo' tiene una FK 'nivel_id'
         ->join('grados', 'grados.id', '=', 'cursos.grado')
         ->join('sedes', 'sedes.id', '=', 'cursos.sede')
         ->where('cursos.coordinador', Auth::id())
+        ->where('lectivos.estado', '=', 'activo')
         ->orderBy('sedes.created_at')
         ->orderBy('niveles.orden')
         ->orderBy('grados.orden')

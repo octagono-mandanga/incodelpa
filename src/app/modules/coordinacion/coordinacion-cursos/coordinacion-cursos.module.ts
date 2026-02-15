@@ -9,6 +9,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { CoordinacionCursosViewComponent } from './coordinacion-cursos-view/coordinacion-cursos-view.component';
 import { CoordinacionCursosAsignacionComponent } from './coordinacion-cursos-asignacion/coordinacion-cursos-asignacion.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CoordinacionCursosAsignacionEditComponent } from './coordinacion-cursos-asignacion-edit/coordinacion-cursos-asignacion-edit.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     CoordinacionCursosAddComponent,
     CoordinacionCursosEditComponent,
     CoordinacionCursosViewComponent,
-    CoordinacionCursosAsignacionComponent
+    CoordinacionCursosAsignacionComponent,
+    CoordinacionCursosAsignacionEditComponent
   ],
   imports: [
     CommonModule,

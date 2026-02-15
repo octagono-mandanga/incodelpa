@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Secretaria;
 use App\Http\Controllers\Controller;
 use App\Models\Curso; // Usamos el modelo Curso
+use App\Models\Grado; // Usamos el modelo Curso
 use App\Models\Matricula; // Usamos el modelo Curso
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,11 +15,12 @@ class CursoController extends Controller
     {
         // Aquí ajustamos para cargar las relaciones necesarias, por ejemplo: 'grado', 'sede', 'lectivo'
 
-        $cursos = Curso::with(['grado', 'sede', 'lectivo.nivel', 'director', 'coordinador', 'matriculas'])
+        $cursos = Curso::with(['grado', 'sede', 'lectivo.nivel', 'asignaciones.materia', 'asignaciones.docente', 'matriculas.alumno.alumno', 'director'])
         ->join('lectivos', 'lectivos.id', '=', 'cursos.lectivo')
         ->join('niveles', 'niveles.id', '=', 'lectivos.nivel') // Asume que 'lectivo' tiene una FK 'nivel_id'
         ->join('grados', 'grados.id', '=', 'cursos.grado')
         ->join('sedes', 'sedes.id', '=', 'cursos.sede')
+        ->where('lectivos.estado', '=', 'activo')
         ->orderBy('sedes.created_at')
         ->orderBy('niveles.orden')
         ->orderBy('grados.orden')
@@ -27,7 +29,10 @@ class CursoController extends Controller
         ->get();
 
 
-        return response()->json($cursos);
+        return response()->json(
+
+            $cursos
+        );
     }
 
     public function store(Request $request)
@@ -151,5 +156,21 @@ class CursoController extends Controller
         return response()->json(['data' => $cursos], 200);
     }
 
+    public function anteriores(){
+        $grados = Grado::select('grados.*')
+        ->join('cursos', 'grados.id', '=', 'cursos.grado')
+        ->join('lectivos', 'cursos.lectivo', '=', 'lectivos.id')
+        ->where('lectivos.estado', 'anterior')
+        ->distinct()               // Para evitar duplicados en caso de que un grado tenga varios cursos
+        ->orderBy('grados.orden')
+        ->get();
 
+
+        return response()->json(
+            [
+                'message' => 'Grados obtenidos con éxito',
+                'data' => $grados
+            ],
+        );
+    }
 }

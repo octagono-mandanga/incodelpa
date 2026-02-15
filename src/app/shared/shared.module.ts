@@ -16,6 +16,8 @@ import { ConstructionMessageComponent } from './construction-message/constructio
 import { AlumnoCalificarComponent } from './alumno-calificar/alumno-calificar.component';
 import { AlumnoCalificarCompetenciaComponent } from './alumno-calificar-competencia/alumno-calificar-competencia.component';
 import { RoundPipe } from '../round.pipe';
+import { NotasxalumnoComponent } from './notasxalumno/notasxalumno.component';
+import { LoadDocumentComponent } from './load-document/load-document.component';
 
 
 
@@ -34,7 +36,9 @@ import { RoundPipe } from '../round.pipe';
     ConstructionMessageComponent,
     AlumnoCalificarComponent,
     AlumnoCalificarCompetenciaComponent,
-    RoundPipe
+    RoundPipe,
+    NotasxalumnoComponent,
+    LoadDocumentComponent
   ],
   exports: [
     DatatableComponent,
@@ -49,7 +53,9 @@ import { RoundPipe } from '../round.pipe';
     MatriculaModificarComponent,
     ConstructionMessageComponent,
     AlumnoCalificarComponent,
-    RoundPipe
+    NotasxalumnoComponent,
+    RoundPipe,
+    LoadDocumentComponent
   ],
   imports: [
     CommonModule,

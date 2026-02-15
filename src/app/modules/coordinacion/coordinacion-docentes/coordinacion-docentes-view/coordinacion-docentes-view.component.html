@@ -1,0 +1,157 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a routerLink="/coordinacion/docentes">Docentes</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Docente</li>
+  </ol>
+</nav>
+<div class="card" *ngIf="loading">
+  <div class="card-body">
+    <div class="container mt-3">
+      <div class="d-flex justify-content-center">
+        <app-loading size="30px"></app-loading>
+        <h4 class="ms-2 text-secondary">
+          Cargando {{msg}}...
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row" *ngIf="!loading">
+  <div class="col-3">
+
+      <div class="row justify-content-center">
+        <div class="col-md-12">
+          <!-- Widget card -->
+          <div class="widget">
+            <img [src]="data.avatar_url" alt="Octagono Avatar">
+            <div class="name">{{ data.primer_nombre }} {{ data.segundo_nombre }}</div>
+            <div class="name">{{ data.primer_apellido }} {{ data.segundo_apellido }}</div>
+            <span class="access-count text-break">Email: {{ data.email }}</span>
+            <span class="access-count text-break">Documento: {{ data.nid }}</span>
+          </div>
+        </div>
+      </div>
+
+  </div>
+<div class="col-9">
+
+  <ul class="nav nav-tabs">
+    <li class="nav-item dropdown">
+      <a class="nav-link active dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
+        Asignaciones
+        <span class="badge text-bg-warning">
+          {{asignaciones.length}}
+        </span>
+      </a>
+      <ul class="dropdown-menu">
+        <li>
+          <a
+            *ngFor="let asignacion of asignaciones; let i = index"
+            class="dropdown-item"
+            data-bs-toggle="tab"
+            [attr.data-bs-target]="'#asigna-' + asignacion.id +'-pane'"
+            role="tab">
+            {{asignacion.curso.nombre}} ({{asignacion.curso.grado.nombre}}) [{{asignacion.materia.nombre}}]
+          </a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+  <div class="tab-content" id="myTabContent">
+    <div
+      *ngFor="let asignacion of asignaciones; let i = index"
+      class="tab-pane fade"
+      [attr.id]="'asigna-'+asignacion.id +'-pane'" role="tabpanel" tabindex="0">
+      <div class="d-flex mt-1 p-2 mb-1 border-bottom bg-white">
+        <div class="flex-grow-1 ms-3">
+          <h5 class="my-0">
+            {{asignacion.materia.nombre | uppercase}}
+          </h5>
+          <a class="h6 my-0 text-primary" [routerLink]="['/coordinacion/cursos/view', asignacion.curso.id]">
+            {{asignacion.curso.nombre | uppercase}} [{{asignacion.curso.grado.nombre | uppercase}}]
+          </a>
+          <p class="my-0">
+            {{asignacion.curso.director.primer_nombre}} {{asignacion.curso.director.segundo_nombre}} {{asignacion.curso.director.primer_apellido}} {{asignacion.curso.director.segundo_apellido}}
+          </p>
+          <p class="mb-0">
+            <small class="text-secondary">
+              Director Curso
+            </small>
+          </p>
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+    <ng-container *ngFor="let asignaNota of notas">
+      <ng-container *ngIf="asignaNota.idasignacion==asignacion.id">
+
+          <div class="table-responsive">
+            <table class="table table-striped table-bordered ">
+              <thead>
+                <tr>
+                  <th>Alumno</th>
+                  <th *ngFor="let item of asignacion.periodos">
+                    <p class=" text-center mb-0 lh-1">
+                      {{ item.nombre.substring(0,1) | uppercase }}P
+                    </p>
+                    <p class="fw-normal text-center mb-0 lh-1">
+                      <small>
+                        {{item.porcentaje}}%
+                      </small>
+                    </p>
+                  </th>
+                  <th class="text-center small align-middle fw-normal">Acum.</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of asignaNota.data.matriz" class="">
+                  <td>
+                    <div class="d-flex">
+                      <div class="flex-shrink-0">
+                        <a [routerLink]="['/coordinacion/alumnos/view/', item.alumno.id]">
+                          <img [src]="item.alumno.avatar_url" width="48px" class="rounded-circle me-2" />
+                        </a>
+                      </div>
+                      <div class="flex-grow-1 ms-3">
+                        <p class="h5 my-0 lh-2">
+                          <a [routerLink]="['/coordinacion/alumnos/view/', item.alumno.id]">
+                            {{ item.alumno.primer_apellido }} {{ item.alumno. segundo_apellido }}
+                          </a>
+                        </p>
+                        <p class="h6 fw-normal lh-1 mb-0">
+                            {{ item.alumno.primer_nombre }} {{ item.alumno.segundo_nombre }}
+                        </p>
+                      </div>
+                    </div>
+                  </td>
+                  <td *ngFor="let nota of item.notas" class="h4 text-center fw-bold align-middle" [ngStyle]="{'color': getColor(nota, asignacion)}">{{ nota }}</td>
+                  <td class="h5 text-center fw-bold align-middle" [ngStyle]="{'color': getColor(item.total, asignacion)}">
+                    {{item.total | round:1}}
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+
+      </ng-container>
+    </ng-container>
+
+
+
+
+
+
+  </div>
+
+
+
+</div>
+
+</div>

@@ -6,13 +6,15 @@ import { CoordinacionDocentesComponent } from './coordinacion-docentes.component
 import { CoordinacionDocentesAddComponent } from './coordinacion-docentes-add/coordinacion-docentes-add.component';
 import { CoordinacionDocentesEditComponent } from './coordinacion-docentes-edit/coordinacion-docentes-edit.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { CoordinacionDocentesViewComponent } from './coordinacion-docentes-view/coordinacion-docentes-view.component';
 
 
 @NgModule({
   declarations: [
     CoordinacionDocentesComponent,
     CoordinacionDocentesAddComponent,
-    CoordinacionDocentesEditComponent
+    CoordinacionDocentesEditComponent,
+    CoordinacionDocentesViewComponent
   ],
   imports: [
     CommonModule,

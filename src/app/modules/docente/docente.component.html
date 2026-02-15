@@ -8,7 +8,8 @@
       </figure>
     </div>
     <div class="list-group list-group-flush">
-      <a *ngFor="let item of opts" class="list-group-item list-group-item-action cursor" [routerLink]="['/docente/'+item.link]" routerLinkActive="active">
+      <a *ngFor="let item of opts" class="list-group-item list-group-item-action cursor"
+        [routerLink]="['/docente/'+item.link]" routerLinkActive="active">
         {{ item.label }}
       </a>
       <!-- Más elementos del menú aquí -->
@@ -30,15 +31,28 @@
 
       <!-- Menú de usuario -->
       <div class="nav-item dropdown me-3">
-        <a class="nav-link dropdown-toggle d-flex align-items-center" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <a class="nav-link dropdown-toggle d-flex align-items-center" id="navbarDropdown" role="button"
+          data-bs-toggle="dropdown" aria-expanded="false">
           <div class="user-initials-circle me-2">
             {{iniciales}}
           </div>
         </a>
         <ul class="dropdown-menu dropdown-menu-end mt-2">
           <li><a class="dropdown-item" [routerLink]="['/docente/perfil']" routerLinkActive="active">Perfil</a></li>
-          <li><a class="dropdown-item" [routerLink]="['/docente/configuracion']" routerLinkActive="active">Configuración</a></li>
-          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" [routerLink]="['/docente/configuracion']"
+              routerLinkActive="active">Configuración</a></li>
+          <ng-container *ngIf="usuario.roles?.length>1">
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <ng-container *ngFor="let rol of usuario.roles">
+              <li *ngIf="rol.name!='docente'"><a class="dropdown-item" [routerLink]="['/'+rol.name]">{{ rol.name |
+                  titlecase }}</a></li>
+            </ng-container>
+          </ng-container>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
           <li><a class="dropdown-item" [routerLink]="['/logout']">Salir</a></li>
         </ul>
       </div>

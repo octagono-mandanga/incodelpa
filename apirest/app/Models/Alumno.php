@@ -12,7 +12,7 @@ class Alumno extends Model
     protected $keyType = 'string';
     public $incrementing = false;
 
-    protected $fillable = ['id', 'codigo', 'data'];
+    protected $fillable = ['id', 'codigo', 'data', 'estado'];
 
     public function user()
     {

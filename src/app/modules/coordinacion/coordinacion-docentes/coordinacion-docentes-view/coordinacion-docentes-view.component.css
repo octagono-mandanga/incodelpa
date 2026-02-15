@@ -1,0 +1,36 @@
+.widget {
+  background-color: #f8f9fa; /* Light gray background */
+  border: 1px solid #dee2e6; /* Gray border */
+  border-radius: 0.5rem; /* Rounded corners */
+  padding: 1rem; /* Padding around the content */
+  text-align: center; /* Center the text */
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075); /* Slight shadow for depth */
+}
+.widget img {
+  width: 80px; /* Set the image size */
+  height: 80px; /* Set the image height */
+  border-radius: 50%; /* Make the image round */
+  margin-bottom: 0.5rem; /* Margin below the image */
+}
+.widget .name {
+  font-size: 1.25rem; /* Size of the name */
+  font-weight: bold; /* Make the name bold */
+  margin-bottom: 0.25rem; /* Space below the name */
+}
+.widget .access-count,
+.widget .timestamp {
+  display: block;
+  color: #6c757d; /* Gray color for the text */
+  font-size: 0.875rem; /* Font size */
+  margin-bottom: 0.25rem; /* Space below the text */
+}
+.widget .btn {
+  background-color: #007bff; /* Blue background for the button */
+  color: white; /* White text for the button */
+  border: none; /* No border for the button */
+  border-radius: 0.25rem; /* Rounded corners for the button */
+  padding: 0.375rem 0.75rem; /* Padding inside the button */
+  font-size: 0.875rem; /* Font size for the button */
+  line-height: 1.5; /* Line height for the button */
+  width: 100%; /* Full width button */
+}

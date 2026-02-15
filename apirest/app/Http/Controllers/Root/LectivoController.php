@@ -80,4 +80,23 @@ class LectivoController extends Controller
         $lectivo->delete();
         return response()->json(['message' => 'Lectivo eliminado con éxito'], 200);
     }
+
+    public function inactivar($id)
+    {
+        $lectivo = Lectivo::find($id);
+        $anterior = Lectivo::where('nivel', '=', $lectivo->nivel)
+                    ->where('estado', '=', 'anterior')
+                    ->first();
+        if($anterior) {
+            $anterior->estado = 'inactivo';
+            $anterior->save();
+        }
+        if ($lectivo) {
+            $lectivo->estado = 'anterior';
+            $lectivo->save();
+            return response()->json(['data' => $lectivo], 200);
+        } else {
+            return response()->json(['message' => 'Lectivo no encontrado'], 404);
+        }
+    }
 }

@@ -6,11 +6,11 @@ import { Materia } from 'src/app/model/materia';
 import { User } from 'src/app/model/user';
 import { CrudService } from 'src/app/service/crud.service';
 
-import { Documento } from 'src/app/model/generardocumento';
 import { Periodo } from 'src/app/model/periodo';
 import { Escala } from 'src/app/model/escala';
 import { MatrizNotas } from 'src/app/model/matriz_notas';
 
+import { Documento } from 'src/app/model/generardocumento';
 import * as pdfMake from "pdfmake/build/pdfmake";
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 (<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
@@ -142,7 +142,7 @@ export class SecretariaCursosViewComponent implements OnInit {
       case 1:
         this.generatepdf = true
         this.docDefinition = new Documento()
-        this.docDefinition.listado(this.matriculados, this.data).then(() => {
+        this.docDefinition.listado(this.data.matriculados, this.data).then(() => {
           pdfMake.createPdf(this.docDefinition.def).download('Listado_'+this.data.nombre+'.pdf', ()=>{
             this.generatepdf = false
           });
@@ -166,37 +166,18 @@ export class SecretariaCursosViewComponent implements OnInit {
           });
         });
       break;
-    }
-    // Pasar el VFS personalizado al crear el PDF
-    /*
-    this.docDefinition = new Curriculo(this.egresado)
-    switch(this.currentParagraph){
-      case 0:
+      case 10:
         this.generatepdf = true
-        this.docDefinition.setCV1().then(() => {
-          pdfMake.createPdf(this.docDefinition.def).download('CVUP_1_'+this.egresado.id+'.pdf', ()=>{
+        this.docDefinition = new Documento()
+        this.docDefinition.listadoAsistencia(this.matriculados, this.data).then(() => {
+
+          pdfMake.createPdf(this.docDefinition.def).download('ListadosAsistencia.pdf', ()=>{
             this.generatepdf = false
           });
         });
-      break;
-      case 1:
-        this.generatepdf = true
-        this.docDefinition.setCV2().then(() => {
-          pdfMake.createPdf(this.docDefinition.def).download('CVUP_2_'+this.egresado.id+'.pdf', ()=>{
-            this.generatepdf = false
-          });
-        });
-      break;
-      case 2:
-        this.generatepdf = true
-        this.docDefinition.setCV3().then(() => {
-          pdfMake.createPdf(this.docDefinition.def).download('CVUP_3_'+this.egresado.id+'.pdf', ()=>{
-            this.generatepdf = false
-          });
-        });
+
       break;
     }
-    */
   }
 
 

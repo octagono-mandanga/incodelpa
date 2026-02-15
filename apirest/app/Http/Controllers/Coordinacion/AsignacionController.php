@@ -66,19 +66,25 @@ class AsignacionController extends Controller
         return response()->json(['data' => $asignaciones], 201);
 
     }
-
+//Docentes listado de notas, registro de puestos por curso, por materia, consolidado total
     public function update(Request $request, $id)
     {
-        // Busca la asignación por UUID y actualízala
-        $asignacion = Asignacion::where('uuid', $id)->first();
+        // Buscamos por la columna 'id', que en tu modelo equivale al UUID
+        $asignacion = Asignacion::findOrFail($id);
 
-        if (!$asignacion) {
-            return response()->json(['error' => 'Asignación no encontrada'], 404);
-        }
+        // Validamos únicamente los campos que vamos a usar
+        $validated = $request->validate([
+            'docente' => ['required', 'exists:users,id'],
+            'estado'  => ['required', 'in:Activo,Inactivo'],
+        ]);
 
-        $asignacion->update($request->all());
+        // Hacemos el update con los datos validados
+        $asignacion->update($validated);
 
-        return response()->json(['data' => $asignacion], 200);
+        // Devolvemos la asignación actualizada
+        return response()->json([
+            'data' => $asignacion
+        ], 200);
     }
 
     public function destroy($id)
@@ -152,7 +158,7 @@ class AsignacionController extends Controller
                 if (Storage::disk('public')->exists($avatarPath)) {
                     $item->avatar_url = Storage::disk('public')->url($avatarPath);
                 } else {
-                    $item->avatar_url = asset('api/storage/avatars/avatar.png');
+                    $item->avatar_url = asset('storage/avatars/avatar.png');
                 }
             });
             $asignacion->matriculados=$data;
@@ -188,6 +194,71 @@ class AsignacionController extends Controller
         return response()->json(['data' => $disponibles], 200);
     }
 
+    public function asignacionesDocente($id)
+    {
+        // Obtén las asignaciones del docente por su ID
+        /*
+        $periodos = Periodo::where('lectivo', $asignacion->curso->lectivo)->orderBy('orden')->get();
+        $lectivo = Lectivo::find($asignacion->curso->lectivo);
+        $escalas = Escala::where('nivel', $lectivo->nivel)->get();
+        */
+        $asignaciones = Asignacion::select('asignaciones.*')
+            ->where('asignaciones.docente', $id)
+            ->join('materias', 'materias.id', '=', 'asignaciones.materia')
+            ->join('cursos', 'cursos.id', '=', 'asignaciones.curso')
+            ->join('grados', 'grados.id', '=', 'cursos.grado')
+            ->with(['curso.grado', 'materia', 'curso.director', 'curso.sede'])
+            ->orderBy('grados.orden', 'asc')
+            ->orderBy('materias.nombre', 'asc')
+            ->get();
+
+        foreach($asignaciones as $index => $asignacion){
+        $data = Matricula::join('cursos', 'cursos.id', '=', 'matriculas.curso')
+            ->join('users', 'matriculas.alumno', '=', 'users.id')
+            ->join('asignaciones', 'asignaciones.curso', '=', 'cursos.id')
+            ->leftjoin('periodos', 'periodos.lectivo', '=', 'cursos.lectivo')
+            ->leftjoin('nota_competencia', function($join) {
+                $join
+                    ->on('nota_competencia.asignacion', '=', 'asignaciones.id')
+                    ->on('nota_competencia.matricula', '=', 'matriculas.id')
+                    ->on('nota_competencia.periodo', '=', 'periodos.id');
+                }
+            )
+            ->where('asignaciones.id', $asignacion->id)
+            ->where('matriculas.estado', 'activo')
+            ->groupBy('users.id', 'periodos.id')
+            ->orderBy('users.primer_apellido')
+            ->orderBy('users.segundo_apellido')
+            ->orderBy('users.primer_nombre')
+            ->orderBy('users.segundo_nombre')
+            ->orderBy('periodos.orden')
+            ->select('users.*', 'periodos.nombre','periodos.id as pid', 'periodos.porcentaje as porcentaje', DB::raw('ROUND(AVG(nota_competencia.nota), 1) as lanota'))
+            ->get();
+            $data->each(function ($item) {
+                $avatarPath = "avatars/{$item->id}.png"; // La misma lógica que en tu accesorio.
+
+                if (Storage::disk('public')->exists($avatarPath)) {
+                    $item->avatar_url = Storage::disk('public')->url($avatarPath);
+                } else {
+                    $item->avatar_url = asset('storage/avatars/avatar.png');
+                }
+            });
+            $asignacion->matriculados=$data;
+            $curso = Curso::find($asignacion->curso);
+            $periodos = Periodo::where('lectivo', $curso->lectivo)->orderBy('orden')->get();
+            $lectivo = Lectivo::find($curso->lectivo);
+            $escalas = Escala::where('nivel', $lectivo->nivel)->get();
+            $asignacion->periodos=$periodos;
+            $asignacion->escalas=$escalas;
+
+        }
+        // Retorna tanto las asignaciones como las materias disponibles
+        return response()->json([
+            'asignaciones' => $asignaciones,
+            /*'periodos' => $periodos,
+            'escalas' => $escalas,*/
+        ]);
+    }
 
 
 }

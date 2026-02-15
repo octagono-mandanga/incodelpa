@@ -13,7 +13,9 @@ class PeriodoController extends Controller
      */
     public function index()
     {
-        $periodos = Periodo::with('lectivo.nivel')->orderBy('created_at')->get();
+        $periodos = Periodo::with('lectivo.nivel')->
+
+                        orderBy('created_at')->get();
         return response()->json($periodos);
     }
 

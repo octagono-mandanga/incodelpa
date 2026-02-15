@@ -27,6 +27,7 @@ export class RootLectivosComponent implements OnInit {
       actions: {
         'add': '/root/lectivos/add',
         'edit': '/root/lectivos/edit/',
+        'view': '/root/lectivos/view/',
         'delete': true,
       }
     };

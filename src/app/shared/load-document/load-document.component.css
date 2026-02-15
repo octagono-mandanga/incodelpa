@@ -1,0 +1,19 @@
+.spinner-grow {
+  width: 1rem; /* Tamaño del spinner más pequeño */
+  height: 1rem;
+  border-width: 0.25em; /* Ancho del borde del spinner más delgado */
+}
+.blink {
+  animation: blink 5s infinite;
+}
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}

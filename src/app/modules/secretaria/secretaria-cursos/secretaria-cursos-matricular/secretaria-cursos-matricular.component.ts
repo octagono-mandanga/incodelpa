@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Alumno } from 'src/app/model/alumno';
 import { Asignacion } from 'src/app/model/asignacion';
 import { Curso } from 'src/app/model/curso';
+import { Grado } from 'src/app/model/grado';
 import { Materia } from 'src/app/model/materia';
 import { User } from 'src/app/model/user';
 import { CrudService } from 'src/app/service/crud.service';
@@ -21,13 +23,18 @@ export class SecretariaCursosMatricularComponent implements OnInit {
   public loading: boolean = false
   public loading2: boolean = false
   public data!: Curso
+  public gradosAnteriores: Grado[] = []
+
   public asignaciones: Asignacion[] = []
   public disponibles: Materia[] = []
 
+
   public matriculados: User[] = []
+  public viewMatriculados: boolean = false
 
   public searchList: User[] = []
-
+  public alumnosSearch: any[] = []
+  public selectedAlumnos: any[] = [];
 
   /**
    * Formulario
@@ -39,7 +46,7 @@ export class SecretariaCursosMatricularComponent implements OnInit {
     public route: ActivatedRoute,
     public router: Router,
     private crudService: CrudService<Curso>,
-    private crudAsignacionService: CrudService<Asignacion>,
+    private crudAlumnoService: CrudService<any>,
     private fb: FormBuilder
   ){}
   async ngOnInit() {
@@ -50,20 +57,9 @@ export class SecretariaCursosMatricularComponent implements OnInit {
       next: (res: any) => {
         this.data = res.data
         this.matriculados = res.data.matriculas.map((matricula: any) => matricula.alumno);
-        this.ordenarMatriculados()
-        this.loading = false
-       },
-       error: (error) => {
-         this.message = 'Error al cargar el curso : '+error
-         this.success = false
-         this.loading = false
-       }
-    })
-    /*
-    await this.crudAsignacionService.read('/secretaria/asignaciones/curso/'+this.id).subscribe({
-      next: (res: any) => {
-        this.disponibles = res.disponibles
-        this.asignaciones = res.asignaciones
+        this.cargarAlumnos();
+        this.ordenarMatriculados();
+        this.loadCursosAnteriores();
 
         this.loading = false
        },
@@ -73,10 +69,23 @@ export class SecretariaCursosMatricularComponent implements OnInit {
          this.loading = false
        }
     })
-    */
   }
 
-  onSearch(){}
+  cargarAlumnos(){
+    this.loading2 = true
+    this.crudAlumnoService.read('/secretaria/matriculas-anteriores/'+this.data.grado.id).subscribe({
+      next: (res: any) => {
+        this.disponibles = res.data
+        this.alumnosSearch = res.data
+        this.loading2 = false
+       },
+       error: (error) => {
+         this.message = 'Error al cargar el curso : '+error
+         this.success = false
+         this.loading = false
+       }
+    })
+  }
 
   async onEvent(event: any){
     if(event.term){
@@ -93,7 +102,7 @@ export class SecretariaCursosMatricularComponent implements OnInit {
          }
       })
     } else if(event.user) {
-      this.router.navigate(['/secretaria/alumnos/view/', event.user])
+      this.router.navigate(['/secretaria/alumnos/view/'+event.user])
     }
   }
 
@@ -113,5 +122,73 @@ export class SecretariaCursosMatricularComponent implements OnInit {
     });
   }
 
+  async loadCursosAnteriores(){
+    this.loading = true
+    await this.crudService.read('/secretaria/cursos-anteriores').subscribe({
+      next: (res: any) => {
+        this.gradosAnteriores = res.data
+        this.loading = false
+       },
+       error: (error) => {
+         this.message = 'Error al cargar el curso : '+error
+         this.success = false
+         this.loading = false
+       }
+    })
+  }
+
+  toggleAlumno(item: any, event: any): void {
+    if (event.target.checked) {
+      // Agregar el alumno seleccionado
+      this.selectedAlumnos.push(item.alumno_r);
+    } else {
+      // Eliminar el alumno de la lista de seleccionados
+      this.selectedAlumnos = this.selectedAlumnos.filter(alumno => alumno.id !== item.alumno_r.id);
+    }
+  }
+  toggleViewMatriculado(){
+    this.viewMatriculados = !this.viewMatriculados
+  }
+
+  async onMatricular(){
+    this.loading2 = true
+    const data = {
+      alumnos: this.selectedAlumnos.map((alumno: any) => alumno.id),
+      curso: this.data.id
+    }
+    await this.crudAlumnoService.create(data, '/secretaria/matricular').subscribe({
+      next: (res: any) => {
+        this.viewMatriculados = false
+        this.matriculados = res.data.matriculas.map((matricula: any) => matricula.alumno);
+        this.message = res.message
+        this.cargarAlumnos();
+        this.ordenarMatriculados();
+        this.selectedAlumnos = []
+        this.success = true
+        this.loading2 = false
+       },
+       error: (error) => {
+         this.message = 'Error al cargar el curso : '+error
+         this.success = false
+         this.loading = false
+       }
+    })
+  }
+
+  async onLoadGrado(id: string) {
+    this.loading2 = true
+    await this.crudService.read('/secretaria/matriculas-anteriores-grado/'+id).subscribe({
+      next: (res: any) => {
+        this.disponibles = res.data
+        this.alumnosSearch = res.data
+        this.loading2 = false
+       },
+       error: (error) => {
+         this.message = 'Error al cargar el curso : '+error
+         this.success = false
+         this.loading = false
+       }
+    })
+  }
 
 }

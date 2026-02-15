@@ -1,0 +1,16 @@
+  <input type="text"
+    class="form-control p-1 rounded-0 text-center notafull bg-warning"
+    #fullnota
+    [ngClass]="{'bg-warning': claseNota === 'warning', 'bg-danger': claseNota === 'danger', 'bg-info': claseNota === 'info'}"
+    [(ngModel)]="notafull"
+    (ngModelChange)="onValidar()"
+    (keyup)="manejarFullKeyup($event)"
+    (blur)="manejarBlur()">
+    <p id="helpId"  class="small form-text text-center fw-bold my-0" [ngStyle]="{color:  claseColor }">
+      {{ mensajeNota | titlecase }}
+      <i *ngIf="saved" class="fa-solid fa-check text-success ms-0"></i>
+    </p>
+    <div *ngIf="loading" class="spinner-grow" role="status" style="--bs-spinner-width: 0.5rem; --bs-spinner-vertical-align: 0.1rem; --bs-spinner-height: 0.5rem;">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+

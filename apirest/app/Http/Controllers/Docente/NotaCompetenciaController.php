@@ -179,7 +179,7 @@ class NotaCompetenciaController extends Controller
             if (Storage::disk('public')->exists($avatarPath)) {
                 $item->avatar_url = Storage::disk('public')->url($avatarPath);
             } else {
-                $item->avatar_url = asset('api/storage/avatars/avatar.png');
+                $item->avatar_url = asset('storage/avatars/avatar.png');
             }
         });
         return response()->json(['data'=>$data, 'escalas' => $escalas, 'periodos'=>$periodos], 200);

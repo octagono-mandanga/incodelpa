@@ -42,4 +42,8 @@ class NotaCompetencia extends Model
     {
         return $this->belongsTo(Periodo::class, 'periodo');
     }
+    public function competencia()
+    {
+        return $this->belongsTo(Competencia::class, 'competencia');
+    }
 }

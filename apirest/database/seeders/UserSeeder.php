@@ -80,7 +80,7 @@ class UserSeeder extends Seeder
             'nid' => '66746616',
             'tipo_documento' => $cedula->id,
             'celular' => '3188547426',
-            'email' => 'claupas01@msn.com',
+            'email' => 'claupas1@msn.com',
             'estado' => 'activo',
             'email_verified_at' => now(),
             'password' => Hash::make('66746616'),

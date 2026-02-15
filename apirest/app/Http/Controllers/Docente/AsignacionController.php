@@ -23,6 +23,8 @@ class AsignacionController extends Controller
             ->join('materias', 'materias.id', '=', 'asignaciones.materia') // Asume que 'lectivo' tiene una FK 'nivel_id'
             ->join('grados', 'grados.id', '=', 'cursos.grado') // Asume que 'lectivo' tiene una FK 'nivel_id'
             ->where('asignaciones.docente', Auth::id())
+            ->where('asignaciones.estado', 'activo')
+            ->where('cursos.estado', 'activo')
             ->orderBy('grados.orden')
             ->orderBy('cursos.orden')
             ->orderBy('materias.nombre')

@@ -1,0 +1,11 @@
+.nota, .notafull {
+  font-size: x-large;
+  font-weight: bold;
+  min-width: 60px;
+  max-width: 60px;
+  height: 40px;
+}
+
+.fa-check {
+  font-size: 0.8rem;
+}

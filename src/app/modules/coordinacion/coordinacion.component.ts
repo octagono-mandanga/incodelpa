@@ -14,6 +14,7 @@ export class CoordinacionComponent implements OnInit {
 
   public opts = [
     { label: 'Cursos', link: 'cursos' },
+    { label: 'Periodos', link: 'periodos' },
     { label: 'Alumnos', link: 'alumnos' },
     { label: 'Docentes', link: 'docentes' },
   ]

@@ -78,6 +78,9 @@
             <h6 class="mb-0 font-monospace text-secondary">
               {{ item.curso.nombre }}
             </h6>
+            <small *ngIf="item.estado!='activo'"  style="text-transform: uppercase; font-style: italic;" class="text-secondary">
+              {{ item.estado }}
+            </small>
           </div>
           <ul class="list-group list-group-flush">
             <li *ngFor="let item of item.curso.asignaciones" class="list-group-item pb-1">

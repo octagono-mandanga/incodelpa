@@ -3,11 +3,5 @@
     <li class="breadcrumb-item active" aria-current="page">Periodos</li>
   </ol>
 </nav>
-<app-datatable
-(event)="onBorrar($event)"
-[data]="data"
-[loading]="loading"
-[message]="message"
-[success]="success"
-[config]="config"
- ></app-datatable>
+<app-datatable (event)="onBorrar($event)" (toggleEvent)="onToggleEstado($event)" [data]="data" [loading]="loading"
+  [message]="message" [success]="success" [config]="config"></app-datatable>

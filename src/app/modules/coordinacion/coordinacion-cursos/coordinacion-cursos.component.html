@@ -3,10 +3,49 @@
     <li class="breadcrumb-item active" aria-current="page">Cursos</li>
   </ol>
 </nav>
-<app-datatable
-  (event)="onBorrar($event)"
-  [data]="data"
-  [loading]="loading"
-  [message]="message"
-  [success]="success"
+<!-- Example split danger button -->
+<div class="d-flex justify-content-between align-items-center w-100">
+  <div class="btn-group">
+    <button type="button" class="btn btn-danger dropdown-toggle rounded-0" data-bs-toggle="dropdown">Documentos</button>
+    <ul class="dropdown-menu dropdown-menu-center rounded-0">
+      <li>
+        <h6 class="dropdown-header">
+          <i class="fa-regular fa-file-pdf text-danger"></i>
+          PDF
+        </h6>
+      </li>
+      <li><a class="dropdown-item cursor" (click)="onPdf(1)">Listados Simples</a></li>
+      <li><a class="dropdown-item cursor" (click)="onPdf(2)">Listados por Asignatura</a></li>
+      <li><a class="dropdown-item cursor" (click)="onPdf(3)">Listados con Notas</a></li>
+      <li>
+        <hr class="dropdown-divider">
+      </li>
+      <li><a class="dropdown-item cursor" (click)="onPdf(4)">Boletines</a></li>
+
+      <li><a class="dropdown-item cursor" (click)="onPdf(5)">Certificados</a></li>
+      <li><a class="dropdown-item cursor" (click)="onPdf(6)">Consolidados</a></li>
+      <!--
+      <li><a class="dropdown-item cursor" (click)="onPdf(3)">Consolidados</a></li>
+      -->
+      <li><a class="dropdown-item cursor" (click)="onPdf(7)">Paz y Salvo</a></li>
+      <li><a class="dropdown-item cursor" (click)="onPdf(8)">Puestos</a></li>
+
+    </ul>
+  </div>
+  <button *ngIf="!loading && data.length === 0" (click)="onImportar()"
+    class="btn btn-outline-primary rounded-0 ms-auto">
+    <i class="fa-solid fa-cloud-arrow-down"></i> Importar Cursos
+  </button>
+  <app-load-document *ngIf="generatepdf" [generatepdfMsg]="generatepdfMsg"></app-load-document>
+</div>
+<div class="container mt-5" *ngIf="!loading && data.length === 0 && lectivos.length === 0">
+  <div class="row">
+    <div class="alert alert-warning" role="alert">
+      <strong>Sin períodos registrados.</strong>
+      No es posible gestionar cursos por falta de años lectivos. Por favor, comuníquese con el administrador del
+      sistema.
+    </div>
+  </div>
+</div>
+<app-datatable (event)="onBorrar($event)" [data]="data" [loading]="loading" [message]="message" [success]="success"
   [config]="config"></app-datatable>

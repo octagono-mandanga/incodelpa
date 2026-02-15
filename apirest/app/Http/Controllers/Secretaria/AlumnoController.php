@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Secretaria;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Alumno;
 use App\Models\Curso;
 use App\Models\Institucion;
 use Spatie\Permission\Models\Role;
@@ -48,10 +49,10 @@ class AlumnoController extends Controller
 
         $user = User::create([
             'id' => Str::uuid(),
-            'primer_apellido' => $request->primer_apellido,
-            'segundo_apellido' => $request->segundo_apellido,
-            'primer_nombre' => $request->primer_nombre,
-            'segundo_nombre' => $request->segundo_nombre,
+            'primer_apellido' => mb_convert_case($request->primer_apellido, MB_CASE_TITLE, "UTF-8"),
+            'segundo_apellido' => mb_convert_case($request->segundo_apellido, MB_CASE_TITLE, "UTF-8"),
+            'primer_nombre' => mb_convert_case($request->primer_nombre, MB_CASE_TITLE, "UTF-8"),
+            'segundo_nombre' => mb_convert_case($request->segundo_nombre, MB_CASE_TITLE, "UTF-8"),
             'celular' => $request->celular,
             'nid' => $request->nid,
             'tipo_documento' => $request->tipo_documento,
@@ -60,6 +61,17 @@ class AlumnoController extends Controller
             'estado' => 'activo',
             'created_at' => Carbon::now()
         ]);
+
+
+                // Se crea también el registro en la tabla "alumnos"
+        // Usamos el método estático para generar el código
+        Alumno::create([
+            'id'     => $user->id,
+            'codigo' => Alumno::generarCodigo(),
+            'data'   => null, // O asigna datos adicionales según tu lógica
+            'estado' => 'activo'
+        ]);
+
 
         $curso = Curso::find($request->curso);
 
@@ -78,6 +90,8 @@ class AlumnoController extends Controller
 
         return response()->json(['message' => 'Usuario creado exitosamente.', 'user' => $user]);
     }
+
+
 
     public function add(Request $request)
     {

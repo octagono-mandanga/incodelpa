@@ -47,9 +47,9 @@ export class RootPeriodosComponent implements OnInit {
     });
   }
 
-  onBorrar(id: any){
+  onBorrar(id: any) {
     this.loading = true
-    this.crudService.delete('/root/periodos/'+ id).subscribe({
+    this.crudService.delete('/root/periodos/' + id).subscribe({
       next: (res: any) => {
         this.data = this.data.filter(r => r.id !== id);
         this.message = res.message
@@ -59,7 +59,7 @@ export class RootPeriodosComponent implements OnInit {
       error: (error) => {
 
 
-        this.message = 'Error al actualizar '+ error;
+        this.message = 'Error al actualizar ' + error;
         this.success = false
         this.loading = false
 
@@ -69,6 +69,36 @@ export class RootPeriodosComponent implements OnInit {
       this.message = '';
       // También resetea el success si es necesario
     }, 5000);
+  }
+
+  onToggleEstado(item: Periodo) {
+    this.loading = true;
+    const originalEstado = item.estado;
+    const nuevoEstado = item.estado === 'activo' ? 'inactivo' : 'activo';
+
+    // Crear una copia del objeto para no modificar el original antes de tiempo
+    // y para ajustar el formato de 'lectivo' que espera el backend (id en lugar de objeto)
+    const payload: any = {
+      ...item,
+      estado: nuevoEstado,
+      lectivo: item.lectivo?.id || item.lectivo // Si es objeto tomamos el id, si ya es id lo dejamos
+    };
+
+    this.crudService.update(payload, '/root/periodos/' + item.id).subscribe({
+      next: (res: any) => {
+        item.estado = nuevoEstado; // Actualizar el estado local solo tras éxito
+        this.message = res.message || 'Estado actualizado con éxito';
+        this.success = true;
+        this.loading = false;
+        setTimeout(() => (this.message = ''), 3000);
+      },
+      error: (error) => {
+        this.message = 'Error al actualizar el estado: ' + error;
+        this.success = false;
+        this.loading = false;
+        setTimeout(() => (this.message = ''), 5000);
+      }
+    });
   }
 
 }

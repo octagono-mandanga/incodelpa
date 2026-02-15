@@ -5,13 +5,15 @@ import { CoordinacionCursosAddComponent } from './coordinacion-cursos-add/coordi
 import { CoordinacionCursosAsignacionComponent } from './coordinacion-cursos-asignacion/coordinacion-cursos-asignacion.component';
 import { CoordinacionCursosEditComponent } from './coordinacion-cursos-edit/coordinacion-cursos-edit.component';
 import { CoordinacionCursosViewComponent } from './coordinacion-cursos-view/coordinacion-cursos-view.component';
+import { CoordinacionCursosAsignacionEditComponent } from './coordinacion-cursos-asignacion-edit/coordinacion-cursos-asignacion-edit.component';
 
 const routes: Routes = [
   { path: '', component: CoordinacionCursosComponent },
   { path: 'add', component: CoordinacionCursosAddComponent },
   { path: 'edit/:id', component: CoordinacionCursosEditComponent },
   { path: 'view/:id', component: CoordinacionCursosViewComponent },
-  { path: 'asignacion/:id', component: CoordinacionCursosAsignacionComponent }
+  { path: 'asignacion/:id', component: CoordinacionCursosAsignacionComponent },
+  { path: 'asignacion-edit/:id', component: CoordinacionCursosAsignacionEditComponent }
 ];
 
 @NgModule({

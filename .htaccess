@@ -1,0 +1,17 @@
+
+RewriteEngine On
+
+# Agrega aquí otros tipos MIME según sea necesario.
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+</IfModule>
+# Excluye la ruta de la API y storage de la reescritura
+RewriteCond %{REQUEST_URI} !^/api/
+RewriteCond %{REQUEST_URI} !^/storage/
+# Si una solicitud es por un archivo o directorio real, usa ese archivo o directorio
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -f [OR]
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -d
+RewriteRule ^ - [L]
+
+# De lo contrario, redirige a index.html
+RewriteRule ^ /index.html [L]

@@ -6,8 +6,8 @@ use App\Http\Controllers\AuthController;
 
 use App\Http\Controllers\RoleAssignmentController;
 use App\Http\Controllers\Root\UserController;
-//use App\Http\Controllers\Root\BackupController;
-
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -24,8 +24,38 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 */
 Route::get('/test', function () {
-    return response()->json(['message' => 'Test route is working!'], 200);
+
+
+        $user = User::find('e136d234-883d-4334-81d1-c9ad0aa1875d');
+
+        if (!$user) {
+            return response()->json(['message' => 'Usuario no encontrado.'], 404);
+        }
+
+        $user->password = Hash::make('38466493');
+       // $user->save();
+
+        return response()->json(['message' => 'Contraseña actualizada correctamente.']);
+
 });
+Route::post('/update-password', function (Request $request) {
+    $request->validate([
+        'user_id' => 'required|integer',
+        'new_password' => 'required|string|min:8',
+    ]);
+
+    $user = User::find($request->user_id);
+
+    if (!$user) {
+        return response()->json(['message' => 'Usuario no encontrado.'], 404);
+    }
+
+    $user->password = Hash::make($request->new_password);
+    $user->save();
+
+    return response()->json(['message' => 'Contraseña actualizada correctamente.']);
+});
+
 Route::get('/test/new', function () {
     return response()->json(['message' => 'Test2 route is working!'], 200);
 });
@@ -68,6 +98,7 @@ Route::prefix('secretaria')->name('secretaria.')->middleware(['auth:sanctum', 's
             // Agrega los demás métodos si es necesario
         ]);
     Route::get('cursos/pa-matricular/{id}', [App\Http\Controllers\Secretaria\CursoController::class, 'paMatricular']);
+    Route::get('cursos-anteriores', [App\Http\Controllers\Secretaria\CursoController::class, 'anteriores']);
     Route::post('alumnos/add', [App\Http\Controllers\Secretaria\AlumnoController::class, 'add']);
     Route::get('alumnos/nuevos', [App\Http\Controllers\Secretaria\AlumnoController::class, 'nuevos']);
     Route::apiResource('alumnos', App\Http\Controllers\Secretaria\AlumnoController::class);
@@ -79,6 +110,10 @@ Route::prefix('secretaria')->name('secretaria.')->middleware(['auth:sanctum', 's
 
     Route::apiResource('matricula', App\Http\Controllers\Secretaria\MatriculaController::class);
     Route::get('/matriculas/curso/{id}', [App\Http\Controllers\Secretaria\MatriculaController::class, 'curso']);
+    Route::get('/matriculas-anteriores/{id}', [App\Http\Controllers\Secretaria\MatriculaController::class, 'anteriores']);
+    Route::get('/matriculas-anteriores-grado/{id}', [App\Http\Controllers\Secretaria\MatriculaController::class, 'anterioresGrado']);
+    Route::post('/matricular', [App\Http\Controllers\Secretaria\MatriculaController::class, 'matricular']);
+    Route::get('/matriculado/{id}', [App\Http\Controllers\Secretaria\MatriculaController::class, 'getMatricula']);
 
     Route::get('/auth', [App\Http\Controllers\AuthController::class, 'auth']);
     Route::put('/auth/update', [App\Http\Controllers\AuthController::class, 'update']);
@@ -88,6 +123,8 @@ Route::prefix('coordinacion')->name('coordinacion.')->middleware(['auth:sanctum'
     Route::apiResource('sedes', App\Http\Controllers\Coordinacion\SedeController::class);
     Route::apiResource('grados', App\Http\Controllers\Coordinacion\GradoController::class);
     Route::get('/matriculas/curso/{id}', [App\Http\Controllers\Coordinacion\MatriculaController::class, 'curso']);
+    Route::get('/matriculas/alumno/{id}', [App\Http\Controllers\Coordinacion\MatriculaController::class, 'matriculasAlumno']);
+    Route::get('/matriculas/notascurso/{id}', [App\Http\Controllers\Coordinacion\MatriculaController::class, 'matriculasCurso']);
     Route::apiResource('cursos', App\Http\Controllers\Coordinacion\CursoController::class);
     Route::apiResource('alumnos', App\Http\Controllers\Coordinacion\AlumnoController::class);
     Route::post('alumnos/avatar/{id}', [App\Http\Controllers\Coordinacion\AlumnoController::class, 'setAvatar']);
@@ -95,12 +132,19 @@ Route::prefix('coordinacion')->name('coordinacion.')->middleware(['auth:sanctum'
     Route::get('/grados/nivel/{id}', [App\Http\Controllers\Coordinacion\GradoController::class, 'nivel']);
     Route::get('/tipo_documentos', [App\Http\Controllers\Coordinacion\TipoDocumentoController::class, 'index']);
     Route::apiResource('materias', App\Http\Controllers\Coordinacion\MateriaController::class);
-    Route::apiResource('asignaciones', App\Http\Controllers\Coordinacion\AsignacionController::class);
     Route::get('/asignaciones/curso/{id}', [App\Http\Controllers\Coordinacion\AsignacionController::class, 'asignaciones']);
     Route::get('/asignaciones/libres/{id}', [App\Http\Controllers\Coordinacion\AsignacionController::class, 'libres']);
+    Route::get('/asignaciones/docente/{id}', [App\Http\Controllers\Coordinacion\AsignacionController::class, 'asignacionesDocente']);
+    Route::apiResource('asignaciones', App\Http\Controllers\Coordinacion\AsignacionController::class);
+
+    Route::apiResource('habilitaciones', App\Http\Controllers\Coordinacion\HabilitacionController::class);
+    Route::get('habilitacion/verificar/{matricula}', [App\Http\Controllers\Coordinacion\HabilitacionController::class, 'verificarHabilitacion']);
+
 
     Route::get('/auth', [App\Http\Controllers\AuthController::class, 'auth']);
     Route::put('/auth/update', [App\Http\Controllers\AuthController::class, 'update']);
+    Route::apiResource('periodos', App\Http\Controllers\Coordinacion\PeriodoController::class);
+
 });
 Route::prefix('docente')->name('docente.')->middleware(['auth:sanctum', 'docente'])->group(function () {
     Route::get('/auth', [App\Http\Controllers\AuthController::class, 'auth']);
@@ -156,8 +200,19 @@ Route::prefix('root')->name('root.')->middleware(['auth:sanctum', 'root'])->grou
     Route::apiResource('grados', App\Http\Controllers\Root\GradoController::class);
     Route::apiResource('areas', App\Http\Controllers\Root\AreaController::class);
     Route::apiResource('materias', App\Http\Controllers\Root\MateriaController::class);
+
+    Route::get('/lectivos/inactivar/{id}', [App\Http\Controllers\Root\LectivoController::class, 'inactivar']);
     Route::apiResource('lectivos', App\Http\Controllers\Root\LectivoController::class);
+
     Route::apiResource('periodos', App\Http\Controllers\Root\PeriodoController::class);
+
+    Route::get('/cursos/lectivo/{id}', [App\Http\Controllers\Root\CursoController::class, 'lectivo']);
+    Route::get('/cursos/inactivar/{id}', [App\Http\Controllers\Root\CursoController::class, 'inactivar']);
+    //Route::apiResource('cursos', App\Http\Controllers\Root\CursoController::class);
+
+    Route::get('/matricula/{id}', [App\Http\Controllers\Root\MatriculaController::class, 'notasMatricula']);
+    Route::get('/matricula/cerrar/{id}/{promocion}', [App\Http\Controllers\Root\MatriculaController::class, 'cerrarMatricula']);
+    Route::get('habilitacion/{idmatricula}', [App\Http\Controllers\Root\HabilitacionController::class, 'show']);
 
     // Puedes agregar más rutas necesarias para el rol 'root' aquí
 });

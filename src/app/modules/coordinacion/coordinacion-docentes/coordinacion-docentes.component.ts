@@ -35,6 +35,7 @@ export class CoordinacionDocentesComponent implements OnInit {
       actions: {
         'add': '/coordinacion/docentes/add',
         'edit': '/coordinacion/docentes/edit/',
+        'view': '/coordinacion/docentes/view/',
         'delete': true,
       }
     };

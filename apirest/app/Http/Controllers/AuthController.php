@@ -41,6 +41,8 @@ class AuthController extends Controller
     public function auth()
     {
         $user = Auth::user();
+        // Cargar la relación de roles.
+        $user->load('roles');
         return response()->json(['data' => $user], 200);
     }
     public function update(Request $request)

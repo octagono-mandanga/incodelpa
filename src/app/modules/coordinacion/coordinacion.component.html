@@ -35,9 +35,17 @@
             {{iniciales}}
           </div>
         </a>
-        <ul class="dropdown-menu dropdown-menu-end mt-2">
+        <ul class="dropdown-menu dropdown-menu-end mt-2" *ngIf="usuario">
           <li><a class="dropdown-item" [routerLink]="['/coordinacion/perfil']" routerLinkActive="active">Perfil</a></li>
           <li><a class="dropdown-item" [routerLink]="['/coordinacion/configuracion']" routerLinkActive="active">Configuración</a></li>
+          <ng-container *ngIf="usuario?.roles?.length>1">
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <ng-container *ngFor="let rol of usuario.roles">
+              <li *ngIf="rol.name!='coordinacion'"><a class="dropdown-item" [routerLink]="['/'+rol.name]">{{ rol.name | titlecase }}</a></li>
+            </ng-container>
+          </ng-container>
           <li><hr class="dropdown-divider"></li>
           <li><a class="dropdown-item" [routerLink]="['/logout']">Salir</a></li>
         </ul>

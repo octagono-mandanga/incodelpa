@@ -5,6 +5,8 @@ export class Asignacion {
   public docente!: any;
   public estado!: string;
   public matriculados: any[] = []
+  public periodos: any[] = []
+  public escalas: any[] = []
   constructor(){
   }
 }

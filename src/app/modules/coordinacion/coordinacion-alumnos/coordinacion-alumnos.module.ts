@@ -7,13 +7,15 @@ import { CoordinacionAlumnosEditComponent } from './coordinacion-alumnos-edit/co
 import { CoordinacionAlumnosAddComponent } from './coordinacion-alumnos-add/coordinacion-alumnos-add.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { CoordinacionAlumnosViewComponent } from './coordinacion-alumnos-view/coordinacion-alumnos-view.component';
 
 
 @NgModule({
   declarations: [
     CoordinacionAlumnosComponent,
     CoordinacionAlumnosEditComponent,
-    CoordinacionAlumnosAddComponent
+    CoordinacionAlumnosAddComponent,
+    CoordinacionAlumnosViewComponent
   ],
   imports: [
     CommonModule,

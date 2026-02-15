@@ -30,7 +30,7 @@ class Habilitacion extends Model
     }
 
     // Métodos para definir las relaciones, si son necesarias
-    public function usuario()
+    public function registra()
     {
         return $this->belongsTo(User::class, 'registra');
     }

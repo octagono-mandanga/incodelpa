@@ -7,11 +7,12 @@ import { CrudService } from 'src/app/service/crud.service';
   templateUrl: './datatable.component.html',
   styleUrls: ['./datatable.component.css']
 })
-export class DatatableComponent implements OnInit, OnChanges{
+export class DatatableComponent implements OnInit, OnChanges {
   @Input() config: any;
   @Input() data: Entity[] = [];
   @Input() loading: boolean = false;
   @Output() event = new EventEmitter
+  @Output() toggleEvent = new EventEmitter<any>()
 
   @Input() message!: string;
   @Input() success: boolean = true;
@@ -37,7 +38,7 @@ export class DatatableComponent implements OnInit, OnChanges{
   constructor(
     public router: Router,
     private crudService: CrudService<Entity>
-  ){}
+  ) { }
 
   ngOnInit(): void {
   }
@@ -52,7 +53,7 @@ export class DatatableComponent implements OnInit, OnChanges{
   getNestedPropertyValue(item: any, path: string): any {
     return path.split('.').reduce((obj, key) => obj && obj[key], item);
   }
-  loadData(){
+  loadData() {
 
   }
 
@@ -114,13 +115,13 @@ export class DatatableComponent implements OnInit, OnChanges{
 
 
   // CRUD
-  agregar(){
+  agregar() {
     this.router.navigate([this.config.actions.add])
   }
-  ver(item: any){
+  ver(item: any) {
     this.router.navigate([this.config.actions.view + item.id])
   }
-  editar(item: any){
+  editar(item: any) {
     this.router.navigate([this.config.actions.edit + item.id])
   }
   eliminar(item: Entity): void {
@@ -148,8 +149,12 @@ export class DatatableComponent implements OnInit, OnChanges{
 
     }
   }
-  gettime(){
-    return Math.random()*1000
+  onToggleEstado(item: any) {
+    this.toggleEvent.emit(item);
+  }
+
+  gettime() {
+    return Math.random() * 1000
   }
 
 

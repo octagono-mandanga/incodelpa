@@ -27,6 +27,10 @@ class Matricula extends Model
     }
 
     // Relaciones
+    public function curso_r()
+    {
+        return $this->belongsTo(Curso::class, 'curso');
+    }
     public function curso()
     {
         return $this->belongsTo(Curso::class, 'curso');
@@ -44,5 +48,10 @@ class Matricula extends Model
     public function matriculador()
     {
         return $this->belongsTo(User::class, 'matriculador');
+    }
+
+    public function habilitaciones()
+    {
+        return $this->hasMany(Habilitacion::class, 'matricula');
     }
 }

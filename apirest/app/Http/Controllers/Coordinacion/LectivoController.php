@@ -13,9 +13,11 @@ class LectivoController extends Controller
         // Ajusta esta línea si la relación se llama de manera diferente
         $lectivos = Lectivo::select('lectivos.*') // Selecciona solo las columnas de la tabla 'areas'
         ->join('niveles', 'niveles.id', '=', 'lectivos.nivel') // Asegúrate de que 'nivel_id' es tu FK en 'areas'
+        ->where('lectivos.estado', 'activo') // Filtra por el estado 'activo'
         ->orderBy('lectivos.estado', 'asc') // Luego ordena por la columna 'nombre' en la tabla 'areas'
         ->orderBy('niveles.orden', 'asc') // Ordena por la columna 'orden' en la tabla 'niveles'
         ->with('nivel') // Carga la relación 'nivel' para cada 'area'
+
         ->get();
         return response()->json($lectivos);
     }

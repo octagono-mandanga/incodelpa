@@ -1,0 +1,46 @@
+<div  class="table-responsive">
+  <table class="table  table-striped table-bordered ">
+    <thead>
+      <tr>
+        <th>Asignatura</th>
+        <th *ngFor="let item of matricula.periodos">
+          <p class=" text-center mb-0 lh-1">
+            {{ item.nombre.substring(0,1) | uppercase }}P
+          </p>
+          <p class="fw-normal text-center mb-0 lh-1">
+            <small>
+              {{item.porcentaje}}%
+            </small>
+          </p>
+        </th>
+        <th class="text-center small align-middle fw-normal">Acum.</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of notas.matriz" class="">
+        <td>
+          <div class="d-flex">
+            <div class="flex-grow-1 ms-1">
+              <p class="h5 my-0">
+                {{item.materia.nombre}}
+              </p>
+              <p class="small fw-normal lh-1 mb-0">
+                {{ item.docente.primer_nombre }} {{ item.docente.segundo_nombre }} {{ item.docente.primer_apellido }}
+              </p>
+            </div>
+          </div>
+        </td>
+        <td *ngFor="let periodo of item.periodos" class="h4 text-center fw-bold align-middle">
+          <ng-container *ngFor="let nota of item.notas">
+            <div *ngIf="nota.periodo.id == periodo.id" [ngStyle]="{'color': getColor(item.escalas, nota.nota)}">
+                {{ nota.nota }}
+            </div>
+          </ng-container>
+        </td>
+        <td  class="h5 text-center fw-bold align-middle" [ngStyle]="{'color': getColor(item.escalas, item.total)}">
+          {{ item.total | round:1 }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

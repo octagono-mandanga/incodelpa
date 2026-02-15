@@ -1,0 +1,119 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a routerLink="/coordinacion/cursos">Cursos</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a
+        [routerLink]="['/coordinacion/cursos/view', id]"
+        *ngIf="curso?.id"
+      >
+        {{ curso.nombre }}
+      </a>
+    </li>
+    <li class="breadcrumb-item">
+      <a
+        [routerLink]="['/coordinacion/cursos/asignacion', id]"
+        *ngIf="curso?.id"
+      >
+        Asignar
+      </a>
+    </li>
+    <li class="breadcrumb-item active" *ngIf="curso?.id">Editar</li>
+  </ol>
+</nav>
+
+<div class="card" *ngIf="loading">
+  <div class="card-body d-flex justify-content-center">
+    <app-loading size="30px"></app-loading>
+    <h4 class="ms-2 text-secondary">Cargando...</h4>
+  </div>
+</div>
+
+<div *ngIf="!loading" class="card">
+  <div class="card-header bg-transparent">
+    <small>
+      <i class="fa-regular fa-address-card me-2"></i>
+      Asignaciones Actuales
+    </small>
+  </div>
+
+  <div class="card-body p-0">
+    <app-loading2 *ngIf="loading2"></app-loading2>
+    <table *ngIf="!loading2" class="table table-sm table-striped mb-0">
+      <thead>
+        <tr>
+          <th class="ps-3">
+            <input type="checkbox" (change)="toggleAll($event)" />
+          </th>
+          <th>Materia</th>
+          <th>Docente Actual</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of asignaciones">
+          <td class="ps-3">
+            <input
+              type="checkbox"
+              [checked]="isSelected(item.id)"
+              (change)="onSelect(item.id, $event)"
+            />
+          </td>
+          <td>{{ item.materia.nombre }}</td>
+          <td>
+            {{ item.docente.primer_nombre }}
+            {{ item.docente.segundo_nombre }}
+            {{ item.docente.primer_apellido }}
+          </td>
+          <td>
+            <div class="form-check form-switch">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                [disabled]="!isSelected(item.id)"
+                [checked]="rowStates[item.id]"
+                (change)="onToggleState(item.id, $event)"
+              />
+              <label class="form-check-label">
+                {{ rowStates[item.id] ? 'Activo' : 'Inactivo' }}
+              </label>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card-footer">
+    <form [formGroup]="form" (ngSubmit)="onReassign()">
+      <div class="row g-3 align-items-end">
+        <div class="col-md-6">
+          <label for="docenteSelect" class="form-label text-secondary">
+            Nuevo Docente
+          </label>
+          <select
+            id="docenteSelect"
+            class="form-select"
+            formControlName="docente"
+          >
+            <option value="" disabled>-- Seleccione --</option>
+            <option *ngFor="let d of docentes" [value]="d.id">
+              {{ d.primer_nombre }} {{ d.primer_apellido }}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-6 d-grid">
+          <button
+            class="btn btn-warning"
+            type="submit"
+            [disabled]="form.invalid || !hasSelection()"
+          >
+            <i class="fa-solid fa-arrows-rotate me-2"></i>
+            Reasignar
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

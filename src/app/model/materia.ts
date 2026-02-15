@@ -8,5 +8,13 @@ export class Materia {
   public competencias: any = [];
   public porcentaje!: number;
   constructor(){
+
+  }
+  setData(data: any){
+    this.id = data.id
+    this.nombre = data.nombre
+    this.ih = data.ih
+    this.estado = data.estado
+    this.porcentaje = data.porcentaje
   }
 }
