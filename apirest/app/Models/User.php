@@ -79,10 +79,17 @@ class User extends Authenticatable
     public function getAvatarUrlAttribute()
     {
         $avatarPath = "avatars/{$this->id}.png";
+
         if (Storage::disk('public')->exists($avatarPath)) {
-            return Storage::disk('public')->url($avatarPath);
+            $url = Storage::disk('public')->url($avatarPath);
+            // Si la URL generada no incluye /public/ y sabemos que es necesaria:
+            if (!str_contains($url, '/public/')) {
+                return str_replace('/storage/', '/public/storage/', $url);
+            }
+            return $url;
         }
-        return asset('storage/avatars/avatar.png');
+
+        return asset('public/storage/avatars/avatar.png');
     }
 
     public function matriculas()
