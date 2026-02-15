@@ -11,15 +11,13 @@ on:
       - 'apirest/database/**'
       - 'apirest/public/**'
       - 'apirest/routes/**'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:
 
 jobs:
   deploy-frontend:
     name: Build and Deploy Frontend
     runs-on: ubuntu-latest
-    if: |
-      contains(github.event.head_commit.modified, 'src/') ||
-      contains(github.event.head_commit.modified, 'angular.json') ||
-      github.event_name == 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v3
 
@@ -58,12 +56,6 @@ jobs:
   deploy-backend:
     name: Deploy Backend
     runs-on: ubuntu-latest
-    if: |
-      contains(github.event.head_commit.modified, 'apirest/app/') ||
-      contains(github.event.head_commit.modified, 'apirest/database/') ||
-      contains(github.event.head_commit.modified, 'apirest/public/') ||
-      contains(github.event.head_commit.modified, 'apirest/routes/') ||
-      github.event_name == 'workflow_dispatch'
     steps:      
       - name: Diagnóstico de Red
         run: |
