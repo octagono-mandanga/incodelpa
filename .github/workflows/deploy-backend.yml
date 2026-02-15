@@ -17,7 +17,7 @@ jobs:
         run: |
           echo "Probando conexión a ${{ secrets.SSH_HOST }}..."
           # Intentamos conectar al puerto 22
-          nc -zv -w 10 ${{ secrets.SSH_HOST }} 22 || (echo "PUERTO CERRADO O BLOQUEADO" && exit 1)
+          nc -zv -w 10 ${{ secrets.SSH_HOST }} 22 || (echo "PUERTO CERRADO" && exit 1)
       
       - name: Checkout del código
         uses: actions/checkout@v3
