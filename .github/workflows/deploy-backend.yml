@@ -12,7 +12,11 @@ on:
 jobs:
   deploy-backend:
     runs-on: ubuntu-latest
-    steps:
+    steps:      
+      - name: Diagnóstico de Red
+        run: |
+          echo "Probando conexión a ${{ secrets.SSH_HOST }}..."
+          nc -zv -w 5 ${{ secrets.SSH_HOST }} 22 || echo "PUERTO CERRADO"  
       - uses: actions/checkout@v3
 
       - name: Sincronizar Carpetas Específicas
