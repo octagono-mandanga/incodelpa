@@ -1,0 +1,103 @@
+name: Unified Deployment (Frontend & Backend)
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - 'angular.json'
+      - 'apirest/app/**'
+      - 'apirest/database/**'
+      - 'apirest/public/**'
+      - 'apirest/routes/**'
+
+jobs:
+  deploy-frontend:
+    name: Build and Deploy Frontend
+    runs-on: ubuntu-latest
+    if: |
+      contains(github.event.head_commit.modified, 'src/') ||
+      contains(github.event.head_commit.modified, 'angular.json') ||
+      github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Build Project
+        run: |
+          npm install
+          npm run build -- --configuration production
+
+      - name: Backup de Seguridad
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/incodelpa
+            BACKUP_NAME=$(date +%Y%m%d_%H%M)
+            mkdir -p $BACKUP_NAME
+            find . -maxdepth 1 -type f \( -name "*.js" -o -name "*.css" -o -name "index.html" -o -name "*.map" \) -exec mv {} $BACKUP_NAME/ \;
+
+      - name: Subir Nueva Versión
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "dist/mdng/*"
+          target: "/var/www/incodelpa/"
+          strip_components: 2
+
+  deploy-backend:
+    name: Deploy Backend
+    runs-on: ubuntu-latest
+    if: |
+      contains(github.event.head_commit.modified, 'apirest/app/') ||
+      contains(github.event.head_commit.modified, 'apirest/database/') ||
+      contains(github.event.head_commit.modified, 'apirest/public/') ||
+      contains(github.event.head_commit.modified, 'apirest/routes/') ||
+      github.event_name == 'workflow_dispatch'
+    steps:      
+      - name: Diagnóstico de Red
+        run: |
+          echo "Probando conexión a ${{ secrets.SSH_HOST }}..."
+          nc -zv -w 10 ${{ secrets.SSH_HOST }} 22 || (echo "PUERTO CERRADO" && exit 1)
+      
+      - name: Checkout del código
+        uses: actions/checkout@v3
+
+      - name: Sincronizar Carpetas Específicas
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          timeout: 60s
+          command_timeout: 10m
+          source: "apirest/app,apirest/database,apirest/public,apirest/routes"
+          target: "/var/www/incodelpa/"
+          strip_components: 0
+
+      - name: Optimización post-deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            if [ -d "/var/www/incodelpa/apirest" ]; then
+              cd /var/www/incodelpa/apirest
+              php artisan config:cache
+              php artisan route:cache
+            else
+              echo "Error: El directorio /var/www/incodelpa/apirest no existe."
+              exit 1
+            fi
