@@ -7,7 +7,7 @@ on:
       - 'apirest/public/**'
       - 'apirest/routes/**'
     branches:
-      - backend
+      - main
 
 jobs:
   deploy-backend:
