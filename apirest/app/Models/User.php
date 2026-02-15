@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Clase que representa a un usuario del sistema.
+ */
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -76,11 +79,9 @@ class User extends Authenticatable
     public function getAvatarUrlAttribute()
     {
         $avatarPath = "avatars/{$this->id}.png";
-
         if (Storage::disk('public')->exists($avatarPath)) {
             return Storage::disk('public')->url($avatarPath);
         }
-
         return asset('storage/avatars/avatar.png');
     }
 
