@@ -1,7 +1,6 @@
 <?php
 
 /**
- * Clase que representa a un usuario del sistema.
  * @author Ing. Gonzalo Lucio  
  */
 namespace App\Models;
