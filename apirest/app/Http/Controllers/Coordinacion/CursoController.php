@@ -123,7 +123,7 @@ class CursoController extends Controller
             ->join('sedes', 'sedes.id', '=', 'cursos.sede')
             ->where('cursos.coordinador', Auth::id())
             ->where('lectivos.estado', '=', 'anterior')
-            ->orderBy('lectivos.anio', 'desc')
+            ->orderBy('lectivos.inicio', 'desc')
             ->orderBy('sedes.created_at')
             ->orderBy('niveles.orden')
             ->orderBy('grados.orden')
