@@ -44,18 +44,28 @@ class BackupController extends Controller
             // Define el directorio donde se almacenan los backups
             $backupDirectory = 'backups'; // Ubicación correcta asumiendo la base en storage/app
 
+            // Asegurar que el directorio existe
+            if (!Storage::disk('local')->exists($backupDirectory)) {
+                Storage::disk('local')->makeDirectory($backupDirectory);
+            }
+
             // Obtiene todos los archivos de backup en el directorio
             $files = Storage::disk('local')->files($backupDirectory);
 
-            // Transforma la lista de archivos para devolver más detalles
-            $backups = collect($files)->map(function ($file) {
-                return [
-                    'name' => basename($file),
-                    'url' => route('backup.download', ['file' => basename($file)]),
-                    'size' => round(Storage::disk('local')->size($file)/1024), // Asegúrate de pasar la ruta correcta
-                    'last_modified' => Storage::disk('local')->lastModified($file) // Usa $file directamente
-                ];
-            });
+            // Filtra solo archivos .zip y transforma la lista
+            $backups = collect($files)
+                ->filter(function ($file) {
+                    return pathinfo($file, PATHINFO_EXTENSION) === 'zip';
+                })
+                ->map(function ($file) {
+                    return [
+                        'name' => basename($file),
+                        'size' => round(Storage::disk('local')->size($file)/1024),
+                        'last_modified' => Storage::disk('local')->lastModified($file)
+                    ];
+                })
+                ->sortByDesc('last_modified')
+                ->values();
 
             return response()->json(['backups' => $backups], 200);
         } catch (\Exception $e) {
@@ -71,12 +81,10 @@ class BackupController extends Controller
             return response()->json(['error' => 'Archivo no encontrado.'], 404);
         }
 
-        $fileContents = Storage::disk('local')->get($filePath);
-        $mimeType = Storage::disk('local')->mimeType($filePath);
+        $fullPath = Storage::disk('local')->path($filePath);
 
-        return response($fileContents, 200, [
-            'Content-Type' => $mimeType,
-            'Content-Disposition' => 'attachment; filename="' . $file . '"',
+        return response()->download($fullPath, $file, [
+            'Content-Type' => 'application/zip',
         ]);
     }
 

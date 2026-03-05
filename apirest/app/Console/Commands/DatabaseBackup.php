@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\Process\Process;
 use Illuminate\Support\Facades\Storage;
 
@@ -48,25 +48,28 @@ class DatabaseBackup extends Command
         // Aquí puedes añadir más condiciones para otros sistemas de gestión de bases de datos como PostgreSQL, SQLite, etc.
 
         $process = Process::fromShellCommandline($command);
+        $process->setTimeout(300); // 5 minutos de timeout
         $process->run();
 
-        // PRIMERO verificar si el proceso fue exitoso
-        if (!$process->isSuccessful()) {
-            $errorOutput = file_get_contents($errorFile);
+        // Verificar si hay errores en el archivo de error
+        $errorOutput = file_get_contents($errorFile);
+
+        // Verificar si el archivo SQL fue creado y tiene contenido
+        $sqlFilePath = storage_path('app/backups/' . $filename);
+
+        if (!empty(trim($errorOutput)) || !file_exists($sqlFilePath) || filesize($sqlFilePath) == 0) {
             $this->error('La copia de seguridad de la base de datos falló. Detalles: ' . $errorOutput);
+            Log::error('Backup falló: ' . $errorOutput);
             unlink($errorFile);
+            // Eliminar archivo SQL vacío si existe
+            if (file_exists($sqlFilePath)) {
+                unlink($sqlFilePath);
+            }
             return 1;
         }
 
         // Limpiar archivo de error temporal
         unlink($errorFile);
-
-        // Verificar que el archivo SQL fue creado
-        $sqlFilePath = storage_path('app/backups/' . $filename);
-        if (!file_exists($sqlFilePath)) {
-            $this->error('El archivo SQL no fue creado.');
-            return 1;
-        }
 
         $zip = new \ZipArchive();
         $zipFilename = storage_path('app/backups/' . basename($filename, '.sql') . '.zip');

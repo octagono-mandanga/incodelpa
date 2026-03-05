@@ -26,17 +26,14 @@
               <i class="fa-solid fa-download fa-2x"></i>
             </div>
             <div class="flex-grow-1 ms-3">
-              <a href="{{ backup.url }}" download="{{ backup.name }}" class="backup-link mb-0  lh-1">
-                {{ backup.name }} ({{  backup.size | number }} KB)
+              <a (click)="descargar(backup.name)" class="backup-link mb-0 lh-1" style="cursor: pointer;">
+                {{ backup.name }} ({{ backup.size | number }} KB)
               </a>
-
               <span class="backup-info lh-1">
-                Creado: {{ backup.last_modified | date:'medium' }}
+                Creado: {{ backup.last_modified * 1000 | date:'medium' }}
               </span>
             </div>
           </div>
-
-
         </li>
       </ul>
     </div>

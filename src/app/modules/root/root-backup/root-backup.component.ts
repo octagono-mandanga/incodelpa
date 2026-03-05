@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Entity } from 'src/app/model/entity';
 import { CrudService } from 'src/app/service/crud.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root-backup',
@@ -14,7 +16,8 @@ export class RootBackupComponent implements OnInit {
   countdown: number = 0;
 
   constructor(
-    public crudService: CrudService<Entity>
+    public crudService: CrudService<Entity>,
+    private http: HttpClient
   ) { }
   ngOnInit(): void {
     this.listar()
@@ -50,6 +53,22 @@ export class RootBackupComponent implements OnInit {
       },
       error: (error) => {
         this.loading = false;
+      }
+    });
+  }
+
+  descargar(filename: string) {
+    const url = `${environment.url}/root/backup/download/${filename}`;
+    this.http.get(url, { responseType: 'blob' }).subscribe({
+      next: (blob) => {
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = filename;
+        link.click();
+        window.URL.revokeObjectURL(link.href);
+      },
+      error: (error) => {
+        console.error('Error al descargar:', error);
       }
     });
   }
