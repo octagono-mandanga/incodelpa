@@ -6,6 +6,7 @@ import { CoordinacionCursosAsignacionComponent } from './coordinacion-cursos-asi
 import { CoordinacionCursosEditComponent } from './coordinacion-cursos-edit/coordinacion-cursos-edit.component';
 import { CoordinacionCursosViewComponent } from './coordinacion-cursos-view/coordinacion-cursos-view.component';
 import { CoordinacionCursosAsignacionEditComponent } from './coordinacion-cursos-asignacion-edit/coordinacion-cursos-asignacion-edit.component';
+import { CoordinacionCursosAnterioresComponent } from './coordinacion-cursos-anteriores/coordinacion-cursos-anteriores.component';
 
 const routes: Routes = [
   { path: '', component: CoordinacionCursosComponent },
@@ -13,7 +14,8 @@ const routes: Routes = [
   { path: 'edit/:id', component: CoordinacionCursosEditComponent },
   { path: 'view/:id', component: CoordinacionCursosViewComponent },
   { path: 'asignacion/:id', component: CoordinacionCursosAsignacionComponent },
-  { path: 'asignacion-edit/:id', component: CoordinacionCursosAsignacionEditComponent }
+  { path: 'asignacion-edit/:id', component: CoordinacionCursosAsignacionEditComponent },
+  { path: 'anteriores', component: CoordinacionCursosAnterioresComponent }
 ];
 
 @NgModule({

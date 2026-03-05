@@ -1,5 +1,4 @@
 export const environment = {
-  //url: 'http://localhost:8000/api',
   url: 'https://www.incodelpa.com/api',
   instituto: {
     nombre: 'INSTITUTO COMERCIAL DEL PACIFICO',

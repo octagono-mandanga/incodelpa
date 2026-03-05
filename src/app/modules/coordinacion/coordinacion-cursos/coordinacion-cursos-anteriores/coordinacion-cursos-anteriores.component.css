@@ -1,0 +1,47 @@
+/* Estilos para el componente de cursos anteriores */
+
+.table-primary {
+  background-color: rgba(13, 110, 253, 0.1) !important;
+}
+
+.form-check-input:checked {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+tr:hover {
+  cursor: pointer;
+}
+
+/* Estilos para el procesamiento */
+.progress {
+  border-radius: 0;
+}
+
+.progress-bar {
+  font-weight: bold;
+}
+
+/* Animación para el mensaje de proceso */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.blink {
+  animation: blink 1.5s ease-in-out infinite;
+}
+
+/* Estilos para las tarjetas de resumen */
+.border-3 {
+  border-width: 3px !important;
+}
+
+/* Gap para flexbox */
+.gap-3 {
+  gap: 1rem;
+}

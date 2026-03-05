@@ -1,6 +1,5 @@
 export const environment = {
-  //url: 'http://localhost:8000/api',
-  //url: 'https://www.incodelpa.com/api',
+  url: 'https://www.incodelpa.com/api',
   instituto: {
     nombre: 'INSTITUTO COMERCIAL DEL PACIFICO',
     resolucion: 'Resolución No. 0602 de Agosto 28 del 2006, Dane No. 376109006564',

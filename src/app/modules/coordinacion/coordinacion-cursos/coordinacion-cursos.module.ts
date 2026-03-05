@@ -10,6 +10,7 @@ import { CoordinacionCursosViewComponent } from './coordinacion-cursos-view/coor
 import { CoordinacionCursosAsignacionComponent } from './coordinacion-cursos-asignacion/coordinacion-cursos-asignacion.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CoordinacionCursosAsignacionEditComponent } from './coordinacion-cursos-asignacion-edit/coordinacion-cursos-asignacion-edit.component';
+import { CoordinacionCursosAnterioresComponent } from './coordinacion-cursos-anteriores/coordinacion-cursos-anteriores.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { CoordinacionCursosAsignacionEditComponent } from './coordinacion-cursos
     CoordinacionCursosEditComponent,
     CoordinacionCursosViewComponent,
     CoordinacionCursosAsignacionComponent,
-    CoordinacionCursosAsignacionEditComponent
+    CoordinacionCursosAsignacionEditComponent,
+    CoordinacionCursosAnterioresComponent
   ],
   imports: [
     CommonModule,

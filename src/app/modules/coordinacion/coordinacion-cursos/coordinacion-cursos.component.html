@@ -32,10 +32,10 @@
 
     </ul>
   </div>
-  <button *ngIf="!loading && data.length === 0" (click)="onImportar()"
+  <a *ngIf="!loading && data.length === 0" routerLink="/coordinacion/cursos/anteriores"
     class="btn btn-outline-primary rounded-0 ms-auto">
     <i class="fa-solid fa-cloud-arrow-down"></i> Importar Cursos
-  </button>
+  </a>
   <app-load-document *ngIf="generatepdf" [generatepdfMsg]="generatepdfMsg"></app-load-document>
 </div>
 <div class="container mt-5" *ngIf="!loading && data.length === 0 && lectivos.length === 0">
