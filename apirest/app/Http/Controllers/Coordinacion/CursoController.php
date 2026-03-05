@@ -143,29 +143,118 @@ class CursoController extends Controller
      */
     public function importar($id)
     {
+        $resultado = $this->importarCursoIndividual($id);
+        return response()->json($resultado['response'], $resultado['status']);
+    }
+
+    /**
+     * Importar múltiples cursos de un lectivo anterior.
+     * Cada curso tiene su propia transacción - si uno falla, no afecta los demás.
+     */
+    public function importarMultiple(Request $request)
+    {
+        $ids = $request->input('ids', []);
+
+        if (empty($ids)) {
+            return response()->json([
+                'message' => 'No se proporcionaron cursos para importar',
+                'success' => false
+            ], 400);
+        }
+
+        $resultados = [
+            'exitosos' => [],
+            'fallidos' => [],
+            'total' => count($ids),
+            'importados' => 0,
+            'errores' => 0
+        ];
+
+        foreach ($ids as $id) {
+            $resultado = $this->importarCursoIndividual($id);
+
+            if ($resultado['success']) {
+                $resultados['exitosos'][] = [
+                    'id' => $id,
+                    'curso' => $resultado['response']['data'] ?? null,
+                    'asignaciones_copiadas' => $resultado['response']['asignaciones_copiadas'] ?? 0
+                ];
+                $resultados['importados']++;
+            } else {
+                $resultados['fallidos'][] = [
+                    'id' => $id,
+                    'mensaje' => $resultado['response']['message']
+                ];
+                $resultados['errores']++;
+            }
+        }
+
+        $mensaje = "Importación completada: {$resultados['importados']} de {$resultados['total']} cursos importados";
+        if ($resultados['errores'] > 0) {
+            $mensaje .= ", {$resultados['errores']} con errores";
+        }
+
+        return response()->json([
+            'message' => $mensaje,
+            'success' => $resultados['errores'] === 0,
+            'resultados' => $resultados
+        ], $resultados['importados'] > 0 ? 200 : 400);
+    }
+
+    /**
+     * Método privado que importa un curso individual con su propia transacción.
+     */
+    private function importarCursoIndividual($id): array
+    {
         try {
             DB::beginTransaction();
 
             // Obtener el curso original con sus relaciones
-            $cursoOriginal = Curso::with(['lectivo.nivel', 'asignaciones'])->find($id);
+            $cursoOriginal = Curso::with(['asignaciones'])->find($id);
 
             if (!$cursoOriginal) {
-                return response()->json([
-                    'message' => 'Curso no encontrado',
-                    'success' => false
-                ], 404);
+                DB::rollBack();
+                return [
+                    'success' => false,
+                    'status' => 404,
+                    'response' => [
+                        'message' => 'Curso no encontrado',
+                        'success' => false
+                    ]
+                ];
             }
 
             // Verificar que el curso pertenece al coordinador actual
             if ($cursoOriginal->coordinador !== Auth::id()) {
-                return response()->json([
-                    'message' => 'No tiene permisos para importar este curso',
-                    'success' => false
-                ], 403);
+                DB::rollBack();
+                return [
+                    'success' => false,
+                    'status' => 403,
+                    'response' => [
+                        'message' => 'No tiene permisos para importar este curso',
+                        'success' => false
+                    ]
+                ];
             }
 
-            // Obtener el nivel del curso original
-            $nivelId = $cursoOriginal->lectivo->nivel;
+            // Obtener el lectivo del curso original usando la relación explícitamente
+            $lectivoOriginal = Lectivo::with('nivel')->find($cursoOriginal->getAttributes()['lectivo']);
+
+            if (!$lectivoOriginal) {
+                DB::rollBack();
+                return [
+                    'success' => false,
+                    'status' => 400,
+                    'response' => [
+                        'message' => 'No se encontró el lectivo del curso',
+                        'success' => false
+                    ]
+                ];
+            }
+
+            // Obtener el nivel ID del lectivo original
+            $nivelId = $lectivoOriginal->getAttributes()['nivel'];
+            $nivelModel = $lectivoOriginal->getRelation('nivel');
 
             // Buscar el lectivo activo del mismo nivel
             $lectivoActivo = Lectivo::where('nivel', $nivelId)
@@ -173,24 +262,34 @@ class CursoController extends Controller
                 ->first();
 
             if (!$lectivoActivo) {
-                return response()->json([
-                    'message' => 'No existe un lectivo activo para el nivel ' . $cursoOriginal->lectivo->nivel->nombre,
-                    'success' => false
-                ], 400);
+                DB::rollBack();
+                return [
+                    'success' => false,
+                    'status' => 400,
+                    'response' => [
+                        'message' => 'No existe un lectivo activo para el nivel ' . ($nivelModel ? $nivelModel->nombre : $nivelId),
+                        'success' => false
+                    ]
+                ];
             }
 
             // Verificar si ya existe un curso con el mismo nombre en el lectivo activo
             $cursoExistente = Curso::where('nombre', $cursoOriginal->nombre)
                 ->where('lectivo', $lectivoActivo->id)
-                ->where('grado', $cursoOriginal->grado)
-                ->where('sede', $cursoOriginal->sede)
+                ->where('grado', $cursoOriginal->getAttributes()['grado'])
+                ->where('sede', $cursoOriginal->getAttributes()['sede'])
                 ->first();
 
             if ($cursoExistente) {
-                return response()->json([
-                    'message' => 'Ya existe el curso "' . $cursoOriginal->nombre . '" en el lectivo activo',
-                    'success' => false
-                ], 400);
+                DB::rollBack();
+                return [
+                    'success' => false,
+                    'status' => 400,
+                    'response' => [
+                        'message' => 'Ya existe el curso "' . $cursoOriginal->nombre . '" en el lectivo activo',
+                        'success' => false
+                    ]
+                ];
             }
 
             // Obtener el orden para el nuevo curso
@@ -201,10 +300,10 @@ class CursoController extends Controller
                 'nombre' => $cursoOriginal->nombre,
                 'estado' => 'activo',
                 'orden' => $orden,
-                'grado' => $cursoOriginal->grado,
-                'sede' => $cursoOriginal->sede,
+                'grado' => $cursoOriginal->getAttributes()['grado'],
+                'sede' => $cursoOriginal->getAttributes()['sede'],
                 'lectivo' => $lectivoActivo->id,
-                'director' => $cursoOriginal->director,
+                'director' => $cursoOriginal->getAttributes()['director'],
                 'coordinador' => Auth::id(),
             ]);
 
@@ -213,8 +312,8 @@ class CursoController extends Controller
             foreach ($cursoOriginal->asignaciones as $asignacion) {
                 Asignacion::create([
                     'curso' => $nuevoCurso->id,
-                    'materia' => $asignacion->materia,
-                    'docente' => $asignacion->docente,
+                    'materia' => $asignacion->getAttributes()['materia'],
+                    'docente' => $asignacion->getAttributes()['docente'],
                     'estado' => $asignacion->estado,
                 ]);
                 $asignacionesCopiadas++;
@@ -225,19 +324,27 @@ class CursoController extends Controller
             // Cargar el curso con sus relaciones para la respuesta
             $nuevoCurso->load(['grado', 'sede', 'lectivo.nivel', 'director', 'asignaciones.materia', 'asignaciones.docente']);
 
-            return response()->json([
-                'message' => 'Curso importado con éxito',
+            return [
                 'success' => true,
-                'data' => $nuevoCurso,
-                'asignaciones_copiadas' => $asignacionesCopiadas
-            ], 201);
+                'status' => 201,
+                'response' => [
+                    'message' => 'Curso importado con éxito',
+                    'success' => true,
+                    'data' => $nuevoCurso,
+                    'asignaciones_copiadas' => $asignacionesCopiadas
+                ]
+            ];
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json([
-                'message' => 'Error al importar el curso: ' . $e->getMessage(),
-                'success' => false
-            ], 500);
+            return [
+                'success' => false,
+                'status' => 500,
+                'response' => [
+                    'message' => 'Error al importar el curso: ' . $e->getMessage(),
+                    'success' => false
+                ]
+            ];
         }
     }
 }

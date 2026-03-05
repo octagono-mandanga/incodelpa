@@ -128,6 +128,7 @@ Route::prefix('coordinacion')->name('coordinacion.')->middleware(['auth:sanctum'
     Route::apiResource('cursos', App\Http\Controllers\Coordinacion\CursoController::class);
     Route::get('cursos-anteriores', [App\Http\Controllers\Coordinacion\CursoController::class, 'anteriores']);
     Route::post('cursos-importar/{id}', [App\Http\Controllers\Coordinacion\CursoController::class, 'importar']);
+    Route::post('cursos-importar-multiple', [App\Http\Controllers\Coordinacion\CursoController::class, 'importarMultiple']);
     Route::apiResource('alumnos', App\Http\Controllers\Coordinacion\AlumnoController::class);
     Route::post('alumnos/avatar/{id}', [App\Http\Controllers\Coordinacion\AlumnoController::class, 'setAvatar']);
     Route::apiResource('docentes', App\Http\Controllers\Coordinacion\DocenteController::class);
