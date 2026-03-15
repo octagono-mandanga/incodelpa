@@ -153,23 +153,33 @@ export class CoordinacionCursosComponent implements OnInit {
     switch (doc) {
       case 1:
         this.generatepdf = true
+        this.generatepdfMsg = 'Iniciando Proceso ...'
         this.docDefinition = new Documento()
         this.data.forEach((element: any) => {
           cursos.push({ curso: element, matriculados: element.matriculas })
         });
-        this.docDefinition.listadoTodosCursos(cursos).then(() => {
+        this.docDefinition.listadoTodosCursos(cursos, (msg: string) => {
+          this.generatepdfMsg = msg
+        }).then(() => {
+          this.generatepdfMsg = 'Generando Listados Simples ...'
           pdfMake.createPdf(this.docDefinition.def).download('Listados.pdf', () => {
             this.generatepdf = false
+            this.generatepdfMsg = undefined
           });
         });
         break;
       case 2:
         this.generatepdf = true
+        this.generatepdfMsg = 'Iniciando Proceso ...'
         this.docDefinition = new Documento()
 
-        this.docDefinition.cursosAsignaciones(this.data).then(() => {
+        this.docDefinition.cursosAsignaciones(this.data, false, (msg: string) => {
+          this.generatepdfMsg = msg
+        }).then(() => {
+          this.generatepdfMsg = 'Generando Listados por Asignatura ...'
           pdfMake.createPdf(this.docDefinition.def).download('Listados_asignacion.pdf', () => {
             this.generatepdf = false
+            this.generatepdfMsg = undefined
           });
         });
 

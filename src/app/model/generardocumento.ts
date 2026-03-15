@@ -397,7 +397,7 @@ function crearAsignaciones(asignacion: Asignacion, matriculados: User[], curso: 
     const segundoNombre = item.alumno.segundo_nombre || '';
     return [
       styledCell((index + 1)),
-      styledCell((item.alumno.alumno.codigo)),
+      styledCell((item.alumno?.alumno?.codigo || '')),
       styledCell(`${primerApellido.toUpperCase()} ${segundoApellido.toUpperCase()} ${primerNombre.toUpperCase()} ${segundoNombre.toUpperCase()}`),
       ...Array(10).fill(styledCell(' ')), // Esto genera 10 celdas vacías
     ];
@@ -1349,9 +1349,10 @@ export class Documento {
    *
    * Genera el listado de alumno, een  la  cabecera el nombre del director de curso
   */
-  async listadoTodosCursos(cursos: { matriculados: User[], curso: Curso }[]) {
+  async listadoTodosCursos(cursos: { matriculados: User[], curso: Curso }[], onProgress?: (msg: string) => void) {
     let content = [];
     for (const { curso, matriculados } of cursos) {
+      if (onProgress) onProgress(`Generando ${curso.grado.nombre} (${curso.nombre})...`);
       const alumnosOrdenados = matriculados.sort((a, b) => {
         // Compara por primer apellido
         if (a.alumno.primer_apellido.toLowerCase() < b.alumno.primer_apellido.toLowerCase()) return -1;
@@ -1377,7 +1378,7 @@ export class Documento {
         const segundoNombre = item.alumno.segundo_nombre || '';
         return [
           styledCell((index + 1).toString()),
-          styledCell(item.alumno.alumno.codigo),
+          styledCell(item.alumno?.alumno?.codigo || ''),
           styledCell(`${primerApellido.toUpperCase()} ${segundoApellido.toUpperCase()} ${primerNombre.toUpperCase()} ${segundoNombre.toUpperCase()}`
           ),
           ...Array(10).fill(styledCell(' ')), // Esto genera 10 celdas vacías
@@ -2093,7 +2094,7 @@ export class Documento {
    *
    * Genera el listado de alumno (Cuadros), een  la  cabecera el nombre del director de curso
   */
-  async cursosAsignaciones(cursos: Curso[], isDocente: boolean = false) {
+  async cursosAsignaciones(cursos: Curso[], isDocente: boolean = false, onProgress?: (msg: string) => void) {
     let content: any = [];
     const fecha = new Date();
     //const fechaFormateada = `${fecha.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()} ${fecha.getHours()}:${fecha.getMinutes()}`;
@@ -2190,6 +2191,8 @@ export class Documento {
     for (const curso of cursos) {
       const matriculados = curso.matriculas; // Asume que cada curso tiene una propiedad 'matriculados'
       const asignaciones = curso.asignaciones; // Asume que cada curso tiene una propiedad 'asignaciones'
+
+      if (onProgress) onProgress(`Generando ${curso.grado.nombre} (${curso.nombre})...`);
 
       // Para cada curso, agrega un salto de página, excepto antes del primer curso
       if (this.def.content.length > 0 && matriculados.length > 0 && asignaciones.length > 0) {
@@ -2648,7 +2651,7 @@ export class Documento {
       const logoColegio = await getImageBase64(logoColegioOriginal);
       const logoOriginal = 'assets/images/logo.png';
       const logo = await getImageBase64(logoOriginal);
-  
+
       this.def = {
         pageSize: 'LETTER',
         pageMargins: [40, 105, 40, 60],
@@ -2700,7 +2703,7 @@ export class Documento {
             columnGap: 10
           };
         },
-  
+
         footer: function(currentPage: any, pageCount: any) {
           return {
             columns: [
@@ -2733,11 +2736,11 @@ export class Documento {
           paddingBottom: () => 0,
         },
       };
-  
-  
-  
-  
-  
+
+
+
+
+
     }
   */
 
