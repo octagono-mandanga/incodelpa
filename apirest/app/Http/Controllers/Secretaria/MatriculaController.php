@@ -58,6 +58,41 @@ class MatriculaController extends Controller
         }
     }
 
+    public function destroy($id)
+    {
+        $matricula = Matricula::with(['curso.director', 'curso.grado'])->find($id);
+
+        if (!$matricula) {
+            return response()->json(['message' => 'Matricula no encontrada'], 404);
+        }
+
+        try {
+            DB::beginTransaction();
+            $matricula->forceDelete();
+            DB::commit();
+
+            return response()->json([
+                'message' => 'La matrícula fue eliminada correctamente.',
+                'data' => null,
+                'action' => 'deleted',
+            ], 200);
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+        }
+
+        $matricula->update([
+            'estado' => 'retirado'
+        ]);
+
+        $matricula->refresh()->load(['curso.director', 'curso.grado']);
+
+        return response()->json([
+            'message' => 'La matricula fue actualizada.',
+            'data' => $matricula,
+            'action' => 'retired',
+        ], 200);
+    }
+
     public function curso($id)
     {
         // Incluye las relaciones 'grado' y 'area' al recuperar las materias

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Matricula } from 'src/app/model/matricula';
 import { User } from 'src/app/model/user';
 
@@ -11,8 +11,9 @@ export class AlumnoExpedienteComponent  implements OnInit, OnChanges {
   @Input() alumno!: User
   @Input() matriculas: Matricula[] = []
   @Input() loading: boolean = false
-  @Input() config: any
-  public matricula!: Matricula
+  @Input() config: any = { actions: {} }
+  @Output() event = new EventEmitter<any>()
+  public matricula: Matricula = new Matricula()
 
   constructor(){}
   async ngOnInit() {
@@ -26,6 +27,14 @@ export class AlumnoExpedienteComponent  implements OnInit, OnChanges {
       this.matricula = matriculaActiva;
     }
 
+  }
+
+  onRetirar(): void {
+    if (!this.matricula?.id) {
+      return;
+    }
+
+    this.event.emit({ type: 'retirar', matriculaId: this.matricula.id });
   }
 
 }

@@ -23,6 +23,9 @@ export class SecretariaAlumnosViewComponent implements  OnInit {
   public matriculas: Matricula[] = []
 
   public cursos: Curso[] = []
+  public retiroModalVisible: boolean = false
+  public retiroProcesando: boolean = false
+  public matriculaPendienteRetiro: Matricula | null = null
 
   constructor(
     public route: ActivatedRoute,
@@ -46,6 +49,7 @@ export class SecretariaAlumnosViewComponent implements  OnInit {
         edit: '/secretaria/alumnos/edit',
         view: '/secretaria/alumnos/detail',
         modify: '/secretaria/alumnos/modify',
+        retirar: true,
       }
     }
     this.cargarMatricula()
@@ -104,6 +108,53 @@ export class SecretariaAlumnosViewComponent implements  OnInit {
         this.message = 'Error al cargar el curso : '+error
         this.success = false
         this.loading = false
+      }
+    })
+  }
+
+  onExpedienteEvent(event: any): void {
+    if (event?.type !== 'retirar' || !event?.matriculaId) {
+      return;
+    }
+
+    const matriculaActiva = this.matriculas.find((item) => item.id === event.matriculaId);
+    if (!matriculaActiva) {
+      return;
+    }
+
+    this.matriculaPendienteRetiro = matriculaActiva;
+    this.retiroModalVisible = true;
+  }
+
+  cerrarModalRetiro(): void {
+    if (this.retiroProcesando) {
+      return;
+    }
+
+    this.retiroModalVisible = false;
+    this.matriculaPendienteRetiro = null;
+  }
+
+  confirmarRetiro(): void {
+    if (!this.matriculaPendienteRetiro?.id || this.retiroProcesando) {
+      return;
+    }
+
+    this.loading = true;
+    this.retiroProcesando = true;
+    this.crudMatriculaService.delete('/secretaria/matricula/' + this.matriculaPendienteRetiro.id).subscribe({
+      next: (res: any) => {
+        this.message = res?.message || 'El estudiante fue retirado correctamente.';
+        this.success = true;
+        this.retiroProcesando = false;
+        this.cerrarModalRetiro();
+        this.cargarMatricula();
+      },
+      error: (error) => {
+        this.message = 'Error al retirar al estudiante : ' + error;
+        this.success = false;
+        this.retiroProcesando = false;
+        this.loading = false;
       }
     })
   }

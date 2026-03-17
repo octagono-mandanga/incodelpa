@@ -36,13 +36,17 @@
             <i class="fa-solid fa-gear"></i>
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" *ngIf="config?.actions?.edit" [routerLink]="[config?.actions?.edit, alumno.id]">Editar Perfil</a></li>
-            <li><a class="dropdown-item" *ngIf="config?.actions?.modify" [routerLink]="[config?.actions?.modify, alumno.id]">Modificar Matricula</a></li>
+            <li><a class="dropdown-item" *ngIf="config.actions.edit" [routerLink]="[config.actions.edit, alumno.id]">Editar Perfil</a></li>
+            <li><a class="dropdown-item" *ngIf="config.actions.modify" [routerLink]="[config.actions.modify, alumno.id]">Modificar Matricula</a></li>
+            <li><hr class="dropdown-divider" *ngIf="config.actions.retirar && matricula.id"></li>
+            <li *ngIf="config.actions.retirar && matricula.id">
+              <button type="button" class="dropdown-item text-danger" (click)="onRetirar()">Retirar Estudiante</button>
+            </li>
           </ul>
         </div>
       </div>
     </div>
-    <div *ngIf="matricula?.id" class="alert alert-info" role="alert">
+    <div *ngIf="matricula.id" class="alert alert-info" role="alert">
       <h6 class="text-secondary mb-0">Matricula Académica (Actual)</h6>
       <h5 class="mb-0">
         Curso: {{matricula.curso.nombre}} ({{matricula.curso.grado.nombre}})

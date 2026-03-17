@@ -53,3 +53,43 @@ jobs:
           target: "/var/www/incodelpa/"
           strip_components: 2
 
+  deploy-backend:
+    name: Deploy Backend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Diagnóstico de Red
+        run: |
+          echo "Probando conexión a ${{ secrets.SSH_HOST }}..."
+          nc -zv -w 10 ${{ secrets.SSH_HOST }} 22 || (echo "PUERTO CERRADO" && exit 1)
+
+      - name: Checkout del código
+        uses: actions/checkout@v3
+
+      - name: Sincronizar Carpetas Específicas
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          timeout: 60s
+          command_timeout: 10m
+          source: "apirest/app,apirest/database,apirest/public,apirest/routes"
+          target: "/var/www/incodelpa/"
+          strip_components: 0
+
+      - name: Optimización post-deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            if [ -d "/var/www/incodelpa/apirest" ]; then
+              cd /var/www/incodelpa/apirest
+              php artisan config:cache
+              php artisan route:cache
+            else
+              echo "Error: El directorio /var/www/incodelpa/apirest no existe."
+              exit 1
+            fi
