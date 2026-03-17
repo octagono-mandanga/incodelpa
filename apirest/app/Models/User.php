@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @author Ing. Gonzalo Lucio  
+ * @author Ing. Gonzalo Lucio
  */
 namespace App\Models;
 
@@ -40,7 +40,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'primer_apellido', 
+        'primer_apellido',
         'segundo_apellido',
         'primer_nombre',
         'segundo_nombre',
@@ -99,6 +99,6 @@ class User extends Authenticatable
     }
     public function alumno()
     {
-        return $this->belongsTo(Alumno::class, 'id');
+        return $this->hasOne(Alumno::class, 'id', 'id');
     }
 }

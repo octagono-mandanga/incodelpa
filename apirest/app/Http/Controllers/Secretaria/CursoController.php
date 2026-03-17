@@ -104,6 +104,8 @@ class CursoController extends Controller
     */
     public function paMatricular($id)
     {
+        $cursos = collect();
+
         // Obtener la última matrícula del estudiante
         $ultimaMatricula = Matricula::where('alumno', $id)
                             ->orderBy('created_at', 'desc')
@@ -115,7 +117,14 @@ class CursoController extends Controller
             if (in_array($ultimaMatricula->estado, ['aprobado', 'promovido'])) {
                 // Consultar el curso asociado a la última matrícula
                 $curso = Curso::find($ultimaMatricula->curso);
+                if (!$curso) {
+                    return response()->json(['data' => $cursos], 200);
+                }
+
                 $grado = Grado::find($curso->grado);
+                if (!$grado) {
+                    return response()->json(['data' => $cursos], 200);
+                }
 
                 // Obtener el grado superior
                 $gradoSuperior = Grado::where('orden', '>', $grado->orden)->orderBy('orden', 'asc')->first();
@@ -126,17 +135,25 @@ class CursoController extends Controller
                                 ->whereHas('lectivo', function ($query) {
                                         $query->where('estado', 'activo');
                                     })
+                                ->where('estado', 'activo')
+                                ->with('grado')
                                 ->get();
                 }
-            } elseif ($ultimaMatricula->estado == 'no aprobado') {
+            } elseif (in_array($ultimaMatricula->estado, ['no aprobado', 'retirado'])) {
                 // Consultar el curso asociado a la última matrícula
                 $curso = Curso::find($ultimaMatricula->curso);
+
+                if (!$curso) {
+                    return response()->json(['data' => $cursos], 200);
+                }
 
                 // Consultar todos los cursos del mismo grado y cuyo lectivo sea activo
                 $cursos = Curso::where('grado', $curso->grado)
                             ->whereHas('lectivo', function ($query) {
                                     $query->where('estado', 'activo');
                                 })
+                            ->where('estado', 'activo')
+                            ->with('grado')
                             ->get();
             }
         } else {

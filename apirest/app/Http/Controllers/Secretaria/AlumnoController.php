@@ -21,6 +21,30 @@ use App\Traits\HandleMatricular;
 class AlumnoController extends Controller
 {
     use HandleMatricular;
+
+    private function ensureAlumnoRecord(User $user): Alumno
+    {
+        $alumno = Alumno::find($user->id);
+
+        if (!$alumno) {
+            return Alumno::create([
+                'id'     => $user->id,
+                'codigo' => Alumno::generarCodigo(),
+                'data'   => null,
+                'estado' => $user->estado ?? 'activo'
+            ]);
+        }
+
+        if (empty($alumno->codigo)) {
+            $alumno->update([
+                'codigo' => Alumno::generarCodigo(),
+                'estado' => $alumno->estado ?? $user->estado ?? 'activo'
+            ]);
+        }
+
+        return $alumno->fresh();
+    }
+
     //
     public function index()
     {
@@ -61,16 +85,7 @@ class AlumnoController extends Controller
             'estado' => 'activo',
             'created_at' => Carbon::now()
         ]);
-
-
-                // Se crea también el registro en la tabla "alumnos"
-        // Usamos el método estático para generar el código
-        Alumno::create([
-            'id'     => $user->id,
-            'codigo' => Alumno::generarCodigo(),
-            'data'   => null, // O asigna datos adicionales según tu lógica
-            'estado' => 'activo'
-        ]);
+    $this->ensureAlumnoRecord($user);
 
 
         $curso = Curso::find($request->curso);
@@ -127,6 +142,7 @@ class AlumnoController extends Controller
         // Asignamos directamente el rol 'alumno'
         $role = Role::findByName('alumno', 'api');
         $user->assignRole($role);
+    $this->ensureAlumnoRecord($user);
         //Mail
         $institucion = Institucion::first();
         DB::table('password_reset_tokens')->insert([
@@ -140,9 +156,19 @@ class AlumnoController extends Controller
 
     public function show($id)
     {
-        // Incluimos las relaciones al buscar el curso específico
-        $user = User::with('matriculas.curso.grado')->with('matriculas.curso.director')->with('matriculas.curso.asignaciones.materia')->with('matriculas.curso.asignaciones.docente')->find($id);
+        $user = User::find($id);
+
         if ($user) {
+            $this->ensureAlumnoRecord($user);
+
+            // Incluimos las relaciones al buscar el curso específico
+            $user = User::with('alumno')
+                ->with('matriculas.curso.grado')
+                ->with('matriculas.curso.director')
+                ->with('matriculas.curso.asignaciones.materia')
+                ->with('matriculas.curso.asignaciones.docente')
+                ->find($id);
+
             return response()->json(['data' => $user], 200);
         } else {
             return response()->json(['message' => 'Usuario no encontrado'], 404);
