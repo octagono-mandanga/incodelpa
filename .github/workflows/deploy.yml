@@ -14,6 +14,10 @@ on:
       - '.github/workflows/deploy.yml'
   workflow_dispatch:
 
+concurrency:
+  group: deploy-incodelpa-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   deploy-frontend:
     name: Build and Deploy Frontend
@@ -32,23 +36,28 @@ jobs:
           npm run build -- --configuration production
 
       - name: Backup Seguridad
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          timeout: 60s
           script: |
             cd /var/www/incodelpa
             BACKUP_NAME=$(date +%Y%m%d_%H%M)
-            mkdir -p $BACKUP_NAME
-            find . -maxdepth 1 -type f \( -name "*.js" -o -name "*.css" -o -name "index.html" -o -name "*.map" \) -exec mv {} $BACKUP_NAME/ \;
+            mkdir -p "$BACKUP_NAME"
+            find . -maxdepth 1 -type f \( -name "*.js" -o -name "*.css" -o -name "index.html" -o -name "*.map" \) -exec mv {} "$BACKUP_NAME"/ \;
 
       - name: Subir Nueva Versión
-        uses: appleboy/scp-action@master
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          timeout: 60s
+          command_timeout: 10m
           source: "dist/mdng/*"
           target: "/var/www/incodelpa/"
           strip_components: 2
@@ -56,6 +65,7 @@ jobs:
   deploy-backend:
     name: Deploy Backend
     runs-on: ubuntu-latest
+    needs: deploy-frontend
     steps:
       - name: Diagnóstico de Red
         run: |
@@ -66,7 +76,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Sincronizar Carpetas Específicas
-        uses: appleboy/scp-action@master
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
@@ -79,11 +89,13 @@ jobs:
           strip_components: 0
 
       - name: Optimización post-deploy
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          timeout: 60s
           script: |
             if [ -d "/var/www/incodelpa/apirest" ]; then
               cd /var/www/incodelpa/apirest

@@ -30,7 +30,7 @@ class MatriculaController extends Controller
             'estado' => 'activo'
         ]);
 
-        return response()->json(['message' => 'Matrícula creada con éxito', 'data' => $matricula], 201);
+        return response()->json(['message' => 'Matrícula creada con éxito.', 'data' => $matricula], 201);
     }
 
     public function update(Request $request, $id)
