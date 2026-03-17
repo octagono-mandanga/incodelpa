@@ -15,13 +15,7 @@ use Illuminate\Support\Facades\DB;
 
 class MatriculaController extends Controller
 {
-    /*
-    public function index()
-    {
-        $matriculas = Matricula::with(['curso', 'alumno', 'matriculador'])->get();
-        return response()->json($matriculas);
-    }
-    */
+
     public function store(Request $request)
     {
         $request->validate([
