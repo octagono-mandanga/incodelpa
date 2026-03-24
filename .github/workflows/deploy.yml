@@ -84,11 +84,11 @@ jobs:
           port: 22
           timeout: 60s
           command_timeout: 10m
-          source: "apirest/app,apirest/database,apirest/public,apirest/routes"
+          source: "apirest/app,apirest/database,apirest/public,apirest/routes,apirest/config,apirest/composer.json,apirest/composer.lock"
           target: "/var/www/incodelpa/"
           strip_components: 0
 
-      - name: Optimización post-deploy
+      - name: Instalar dependencias y optimizar
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -96,9 +96,11 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           timeout: 60s
+          command_timeout: 10m
           script: |
             if [ -d "/var/www/incodelpa/apirest" ]; then
               cd /var/www/incodelpa/apirest
+              composer install --no-dev --optimize-autoloader --no-interaction
               php artisan config:cache
               php artisan route:cache
             else

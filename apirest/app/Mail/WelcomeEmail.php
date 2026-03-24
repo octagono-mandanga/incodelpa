@@ -31,19 +31,16 @@ class WelcomeEmail extends Mailable
         $this->role = $role;
     }
 
-    public function build()
-    {
-
-        return $this->from('info@gi2t.org', 'Plataforma Octagono')
-                    ->subject('Bienvenido a Nuestra Aplicación')
-                    ->view('emails.welcome');
-    }
     /**
      * Get the message envelope.
      */
     public function envelope(): Envelope
     {
         return new Envelope(
+            from: new \Illuminate\Mail\Mailables\Address(
+                config('services.resend.from_email', config('mail.from.address')),
+                config('services.resend.from_name', config('mail.from.name'))
+            ),
             subject: 'Bienvenido a Nuestra Aplicación',
         );
     }

@@ -31,4 +31,10 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'resend' => [
+        'key' => env('RESEND_API_KEY'),
+        'from_email' => env('RESEND_FROM_EMAIL', 'verificacion@octagono.app'),
+        'from_name' => env('RESEND_FROM_NAME', 'Octágono'),
+    ],
+
 ];
